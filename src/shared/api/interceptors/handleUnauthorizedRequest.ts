@@ -1,5 +1,4 @@
 import axios, { type AxiosRequestConfig } from 'axios';
-import { handleUnauthorized } from '@/shared/api/errorHandler';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { apiPublic } from '@/shared/api/axiosInstance';
 interface AxiosRequestConfigWithRetry extends AxiosRequestConfig {
@@ -16,10 +15,10 @@ export const handleUnauthorizedRequest = async (originalRequest: AxiosRequestCon
     if (!originalRequest.headers) originalRequest.headers = {};
     originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
-    return axios(originalRequest); // 재요청
-  } catch (err) {
-    // refresh token도 만료
-    handleUnauthorized();
-    return Promise.reject(err);
+    return axios(originalRequest); 
+  } catch {
+    const clearAuth = useAuthStore.getState().clearAuth;
+    clearAuth();
+    return Promise.reject('UNAUTHORIZED');
   }
 };
