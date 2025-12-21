@@ -8,8 +8,6 @@ import RootErrorBoundary from '@/app/RootErrorBoundary/RootErrorBoundary';
 const queryClient = new QueryClient();
 
 function App() {
-  const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  console.log(nums);
   return (
     <RootErrorBoundary onReset={() => (window.location.href = '/')}>
       <QueryClientProvider client={queryClient}>
