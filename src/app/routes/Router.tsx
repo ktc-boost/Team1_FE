@@ -17,6 +17,8 @@ import FileSection from '@/features/file/components/FileSection';
 import MemoEditor from '@/features/memo/components/MemoEditor/MemoEditor';
 import MemoDetail from '@/features/memo/components/MemoDetail/MemoDetail';
 import SettingsPage from '@/pages/SettingsPage';
+import PageErrorBoundary from '@/pages/PageErrorBoundary/PagaErrorBoundary';
+import RootFallback from '@/app/RootErrorBoundary/RootFallback';
 
 export const ROUTE_PATH = {
   MAIN: '/',
@@ -82,23 +84,35 @@ const PROTECTED_ROUTES_NO_LAYOUT = [
 ];
 
 export const router = createBrowserRouter([
-  // 공개 라우트
   ...PUBLIC_ROUTES,
 
-  // 사이드바 없는 보호 라우트
   ...PROTECTED_ROUTES_NO_LAYOUT.map((route) => ({
     ...route,
-    element: <ProtectedRoute>{route.element}</ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <PageErrorBoundary>{route.element}</PageErrorBoundary>
+      </ProtectedRoute>
+    ),
   })),
 
   {
     path: '/',
+
     element: <AppLayout />,
+    errorElement: (
+      <RootFallback
+        error={new Error('라우터 레벨 디자인 테스트')}
+        resetErrorBoundary={() => window.location.reload()}
+      />
+    ),
     children: [
-      // 보호된 라우트
       ...PROTECTED_ROUTES.map((route) => ({
         ...route,
-        element: <ProtectedRoute>{route.element}</ProtectedRoute>,
+        element: (
+          <ProtectedRoute>
+            <PageErrorBoundary>{route.element}</PageErrorBoundary>
+          </ProtectedRoute>
+        ),
       })),
     ],
   },
