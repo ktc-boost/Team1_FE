@@ -2,6 +2,8 @@
   <img src="https://github.com/daaoooy/boost-assets/blob/main/assets/thumbnail/default-thumbnail.png" alt="썸네일" width="100%" style="max-width: 1200px; margin-bottom: 30px;"/>
 </div>
 
+
+
 <br/>
 <br/>
 <br/>
