@@ -4,7 +4,15 @@ on:
   push:
     branches:
       - 'develop'
-      - 'feature/*'
+      - 'feat/**'
+      - 'fix/**'
+      - 'refactor/**'
+      - 'docs/**'
+      - 'style/**'
+      - 'test/**'
+      - 'deploy/**'
+      - 'hotfix/**'
+
       - 'main'
   pull_request:
     branches:
