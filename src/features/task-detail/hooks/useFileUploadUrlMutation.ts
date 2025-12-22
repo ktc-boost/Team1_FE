@@ -8,6 +8,7 @@ import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
 import { isAxiosError } from 'axios';
 import type { FileItemType } from '@/features/file/types/fileTypes';
 import type { FileStatus } from '@/features/task-detail/types/taskDetailType';
+import { TASK_DETAIL_FILES_QUERY_KEY } from '@/features/task-detail/constants/taskDetailQueryKey';
 
 export const useUploadFileMutation = () => {
   const queryClient = useQueryClient();
@@ -39,8 +40,10 @@ export const useUploadFileMutation = () => {
 
     onMutate: async (variables) => {
       const { taskId } = variables;
-      await queryClient.cancelQueries({ queryKey: ['uploadedFile', taskId] });
-      const prevFiles = queryClient.getQueryData<FileItemType[]>(['uploadedFile', taskId]);
+      await queryClient.cancelQueries({ queryKey: TASK_DETAIL_FILES_QUERY_KEY.list(taskId) });
+      const prevFiles = queryClient.getQueryData<FileItemType[]>(
+        TASK_DETAIL_FILES_QUERY_KEY.list(taskId),
+      );
       const tempId = uuidv4();
       const newFile: FileItemType = {
         fileId: tempId,
@@ -50,29 +53,33 @@ export const useUploadFileMutation = () => {
         timeLeft: '방금',
         status: 'uploading' as FileStatus,
       };
-      queryClient.setQueryData(['uploadedFile', taskId], (old: FileItemType[] = []) => [
-        ...old,
-        newFile,
-      ]);
+      queryClient.setQueryData(
+        TASK_DETAIL_FILES_QUERY_KEY.list(taskId),
+        (old: FileItemType[] = []) => [...old, newFile],
+      );
       return { prevFiles, tempId, taskId };
     },
 
     onSuccess: (data, { taskId }, context) => {
-      queryClient.setQueryData(['uploadedFile', taskId], (old: FileItemType[] = []) =>
-        old.map((file) =>
-          file.fileId === context?.tempId
-            ? {
-                ...file,
-                status: 'success',
-                fileId: data.fileId,
-                fileUrl: data.downloadUrl,
-              }
-            : file,
-        ),
+      queryClient.setQueryData(
+        TASK_DETAIL_FILES_QUERY_KEY.list(taskId),
+        (old: FileItemType[] = []) =>
+          old.map((file) =>
+            file.fileId === context?.tempId
+              ? {
+                  ...file,
+                  status: 'success',
+                  fileId: data.fileId,
+                  fileUrl: data.downloadUrl,
+                }
+              : file,
+          ),
       );
     },
 
-    onError: (error, _variables, context) => {
+    onError: (error, variables, context) => {
+      const { taskId } = variables;
+
       console.error('파일 업로드 실패:', error);
 
       if (isAxiosError(error)) {
@@ -92,10 +99,11 @@ export const useUploadFileMutation = () => {
       }
 
       if (context?.prevFiles) {
-        queryClient.setQueryData(['uploadedFile', context.taskId], context.prevFiles);
+        queryClient.setQueryData(TASK_DETAIL_FILES_QUERY_KEY.list(taskId), context.prevFiles);
       } else {
-        queryClient.setQueryData(['uploadedFile', context?.taskId], (old: FileItemType[] = []) =>
-          old.filter((file) => file.fileId !== context?.tempId),
+        queryClient.setQueryData(
+          TASK_DETAIL_FILES_QUERY_KEY.list(taskId),
+          (old: FileItemType[] = []) => old.filter((file) => file.fileId !== context?.tempId),
         );
       }
     },
