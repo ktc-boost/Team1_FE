@@ -33,10 +33,10 @@ api.interceptors.response.use(
     if (!error.response) {
       throw new ApiError('NETWORK_ERROR', 0);
     }
-    if (error.response.status === 401) {
+    if (error.response.status === 401 && !originalRequest._retry) {
       return handleUnauthorizedRequest(originalRequest);
     }
-    if (error.respense.status === 500) {
+    if (error.response.status === 500) {
       throw new ApiError('SERVER_ERROR', 500);
     }
     throw error;
