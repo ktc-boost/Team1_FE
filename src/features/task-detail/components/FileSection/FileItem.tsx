@@ -1,4 +1,4 @@
-import fileIcon from '@/shared/assets/images/file_icon.png';
+import fileIcon from '@/shared/assets/images/file-icon/file_icon.png';
 import { EllipsisVertical } from 'lucide-react';
 import { FileStatusImages } from '@/features/task-detail/utils/fileStatusImageUtil';
 import {
