@@ -1,56 +1,15 @@
+import type {
+  CommentSlice,
+  FileSlice,
+  PdfSlice,
+  PinSlice,
+  TaskDetailDataState,
+  TaskDetailState,
+} from '@/features/task-detail/store/taskDetail/types';
 import { create } from 'zustand';
 import type { StateCreator } from 'zustand';
-import type { FileInfo, PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
-import type { PersonaType } from '@/features/comment/constants/personaConstants';
 
-interface EditingCommentState {
-  id: string;
-  content: string;
-  isAnonymous: boolean;
-  fileInfo?: FileInfo | null;
-}
-
-type TaskDetailDataState = {
-  selectedFile: FileInfo | null;
-
-  currentPin: PinWithAuthor | null;
-  pins: PinWithAuthor[];
-
-  isPdfOpen: boolean;
-  isEditingPin: boolean;
-  isAnonymous: boolean;
-
-  selectedCommentId: string | null;
-  activePinCommentId: string | null;
-
-  editingComment: EditingCommentState | null;
-  persona: PersonaType | null;
-};
-
-type TaskDetailActions = {
-  setPersona: (persona: PersonaType | null) => void;
-
-  setSelectedFile: (fileInfo: FileInfo | null) => void;
-
-  setCurrentPin: (pin: PinWithAuthor | null) => void;
-  setPins: (pins: PinWithAuthor[]) => void;
-
-  togglePdf: (open: boolean) => void;
-  setIsEditingPin: (val: boolean) => void;
-  setIsAnonymous: (val: boolean) => void;
-
-  setSelectedCommentId: (id: string | null) => void;
-  setActivePinCommentId: (id: string | null) => void;
-
-  setEditingComment: (comment: EditingCommentState | null) => void;
-
-  clearCurrentPin: () => void;
-  clearFileState: () => void;
-  resetAll: () => void;
-};
-
-export type TaskDetailState = TaskDetailDataState & TaskDetailActions;
-
+// 초기 상태
 const initialDataState: TaskDetailDataState = {
   selectedFile: null,
   currentPin: null,
@@ -64,32 +23,7 @@ const initialDataState: TaskDetailDataState = {
   persona: null,
 };
 
-type FileSlice = Pick<TaskDetailState, 'selectedFile' | 'setSelectedFile' | 'clearFileState'>;
-type PinSlice = Pick<
-  TaskDetailState,
-  | 'currentPin'
-  | 'pins'
-  | 'isEditingPin'
-  | 'setCurrentPin'
-  | 'setPins'
-  | 'setIsEditingPin'
-  | 'clearCurrentPin'
->;
-type PdfSlice = Pick<TaskDetailState, 'isPdfOpen' | 'togglePdf'>;
-type CommentSlice = Pick<
-  TaskDetailState,
-  | 'isAnonymous'
-  | 'selectedCommentId'
-  | 'activePinCommentId'
-  | 'editingComment'
-  | 'persona'
-  | 'setPersona'
-  | 'setIsAnonymous'
-  | 'setSelectedCommentId'
-  | 'setActivePinCommentId'
-  | 'setEditingComment'
->;
-
+// 파일 관련 Slice
 const createFileSlice: StateCreator<TaskDetailState, [], [], FileSlice> = (set) => ({
   selectedFile: initialDataState.selectedFile,
 
@@ -107,6 +41,7 @@ const createFileSlice: StateCreator<TaskDetailState, [], [], FileSlice> = (set) 
     }),
 });
 
+// 핀 관련 Slice
 const createPinSlice: StateCreator<TaskDetailState, [], [], PinSlice> = (set) => ({
   currentPin: initialDataState.currentPin,
   pins: initialDataState.pins,
@@ -119,11 +54,13 @@ const createPinSlice: StateCreator<TaskDetailState, [], [], PinSlice> = (set) =>
   clearCurrentPin: () => set({ currentPin: null }),
 });
 
+// PDF 관련 Slice
 const createPdfSlice: StateCreator<TaskDetailState, [], [], PdfSlice> = (set) => ({
   isPdfOpen: initialDataState.isPdfOpen,
   togglePdf: (isPdfOpen) => set({ isPdfOpen }),
 });
 
+//댓글 관련 Slice
 const createCommentSlice: StateCreator<TaskDetailState, [], [], CommentSlice> = (set) => ({
   isAnonymous: initialDataState.isAnonymous,
   selectedCommentId: initialDataState.selectedCommentId,
@@ -144,6 +81,7 @@ const createCommentSlice: StateCreator<TaskDetailState, [], [], CommentSlice> = 
     })),
 });
 
+// 할 일 상세 스토어
 export const useTaskDetailStore = create<TaskDetailState>()((...a) => ({
   ...initialDataState,
   ...createFileSlice(...a),

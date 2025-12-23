@@ -3,7 +3,7 @@ import { Button } from '@/shared/components/shadcn/button';
 import { Textarea } from '@/shared/components/shadcn/textarea';
 import { Switch } from '@/shared/components/shadcn/switch';
 import Boo from '@/shared/assets/images/boost/boo.png';
-import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
 import toast from 'react-hot-toast';
 import type { FileInfo, PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import { CommentEditorActions } from '@/features/task-detail/components/CommentSection/CommentEditorActions';

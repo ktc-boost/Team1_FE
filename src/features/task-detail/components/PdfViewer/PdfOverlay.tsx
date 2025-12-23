@@ -1,6 +1,6 @@
 import { PinAvatar } from './PinAvatar';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
-import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
 import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import type { PageSize } from '@/features/task-detail/types/pdfTypes';
 interface OverlayProps {

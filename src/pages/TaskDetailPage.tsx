@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import TaskDetailTopTab from '@/features/task-detail/components/TaskDetailTopTab/TaskDetailTopTab';
 import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
 import type { CommentUIType } from '@/features/comment/types/commentTypes';
-import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
 import TaskDetailLeftPane from '@/features/task-detail/components/TaskDetailLeftPane';
 import { extractPinsFromComments } from '@/features/comment/utils/commentUtils';
 import TaskDetailRightPane from '@/features/task-detail/components/TaskDetailRightPane';

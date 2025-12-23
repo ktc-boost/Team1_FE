@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { cn } from '@/shared/lib/utils';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
-import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
 import { AssigneeActionButton } from '@/features/task-detail/components/TaskDetailTopTab/AssigneeActionButton';
 import { ReviewerActionButton } from '@/features/task-detail/components/TaskDetailTopTab/ReviewerActionButton';
 import { useAssigneeTask } from '@/features/task-detail/hooks/useAssigneeTask';
@@ -20,7 +20,7 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
   const currentUser = useAuthStore((state) => state.user);
   const { projectId } = useParams<{ projectId: string }>();
   const resetAiComment = useAiTransformStore((state) => state.reset);
-const {resetPdf} = usePdfStore()
+  const { resetPdf } = usePdfStore();
   const isAssignee = task.assignees.some((a) => a.id === currentUser?.id);
 
   const assigneeTask = useAssigneeTask({
@@ -47,7 +47,7 @@ const {resetPdf} = usePdfStore()
           onBack={() => {
             resetAll();
             resetAiComment();
-            resetPdf()
+            resetPdf();
           }}
         />
 

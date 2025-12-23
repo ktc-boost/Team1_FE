@@ -1,4 +1,4 @@
-import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
 import type { TaskDetail } from '@/features/task/types/taskTypes';
 import FileSection from '@/features/task-detail/components/FileSection/FileSection';
 import TaskDetailContent from '@/features/task-detail/components/TaskDetailContent/TaskDetailContent';

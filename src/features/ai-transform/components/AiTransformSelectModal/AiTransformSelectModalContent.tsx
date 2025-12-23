@@ -4,7 +4,7 @@ import { useModal } from '@/shared/hooks/useModal';
 import toast from 'react-hot-toast';
 import AiTransformTextCard from '@/features/ai-transform/components/AiTransformSelectModal/AiTransformTextCard';
 import AiTransformGuide from '@/features/ai-transform/components/AiTransformSelectModal/AiTransformGuide';
-import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
 import { PERSONA } from '@/features/comment/constants/personaConstants';
 
 const AiTransformSelectModalContent = () => {

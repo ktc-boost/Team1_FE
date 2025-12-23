@@ -1,4 +1,4 @@
-import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
 import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
 import toast from 'react-hot-toast';

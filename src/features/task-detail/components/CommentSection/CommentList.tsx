@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import CommentItem from './CommentItem';
-import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
 import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 
@@ -33,7 +33,7 @@ const CommentList = ({ comments, onDelete, onSelectPin }: CommentListProps) => {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [comments]);
-  
+
   return (
     <div ref={scrollRef} className="px-4 flex-1 overflow-y-auto pb-35">
       {comments.map((comment) => (
