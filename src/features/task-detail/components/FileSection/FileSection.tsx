@@ -5,6 +5,7 @@ import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
 import ContentItem from '@/shared/components/ui/ContentItem';
 import { useFileUploader } from '@/features/task-detail/hooks/useFileUploader';
 import { useDeleteFileMutation } from '@/features/task-detail/hooks/useDeleteFileMutation';
+import { showDeleteFileSuccessToast } from '@/features/task-detail/ui/toast/showDeleteFileToast';
 
 interface FileSectionProps {
   onOpenPdf: (url: string, fileName: string, id: string) => void;
@@ -18,7 +19,14 @@ const FileSection = ({ onOpenPdf, taskId, files: serverFiles }: FileSectionProps
   const { mutate: deleteFile } = useDeleteFileMutation(taskId);
 
   const handleDelete = (fileId: string) => {
-    deleteFile(fileId);
+    deleteFile(fileId, {
+      onSuccess: () => {
+        showDeleteFileSuccessToast();
+      },
+      onError: () => {
+        showDeleteFileSuccessToast();
+      },
+    });
   };
   return (
     <div className="w-full h-full pt-6 p-3 pb-4 border-t-2 border-gray-300 flex flex-col">

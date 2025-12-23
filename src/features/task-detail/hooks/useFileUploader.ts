@@ -1,16 +1,20 @@
 import { useDropzone } from 'react-dropzone';
 import { useUploadFileMutation } from '@/features/task-detail/hooks/useFileUploadUrlMutation';
+import { showFileUploadErrorToast } from '@/features/task-detail/ui/toast/showFileUploadErrorToast';
 
 export const useFileUploader = (taskId: string) => {
-  const uploadMutation = useUploadFileMutation();
-
+  const { mutate: uploadFile } = useUploadFileMutation();
   const onDrop = (acceptedFiles: File[]) => {
     acceptedFiles.forEach((file) => {
-      uploadMutation.mutate({ file, taskId });
+      uploadFile(
+        { file, taskId },
+        {
+          onError: (e) => {
+            showFileUploadErrorToast(e);
+          },
+        },
+      );
     });
   };
-
-  const dropzoneProps = useDropzone({ onDrop });
-
-  return { ...dropzoneProps };
+  return useDropzone({ onDrop });
 };

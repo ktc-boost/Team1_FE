@@ -1,11 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fileUploadApi } from '@/features/task-detail/api/fileUploadApi';
 import { uploadToS3 } from '@/features/task-detail/utils/fileUploadUtil';
-import toast from 'react-hot-toast';
 import { formatBytes } from '@/features/file/utils/fileUtils';
 import { v4 as uuidv4 } from 'uuid';
 import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
-import { isAxiosError } from 'axios';
 import type { FileItemType } from '@/features/file/types/fileTypes';
 import type { FileStatus } from '@/features/task-detail/types/taskDetailType';
 import { TASK_DETAIL_FILES_QUERY_KEY } from '@/features/task-detail/constants/taskDetailQueryKey';
@@ -79,25 +77,6 @@ export const useUploadFileMutation = () => {
 
     onError: (error, variables, context) => {
       const { taskId } = variables;
-
-      console.error('파일 업로드 실패:', error);
-
-      if (isAxiosError(error)) {
-        const status = error.response?.status;
-
-        if (status === 400) {
-          toast.error('PDF 파일만 업로드할 수 있습니다.');
-        } else if (status === 403) {
-          toast.error('담당자만 파일을 업로드할 수 있습니다.');
-        } else if (status === 413) {
-          toast.error('파일 크기가 너무 커서 업로드할 수 없습니다.');
-        } else {
-          toast.error('파일 업로드에 실패했습니다.');
-        }
-      } else {
-        toast.error('파일 업로드에 실패했습니다.');
-      }
-
       if (context?.prevFiles) {
         queryClient.setQueryData(TASK_DETAIL_FILES_QUERY_KEY.list(taskId), context.prevFiles);
       } else {
