@@ -75,7 +75,7 @@ export const useUploadFileMutation = () => {
       );
     },
 
-    onError: (error, variables, context) => {
+    onError: (_error, variables, context) => {
       const { taskId } = variables;
       if (context?.prevFiles) {
         queryClient.setQueryData(TASK_DETAIL_FILES_QUERY_KEY.list(taskId), context.prevFiles);
