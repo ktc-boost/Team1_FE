@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import type { StateCreator } from 'zustand';
 import type { FileInfo, PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import type { PersonaType } from '@/features/comment/constants/personaConstants';
 
@@ -9,10 +10,12 @@ interface EditingCommentState {
   fileInfo?: FileInfo | null;
 }
 
-interface TaskDetailState {
+type TaskDetailDataState = {
   selectedFile: FileInfo | null;
+
   currentPin: PinWithAuthor | null;
   pins: PinWithAuthor[];
+
   isPdfOpen: boolean;
   isEditingPin: boolean;
   isAnonymous: boolean;
@@ -21,12 +24,17 @@ interface TaskDetailState {
   activePinCommentId: string | null;
 
   editingComment: EditingCommentState | null;
-  persona: PersonaType;
+  persona: PersonaType | null;
+};
 
-  setPersona: (persona: TaskDetailState['persona']) => void;
+type TaskDetailActions = {
+  setPersona: (persona: PersonaType | null) => void;
+
   setSelectedFile: (fileInfo: FileInfo | null) => void;
+
   setCurrentPin: (pin: PinWithAuthor | null) => void;
   setPins: (pins: PinWithAuthor[]) => void;
+
   togglePdf: (open: boolean) => void;
   setIsEditingPin: (val: boolean) => void;
   setIsAnonymous: (val: boolean) => void;
@@ -39,55 +47,109 @@ interface TaskDetailState {
   clearCurrentPin: () => void;
   clearFileState: () => void;
   resetAll: () => void;
-}
+};
 
-const initialState = {
+export type TaskDetailState = TaskDetailDataState & TaskDetailActions;
+
+const initialDataState: TaskDetailDataState = {
   selectedFile: null,
   currentPin: null,
   pins: [],
   isPdfOpen: false,
   isEditingPin: false,
   isAnonymous: false,
-
   selectedCommentId: null,
   activePinCommentId: null,
-
   editingComment: null,
   persona: null,
 };
 
-export const useTaskDetailStore = create<TaskDetailState>((set) => ({
-  ...initialState,
+type FileSlice = Pick<TaskDetailState, 'selectedFile' | 'setSelectedFile' | 'clearFileState'>;
+type PinSlice = Pick<
+  TaskDetailState,
+  | 'currentPin'
+  | 'pins'
+  | 'isEditingPin'
+  | 'setCurrentPin'
+  | 'setPins'
+  | 'setIsEditingPin'
+  | 'clearCurrentPin'
+>;
+type PdfSlice = Pick<TaskDetailState, 'isPdfOpen' | 'togglePdf'>;
+type CommentSlice = Pick<
+  TaskDetailState,
+  | 'isAnonymous'
+  | 'selectedCommentId'
+  | 'activePinCommentId'
+  | 'editingComment'
+  | 'persona'
+  | 'setPersona'
+  | 'setIsAnonymous'
+  | 'setSelectedCommentId'
+  | 'setActivePinCommentId'
+  | 'setEditingComment'
+>;
 
-  setPersona: (persona) => set({ persona }),
+const createFileSlice: StateCreator<TaskDetailState, [], [], FileSlice> = (set) => ({
+  selectedFile: initialDataState.selectedFile,
+
   setSelectedFile: (selectedFile) => set({ selectedFile }),
+
+  clearFileState: () =>
+    set({
+      selectedFile: null,
+      isPdfOpen: false,
+      currentPin: null,
+      persona: null,
+      isAnonymous: false,
+      activePinCommentId: null,
+      selectedCommentId: null,
+    }),
+});
+
+const createPinSlice: StateCreator<TaskDetailState, [], [], PinSlice> = (set) => ({
+  currentPin: initialDataState.currentPin,
+  pins: initialDataState.pins,
+  isEditingPin: initialDataState.isEditingPin,
+
   setCurrentPin: (currentPin) => set({ currentPin }),
   setPins: (pins) => set({ pins }),
-  togglePdf: (isPdfOpen) => set({ isPdfOpen }),
-  setIsEditingPin: (val) => set({ isEditingPin: val }),
-  setIsAnonymous: (val) => set({ isAnonymous: val }),
+  setIsEditingPin: (isEditingPin) => set({ isEditingPin }),
 
-  setSelectedCommentId: (id) => set({ selectedCommentId: id }),
-  setActivePinCommentId: (id) => set({ activePinCommentId: id }),
+  clearCurrentPin: () => set({ currentPin: null }),
+});
+
+const createPdfSlice: StateCreator<TaskDetailState, [], [], PdfSlice> = (set) => ({
+  isPdfOpen: initialDataState.isPdfOpen,
+  togglePdf: (isPdfOpen) => set({ isPdfOpen }),
+});
+
+const createCommentSlice: StateCreator<TaskDetailState, [], [], CommentSlice> = (set) => ({
+  isAnonymous: initialDataState.isAnonymous,
+  selectedCommentId: initialDataState.selectedCommentId,
+  activePinCommentId: initialDataState.activePinCommentId,
+  editingComment: initialDataState.editingComment,
+  persona: initialDataState.persona,
+
+  setPersona: (persona) => set({ persona }),
+  setIsAnonymous: (isAnonymous) => set({ isAnonymous }),
+
+  setSelectedCommentId: (selectedCommentId) => set({ selectedCommentId }),
+  setActivePinCommentId: (activePinCommentId) => set({ activePinCommentId }),
 
   setEditingComment: (comment) =>
     set((state) => ({
       editingComment: comment,
       activePinCommentId: comment ? null : state.activePinCommentId,
     })),
-  clearCurrentPin: () => set({ currentPin: null }),
+});
 
-  clearFileState: () =>
-    set({
-      selectedFile: null,
-      currentPin: null,
-      isPdfOpen: false,
-      persona: null,
-      isAnonymous: false,
+export const useTaskDetailStore = create<TaskDetailState>()((...a) => ({
+  ...initialDataState,
+  ...createFileSlice(...a),
+  ...createPinSlice(...a),
+  ...createPdfSlice(...a),
+  ...createCommentSlice(...a),
 
-      activePinCommentId: null,
-      selectedCommentId: null,
-    }),
-
-  resetAll: () => set(initialState),
+  resetAll: () => a[0](initialDataState),
 }));
