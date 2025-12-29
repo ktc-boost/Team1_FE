@@ -16,11 +16,12 @@ interface TaskDetailTopTabProps {
 }
 
 const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
-  const { resetAll } = useTaskDetailStore();
-  const currentUser = useAuthStore((state) => state.user);
   const { projectId } = useParams<{ projectId: string }>();
+
+  const resetAll = useTaskDetailStore((state) => state.resetAll);
+  const currentUser = useAuthStore((state) => state.user);
   const resetAiComment = useAiTransformStore((state) => state.reset);
-  const { resetPdf } = usePdfStore();
+  const resetPdf = usePdfStore((state) => state.resetPdf);
   const isAssignee = task.assignees.some((a) => a.id === currentUser?.id);
 
   const assigneeTask = useAssigneeTask({

@@ -3,13 +3,20 @@ import type { TaskDetail } from '@/features/task/types/taskTypes';
 import FileSection from '@/features/task-detail/components/FileSection/FileSection';
 import TaskDetailContent from '@/features/task-detail/components/TaskDetailContent/TaskDetailContent';
 import PDFViewer from '@/features/task-detail/components/PdfViewer/PdfViewer';
+import { useShallow } from 'zustand/react/shallow';
 
 interface TaskDetailLeftPaneProps {
   task: TaskDetail;
   taskId: string;
 }
 const TaskDetailLeftPane = ({ task, taskId }: TaskDetailLeftPaneProps) => {
-  const { isPdfOpen, setSelectedFile, togglePdf } = useTaskDetailStore();
+  const { isPdfOpen, setSelectedFile, togglePdf } = useTaskDetailStore(
+    useShallow((state) => ({
+      isPdfOpen: state.isPdfOpen,
+      setSelectedFile: state.setSelectedFile,
+      togglePdf: state.togglePdf,
+    })),
+  );
   return (
     <div id="left" className="flex flex-col w-6/10 overflow-hidden">
       {isPdfOpen ? (
