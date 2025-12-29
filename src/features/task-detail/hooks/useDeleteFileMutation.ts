@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fileApi } from '@/features/file/api/fileApi';
-import toast from 'react-hot-toast';
 import type { FileItemType } from '@/features/file/types/fileTypes';
 import { TASK_DETAIL_FILES_QUERY_KEY } from '@/features/task-detail/constants/taskDetailQueryKey';
+import { fileToast } from '@/features/task-detail/ui/toast/fileToast';
 
 export const useDeleteFileMutation = (taskId: string) => {
   const queryClient = useQueryClient();
@@ -26,14 +26,14 @@ export const useDeleteFileMutation = (taskId: string) => {
     },
 
     onSuccess: () => {
-      toast.success('파일이 삭제되었습니다.');
+      fileToast.deleteSuccess();
     },
 
     onError: (_error, _fileId, context) => {
       if (context?.prevFiles) {
         queryClient.setQueryData(TASK_DETAIL_FILES_QUERY_KEY.list(taskId), context.prevFiles);
       }
-      toast.error('파일 삭제에 실패했습니다.');
+      fileToast.deleteError();
     },
 
     onSettled: async () => {
