@@ -41,7 +41,7 @@ const FileItem = ({
         <div className="flex-1">
           <p className="text-sm">{fileName}</p>
           <p className="text-xs pt-1 text-gray-500">
-            {fileSize} | {timeLeft} left |
+            {fileSize} | {timeLeft} |
             <img src={FileStatusImages[status]} alt={status} className="inline-block w-4 h-4" />
             {status}
           </p>

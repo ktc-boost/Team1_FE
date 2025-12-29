@@ -12,7 +12,7 @@ export const mapToFileItemWithDownloadUrl = async (
     fileName: serverFile.filename,
     fileUrl: downloadRes.url,
     fileSize: formatBytes(serverFile.sizeBytes),
-    timeLeft: '방금',
+    timeLeft: '완료',
     status: 'success',
   };
 };

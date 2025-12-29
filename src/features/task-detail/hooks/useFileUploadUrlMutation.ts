@@ -7,6 +7,7 @@ import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
 import type { FileItemType } from '@/features/file/types/fileTypes';
 import type { FileStatus } from '@/features/task-detail/types/taskDetailType';
 import { TASK_DETAIL_FILES_QUERY_KEY } from '@/features/task-detail/constants/taskDetailQueryKey';
+import { calculateTimeLeft } from '@/features/task-detail/utils/calculateTimeLeftUtil';
 
 export const useUploadFileMutation = () => {
   const queryClient = useQueryClient();
@@ -18,9 +19,17 @@ export const useUploadFileMutation = () => {
         contentType: file.type,
         sizeBytes: file.size,
       });
-
+      const startTime = Date.now();
       // 2️⃣ S3에 실제 업로드
-      await uploadToS3(file, presigned.url, presigned.headers);
+      await uploadToS3(file, presigned.url, presigned.headers, (progressEvent) => {
+        const timeLeft = calculateTimeLeft(progressEvent, startTime);
+
+        queryClient.setQueryData(
+          TASK_DETAIL_FILES_QUERY_KEY.list(taskId),
+          (old: FileItemType[] = []) =>
+            old.map((item) => (item.status === 'uploading' ? { ...item, timeLeft } : item)),
+        );
+      });
 
       // 3️⃣ 업로드 완료 콜백 (서버에 알림)
       await fileUploadApi.completeFileUpload({
@@ -48,7 +57,7 @@ export const useUploadFileMutation = () => {
         fileName: variables.file.name,
         fileUrl: '',
         fileSize: formatBytes(variables.file.size),
-        timeLeft: '방금',
+        timeLeft: '',
         status: 'uploading' as FileStatus,
       };
       queryClient.setQueryData(
@@ -69,6 +78,7 @@ export const useUploadFileMutation = () => {
                   status: 'success',
                   fileId: data.fileId,
                   fileUrl: data.downloadUrl,
+                  timeLeft: '완료',
                 }
               : file,
           ),
