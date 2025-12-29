@@ -3,7 +3,7 @@ import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
 import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
 import type { FileItemType } from '@/features/file/types/fileTypes';
 
-export const mapToTaskDetailFileType = async (
+export const mapToFileItemWithDownloadUrl = async (
   serverFile: ServerFileType,
 ): Promise<FileItemType> => {
   const downloadRes = await fetchFileDownloadUrl(serverFile.id);
