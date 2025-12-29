@@ -1,9 +1,9 @@
 import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
 import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
-import toast from 'react-hot-toast';
 import type { FileInfo, PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
+import { commentToast } from '@/features/task-detail/ui/toast/commentToast';
 
 export const useCommentSelect = () => {
   const { setSelectedFile, setPins, togglePdf } = useTaskDetailStore();
@@ -34,7 +34,7 @@ export const useCommentSelect = () => {
       }
     } catch (err) {
       console.error('파일 열기 오류:', err);
-      toast.error('해당 파일이 삭제되어 마커를 찾을 수 없습니다.');
+      commentToast.openFileError();
     }
   };
 
