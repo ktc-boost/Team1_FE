@@ -3,6 +3,7 @@ import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
 import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import type { PageSize } from '@/features/task-detail/types/pdfTypes';
+import { useShallow } from 'zustand/react/shallow';
 interface OverlayProps {
   pageNumber: number;
   zoom: number;
@@ -12,17 +13,29 @@ interface OverlayProps {
 const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
   const {
     pins,
-    isAnonymous,
-    clearCurrentPin,
-    activePinCommentId,
-    currentPin,
-    setActivePinCommentId,
     selectedFile,
-    persona,
+    activePinCommentId,
+    setActivePinCommentId,
+    clearCurrentPin,
+    currentPin,
     editingComment,
-  } = useTaskDetailStore();
-  const pinList = pins as PinWithAuthor[];
+    persona,
+    isAnonymous,
+  } = useTaskDetailStore(
+    useShallow((s) => ({
+      pins: s.pins,
+      selectedFile: s.selectedFile,
+      activePinCommentId: s.activePinCommentId,
+      setActivePinCommentId: s.setActivePinCommentId,
+      clearCurrentPin: s.clearCurrentPin,
+      currentPin: s.currentPin,
+      editingComment: s.editingComment,
+      persona: s.persona,
+      isAnonymous: s.isAnonymous,
+    })),
+  );
   const user = useAuthStore((state) => state.user);
+  const pinList = pins as PinWithAuthor[];
 
   return (
     <div className="absolute top-0 left-0 w-full h-full z-10" onClick={onClick}>

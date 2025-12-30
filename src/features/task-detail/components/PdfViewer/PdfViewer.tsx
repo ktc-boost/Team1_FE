@@ -10,16 +10,26 @@ import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useT
 import { usePdfPinInteraction } from '@/features/task-detail/hooks/usePdfPinInteraction';
 import { usePdfDocument } from '@/features/task-detail/hooks/usePdfDocument';
 import PdfHeaderBar from '@/features/task-detail/components/PdfViewer/PdfHeaderBar';
+import { useShallow } from 'zustand/react/shallow';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 const PDFViewer = () => {
-  const { pageNumber, zoom, position, isDragging, pdfDocument, pageSize } = usePdfStore();
+  const { pageNumber, zoom, position, isDragging, pdfDocument, pageSize } = usePdfStore(
+    useShallow((s) => ({
+      pageNumber: s.pageNumber,
+      zoom: s.zoom,
+      position: s.position,
+      isDragging: s.isDragging,
+      pdfDocument: s.pdfDocument,
+      pageSize: s.pageSize,
+    })),
+  );
+  const selectedFile = useTaskDetailStore((s) => s.selectedFile);
+
   const { onMouseDown, onMouseMove, onMouseUp, mouseMoved } = usePdfDrag();
   const { onDocumentLoadSuccess, setPdfDocument } = usePdfDocument(pdfDocument, pageNumber);
   const { handleOverlayClick } = usePdfPinInteraction(pageNumber, pageSize);
-  const { selectedFile } = useTaskDetailStore();
-
   const handleOverlayClickWithDragCheck = (e: React.MouseEvent) => {
     if (mouseMoved.current) return;
     handleOverlayClick(e);

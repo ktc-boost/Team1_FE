@@ -14,12 +14,9 @@ interface FileSectionProps {
 
 const FileSection = ({ onOpenPdf, taskId, files: serverFiles }: FileSectionProps) => {
   const { data: uiFiles } = useTaskFilesQuery(serverFiles, taskId);
-  const { getRootProps, getInputProps } = useFileUploader(taskId);
   const { mutate: deleteFile } = useDeleteFileMutation(taskId);
+  const { getRootProps, getInputProps } = useFileUploader(taskId);
 
-  const handleDelete = (fileId: string) => {
-    deleteFile(fileId);
-  };
   return (
     <div className="w-full h-full pt-6 p-3 pb-4 border-t-2 border-gray-300 flex flex-col">
       <ContentItem
@@ -41,7 +38,7 @@ const FileSection = ({ onOpenPdf, taskId, files: serverFiles }: FileSectionProps
             fileUrl={item.fileUrl}
             fileSize={item.fileSize}
             timeLeft={item.timeLeft}
-            onDelete={() => handleDelete(item.fileId)}
+            onDelete={() => deleteFile(item.fileId)}
             onOpenPdf={() => onOpenPdf(item.fileUrl, item.fileName, item.fileId)}
             status={item.status}
           />

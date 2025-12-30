@@ -3,6 +3,7 @@ import CommentItem from './CommentItem';
 import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
 import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
+import { useShallow } from 'zustand/react/shallow';
 
 interface CommentListProps {
   comments: CommentUIType[];
@@ -15,8 +16,14 @@ const CommentList = ({ comments, onDelete, onSelectPin }: CommentListProps) => {
   const pinnedRef = useRef<HTMLDivElement | null>(null);
 
   const { activePinCommentId, selectedCommentId, editingComment, setEditingComment } =
-    useTaskDetailStore();
-
+    useTaskDetailStore(
+      useShallow((s) => ({
+        activePinCommentId: s.activePinCommentId,
+        selectedCommentId: s.selectedCommentId,
+        editingComment: s.editingComment,
+        setEditingComment: s.setEditingComment,
+      })),
+    );
   useEffect(() => {
     if (!activePinCommentId) return;
 
