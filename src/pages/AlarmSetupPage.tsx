@@ -48,7 +48,7 @@ const AlarmSetupPage = () => {
     ? `${window.location.origin}${ROUTE_PATH.ALARM_SETUP_MOBILE}?token=${qrToken}`
     : '';
 
-  // CONNECTED → 리디렉션
+  // REGISTERD → 리디렉션
   useEffect(() => {
     if (!statusData?.status) return;
     if (statusData.status === WebPushStatus.REGISTERED && !hasHandledStatus.current) {
