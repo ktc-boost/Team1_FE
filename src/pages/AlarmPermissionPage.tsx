@@ -1,54 +1,14 @@
 import { CheckCircle } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/components/shadcn/button';
 import { useSearchParams } from 'react-router-dom';
 import { useAlarmPermission } from '@/features/webpush/hooks/useAlarmPermission';
 import { STATUS_CONTENT } from '@/features/webpush/constants/alarmStatusContent';
 import { WebPushStatus, type WebPushStatusType } from '@/features/webpush/types/pushApiTypes';
 import { useConnectPushSessionMutation } from '@/features/webpush/hooks/useConnectPushSessionMutation';
-
-interface StatusViewProps {
-  title: string;
-  message: React.ReactNode;
-  icon: React.ComponentType<{ className?: string }>;
-  blurClass: string;
-  bgClass: string;
-  textClass: string;
-  children?: React.ReactNode;
-}
-
-const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
-const isStandalone = () =>
-  window.matchMedia('(display-mode: standalone)').matches ||
-  (navigator as unknown as { standalone?: boolean }).standalone === true;
-
-const StatusView = ({
-  title,
-  message,
-  icon: Icon,
-  blurClass,
-  bgClass,
-  textClass,
-  children,
-}: StatusViewProps) => (
-  <div className="flex flex-col h-screen justify-center items-center text-center p-6 space-y-6">
-    <div className="relative inline-block">
-      <div className={cn('absolute inset-0 rounded-full blur-xs', blurClass)} />
-      <div className={cn('relative p-4 rounded-full w-fit mx-auto', bgClass)}>
-        <Icon className={cn('w-10 h-10', textClass)} />
-      </div>
-    </div>
-
-    <div className="space-y-2">
-      <h2 className="title1-bold text-gray-900">{title}</h2>
-      <p className="subtitle2-regular text-gray-600 leading-relaxed">{message}</p>
-    </div>
-
-    {children}
-  </div>
-);
+import { getIsIOS, getIsStandalone } from '@/features/webpush/utils/deviceUtil';
+import StatusView from './../features/webpush/components/StatusView';
 
 const AlarmPermissionPage = () => {
   const [params] = useSearchParams();
@@ -74,7 +34,7 @@ const AlarmPermissionPage = () => {
       return;
     }
 
-    if (isIOS && !isStandalone()) {
+    if (getIsIOS() && !getIsStandalone()) {
       return;
     }
 
@@ -130,13 +90,10 @@ const AlarmPermissionPage = () => {
       bgClass={status.bgClass}
       textClass={status.textClass}
     >
-      {isIOS && (
+      {getIsIOS() && (
         <div className="w-full max-w-xs mb-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
           <p className="text-sm text-amber-800 leading-relaxed">
-            <span className="text-md font-bold">
-              {' '}
-              📢 IOS 환경 사용자는 아래 단계로 진행해주세요
-            </span>
+            <span className="text-md font-bold">📢 IOS 환경 사용자는 아래 단계로 진행해주세요</span>
             <br />
             1. Safari에서 <b>공유 버튼</b> 클릭하기
             <br />
