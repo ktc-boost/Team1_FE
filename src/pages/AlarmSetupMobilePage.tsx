@@ -8,9 +8,9 @@ import { STATUS_CONTENT } from '@/features/webpush/constants/alarmStatusContent'
 import { WebPushStatus, type WebPushStatusType } from '@/features/webpush/types/pushApiTypes';
 import { useConnectPushSessionMutation } from '@/features/webpush/hooks/useConnectPushSessionMutation';
 import { getIsIOS, getIsStandalone } from '@/features/webpush/utils/deviceUtil';
-import StatusView from './../features/webpush/components/StatusView';
+import StatusView from '../features/webpush/components/StatusView';
 
-const AlarmPermissionPage = () => {
+const AlarmSetupMobilePage = () => {
   const [params] = useSearchParams();
   const qrToken = params.get('token');
   const { mutate: connectPushSession } = useConnectPushSessionMutation();
@@ -120,4 +120,4 @@ const AlarmPermissionPage = () => {
   );
 };
 
-export default AlarmPermissionPage;
+export default AlarmSetupMobilePage;
