@@ -1,56 +1,45 @@
 import toast from 'react-hot-toast';
 import { webPushApi } from '@/features/webpush/api/webPushApi';
-import { normalizeSubscription } from '@/features/notifications/utils/normalizeSubscription';
-import { WebPushStatus, type PushSubscriptionRequest } from '@/features/webpush/types/pushApiTypes';
+import { WebPushStatus } from '@/features/webpush/types/pushApiTypes';
+import { registerServiceWorker } from '@/features/webpush/utils/registerServiceWorkerUtil';
+import { getOrCreatePushSubscription } from '@/features/webpush/utils/getOrCreatePushSubscriptionUtil';
+import { buildPushSubscriptionRequest } from '@/features/webpush/utils/buildPushSubscriptionRequestUtil';
+import { requestNotificationPermission } from '@/features/webpush/utils/requestNotificationPermissionUtil';
+import { supportsWebPush } from '@/features/webpush/utils/pushSupportUtil';
+import { useState } from 'react';
 
-const urlBase64ToUint8Array = (base64String: string) => {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-  const rawData = atob(base64);
-  return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
-};
 export const useAlarmPermission = (token: string | null) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const registerPushSubscription = async (): Promise<boolean> => {
+    if (!token) {
+      toast.error('QR 토큰이 유효하지 않습니다.');
+      return false;
+    }
+    if (!supportsWebPush()) {
+      toast.error('이 브라우저는 알림 기능을 지원하지 않습니다.');
+      return false;
+    }
+    setIsLoading(true);
     try {
-      if (!token) {
-        toast.error('QR 토큰이 유효하지 않습니다.');
+      const permission = await requestNotificationPermission();
+
+      if (permission === 'denied') {
+        toast.error('알림이 차단되었습니다. 브라우저 설정에서 알림을 허용해주세요.');
         return false;
       }
-
-      const registration = await navigator.serviceWorker
-        .register('/service-worker.js')
-        .catch(() => {
-          toast.error('서비스 워커 등록에 실패했습니다.');
-          return null;
-        });
-
-      if (!registration) return false;
-
-      const existing = await registration.pushManager.getSubscription();
-
-      const targetSub =
-        existing ??
-        (await registration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(import.meta.env.VITE_VAPID_PUBLIC_KEY),
-        }));
-
-      if (!targetSub) {
-        toast.error('푸시 구독 생성에 실패했습니다.');
+      if (permission !== 'granted') {
+        toast('알림 요청이 취소되었습니다. 다시 시도해주세요.');
         return false;
       }
+      const registration = await registerServiceWorker();
+      const subscription = await getOrCreatePushSubscription(registration);
+      if (!subscription) throw new Error('Subscription failed');
 
-      const normalized = normalizeSubscription(targetSub.toJSON());
-      const request: PushSubscriptionRequest = {
-        token,
-        webPushUrl: normalized.endpoint,
-        publicKey: normalized.keys.p256dh,
-        authKey: normalized.keys.auth,
-      };
-
+      const request = buildPushSubscriptionRequest(token, subscription);
       const response = await webPushApi.registerSubscription(request);
-      const isSuccess = response.status === WebPushStatus.REGISTERED;
 
+      const isSuccess = response.status === WebPushStatus.REGISTERED;
       if (!isSuccess) {
         toast.error('서버 구독 등록에 실패했습니다.');
         return false;
@@ -59,9 +48,12 @@ export const useAlarmPermission = (token: string | null) => {
       return true;
     } catch (error) {
       console.error('[registerPushSubscription error]', error);
+      toast.error('알림 권한 설정 중 오류가 발생했습니다.');
       return false;
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return { registerPushSubscription };
+  return { registerPushSubscription, isLoading };
 };

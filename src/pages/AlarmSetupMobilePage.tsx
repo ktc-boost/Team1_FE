@@ -9,18 +9,35 @@ import { WebPushStatus, type WebPushStatusType } from '@/features/webpush/types/
 import { useConnectPushSessionMutation } from '@/features/webpush/hooks/useConnectPushSessionMutation';
 import { getIsIOS, getIsStandalone } from '@/features/webpush/utils/deviceUtil';
 import StatusView from '../features/webpush/components/StatusView';
+import { supportsWebPush } from '@/features/webpush/utils/pushSupportUtil';
 
 const AlarmSetupMobilePage = () => {
   const [params] = useSearchParams();
   const qrToken = params.get('token');
   const { mutate: connectPushSession } = useConnectPushSessionMutation();
-  const { registerPushSubscription } = useAlarmPermission(qrToken!);
+  const { registerPushSubscription, isLoading } = useAlarmPermission(qrToken!);
 
   const [permission, setPermission] = useState<WebPushStatusType>(WebPushStatus.CREATED);
-  const [isLoading, setIsLoading] = useState(false);
 
   const triedConnectRef = useRef(false);
   const hasShownError = useRef(false);
+  const isQrValid = Boolean(qrToken);
+  const isWebPushSupported = supportsWebPush();
+  const isIOSNotStandalone = getIsIOS() && !getIsStandalone();
+
+  const isAllowDisabled =
+    isLoading ||
+    permission !== WebPushStatus.CREATED ||
+    !isQrValid ||
+    !isWebPushSupported ||
+    isIOSNotStandalone;
+  const disabledReason = !isQrValid
+    ? '유효하지 않은 QR 코드입니다. QR을 다시 인식해주세요.'
+    : !isWebPushSupported
+      ? '이 브라우저는 알림을 지원하지 않습니다.'
+      : isIOSNotStandalone
+        ? 'iOS는 안내를 따른 후 진행해주세요.'
+        : null;
 
   useEffect(() => {
     if (!qrToken && !hasShownError.current) {
@@ -29,7 +46,7 @@ const AlarmSetupMobilePage = () => {
       return;
     }
 
-    if (!('serviceWorker' in navigator)) {
+    if (!supportsWebPush()) {
       toast.error('이 브라우저는 알림 기능을 지원하지 않습니다.');
       return;
     }
@@ -47,35 +64,8 @@ const AlarmSetupMobilePage = () => {
   }, [qrToken]);
 
   const handleAllow = async () => {
-    if (!qrToken) {
-      toast.error('QR 토큰이 유효하지 않습니다.');
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-
-      const result = await Notification.requestPermission();
-
-      if (result === 'granted') {
-        const success = await registerPushSubscription();
-
-        if (success) {
-          setPermission(WebPushStatus.REGISTERED);
-        } else {
-          toast.error('푸시 구독에 실패했습니다. 다시 시도해주세요.');
-        }
-      } else if (result === 'denied') {
-        toast.error('알림이 차단되었습니다. 브라우저 설정에서 알림을 허용해주세요.');
-      } else {
-        toast('알림 요청이 취소되었습니다. 다시 시도해주세요.');
-      }
-    } catch (error) {
-      console.error('[handleAllow error]', error);
-      toast.error('알림 권한 설정 중 오류가 발생했습니다.');
-    } finally {
-      setIsLoading(false);
-    }
+    const success = await registerPushSubscription();
+    if (success) setPermission(WebPushStatus.REGISTERED);
   };
 
   const status = STATUS_CONTENT[permission];
@@ -90,7 +80,7 @@ const AlarmSetupMobilePage = () => {
       bgClass={status.bgClass}
       textClass={status.textClass}
     >
-      {getIsIOS() && (
+      {getIsIOS() && !getIsStandalone() && (
         <div className="w-full max-w-xs mb-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
           <p className="text-sm text-amber-800 leading-relaxed">
             <span className="text-md font-bold">📢 IOS 환경 사용자는 아래 단계로 진행해주세요</span>
@@ -108,12 +98,13 @@ const AlarmSetupMobilePage = () => {
         <div className="space-y-2.5 pt-2 w-full max-w-xs mx-auto">
           <Button
             onClick={handleAllow}
-            disabled={isLoading}
+            disabled={isLoading || isAllowDisabled}
             className="w-full py-6 bg-boost-blue hover:bg-boost-blue-hover active:bg-boost-blue-pressed text-gray-100 title2-bold duration-300 shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <CheckCircle className="w-4 h-4" />
             {isLoading ? '처리 중...' : '허용'}
           </Button>
+          {disabledReason && <p className="text-xs text-gray-500 mt-2">{disabledReason}</p>}
         </div>
       )}
     </StatusView>
