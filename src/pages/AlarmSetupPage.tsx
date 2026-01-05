@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { QRCodeSVG } from 'qrcode.react';
 import { AlarmClock, ArrowDown, BellRing, SquareCheck } from 'lucide-react';
@@ -6,84 +5,12 @@ import BooAlarmClick from '@/shared/assets/images/boost/boo-with-alarm.png';
 import AlarmBell from '@/shared/assets/images/boost/alarm-bell.png';
 import CircleBox from '@/shared/components/ui/CircleBox';
 import { floatVariant, shakeVariant } from '@/shared/utils/animations/motionVariants';
-import { useCreatePushSessionMutation } from '@/features/webpush/hooks/useCreatePushSessionMutation';
-import toast from 'react-hot-toast';
-import { ROUTE_PATH } from '@/app/routes/Router';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { usePushSessionStatusQuery } from '@/features/webpush/hooks/usePushSessionStatusQuery';
-import { WebPushStatus } from '@/features/webpush/types/pushApiTypes';
-import { useEnableServiceAlarmMutation } from '@/features/webpush/hooks/useEnableServiceAlarmMutation';
 import { Button } from '@/shared/components/shadcn/button';
 import InlineLoader from '@/shared/components/ui/loading/InlineLoader';
-
-const INTERVAL_MS = 30 * 10000;
+import { useAlarmSetup } from '@/features/webpush/hooks/useAlarmSetup';
 
 const AlarmSetupPage = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from;
-
-  const hasHandledStatus = useRef(false);
-
-  const {
-    mutate: createPushSession,
-    data,
-    isPending,
-  } = useCreatePushSessionMutation({
-    onSuccess: (res) => {
-      setQrToken(res.token);
-      setRemainingTime(INTERVAL_MS / 1000);
-    },
-    onError: () => {
-      toast.error('QR 세션 생성에 실패했습니다. 잠시 후 다시 시도해주세요.');
-    },
-  });
-  const { data: statusData } = usePushSessionStatusQuery(data?.token);
-  const [qrToken, setQrToken] = useState<string | null>(null);
-  const [remainingTime, setRemainingTime] = useState(INTERVAL_MS / 1000);
-  const { mutate: enableServiceAlarm } = useEnableServiceAlarmMutation();
-
-  // QR 데이터 URL 생성
-  const qrData = qrToken
-    ? `${window.location.origin}${ROUTE_PATH.ALARM_SETUP_MOBILE}?token=${qrToken}`
-    : '';
-
-  // REGISTERD → 리디렉션
-  useEffect(() => {
-    if (!statusData?.status) return;
-    if (statusData.status === WebPushStatus.REGISTERED && !hasHandledStatus.current) {
-      hasHandledStatus.current = true;
-      enableServiceAlarm();
-      toast.success('알림이 활성화되었습니다!');
-      navigate(ROUTE_PATH.MY_TASK);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [statusData?.status, navigate]);
-
-  // 세션 생성 + 5분마다 갱신 + 카운트다운
-  useEffect(() => {
-    createPushSession();
-    setRemainingTime(INTERVAL_MS / 1000);
-
-    const interval = setInterval(() => {
-      createPushSession();
-      setRemainingTime(INTERVAL_MS / 1000);
-    }, INTERVAL_MS);
-
-    const countdown = setInterval(() => {
-      setRemainingTime((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-      clearInterval(countdown);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const minutes = Math.floor(remainingTime / 60);
-  const seconds = remainingTime % 60;
-
+  const { qrData, isPending, timeLeft, handleSkip } = useAlarmSetup();
   return (
     <div className="flex flex-row h-screen overflow-hidden">
       {/* 왼쪽 알림 예시 */}
@@ -132,7 +59,7 @@ const AlarmSetupPage = () => {
 
         {/* QR 코드 */}
         <div className="p-4 shadow-md rounded-md bg-white mt-[-20px]">
-          {isPending && !data ? (
+          {isPending ? (
             <p className="text-gray-500 text-sm text-center w-40 h-40 flex items-center justify-center">
               <InlineLoader size={6} text="QR 코드 생성 중.." />
             </p>
@@ -146,17 +73,11 @@ const AlarmSetupPage = () => {
         </div>
 
         {/* 남은 시간 */}
-        <p className="text-gray-700 font-semibold text-sm">
-          QR 갱신까지 남은 시간: {minutes}:{seconds.toString().padStart(2, '0')}
-        </p>
+        <p className="text-gray-700 font-semibold text-sm">QR 갱신까지 남은 시간: {timeLeft}</p>
 
         <Button
           variant="link"
-          onClick={() => {
-            if (from === ROUTE_PATH.AVATAR) navigate(ROUTE_PATH.MY_TASK);
-            else if (from === ROUTE_PATH.SETTINGS) navigate(ROUTE_PATH.SETTINGS);
-            else navigate(ROUTE_PATH.MY_TASK);
-          }}
+          onClick={() => handleSkip()}
           className="z-10 mt-[-20px] cursor-pointer text-gray-500"
         >
           다음에 할래요
