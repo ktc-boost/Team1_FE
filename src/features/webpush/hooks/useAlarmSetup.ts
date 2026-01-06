@@ -1,4 +1,5 @@
 import { ROUTE_PATH } from '@/app/routes/Router';
+import { REFRESH_INTERVAL_MS } from '@/features/webpush/constants/qrConstants';
 import { useCreatePushSessionMutation } from '@/features/webpush/hooks/useCreatePushSessionMutation';
 import { useEnableServiceAlarmMutation } from '@/features/webpush/hooks/useEnableServiceAlarmMutation';
 import { usePushSessionStatusQuery } from '@/features/webpush/hooks/usePushSessionStatusQuery';
@@ -6,7 +7,6 @@ import { WebPushStatus } from '@/features/webpush/types/pushApiTypes';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
-const REFRESH_INTERVAL_MS = 5 * 60 * 1000; // 5분 (300,000ms)
 export const useAlarmSetup = () => {
   const navigate = useNavigate();
   const location = useLocation();
