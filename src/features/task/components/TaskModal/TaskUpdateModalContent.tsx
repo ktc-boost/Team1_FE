@@ -13,12 +13,12 @@ import UrgentToggle from '@/shared/components/ui/form/UrgentToggle';
 import AssigneeDropdown from '@/shared/components/ui/form/AssigneeDropdown';
 import TagManager from '@/features/tag/components/TagInput/TagManager';
 import { statusList } from '@/features/board/types/boardTypes';
-import { useUpdateTaskMutation } from '@/features/task/hooks/useUpdateTaskMutation';
+import { useUpdateTaskMutation } from '@/features/task/hooks/mutation/useUpdateTaskMutation';
 import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
 import type { Tag } from '@/features/tag/types/tagTypes';
 import { getTagIds } from '@/features/tag/utils/tagUtils';
 import type { TaskDetail } from '@/features/task/types/taskTypes';
-import { useUpdateTaskForm } from '@/features/task/hooks/useUpdateTaskForm';
+import { useUpdateTaskForm } from '@/features/task/hooks/form/useUpdateTaskForm';
 import { useModal } from '@/shared/hooks/useModal';
 import DueDatePicker from '@/shared/components/ui/form/DueDatePicker';
 

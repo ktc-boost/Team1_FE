@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import MemberColumn from '@/features/board/components/MemberBoard/MemberColumn';
 import DoneColumn from '@/features/board/components/MemberBoard/DoneColumn';
-import { useInfiniteProjectTasksByStatusQuery } from '@/features/task/hooks/useInfiniteProjectTasksByStatusQuery';
+import { useInfiniteProjectTasksByStatusQuery } from '@/features/task/hooks/query/useInfiniteProjectTasksByStatusQuery';
 import { useHorizontalScroll } from '@/features/board/hooks/useHorizontalScroll';
 import type { TaskListItem } from '@/features/task/types/taskTypes';
 import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';

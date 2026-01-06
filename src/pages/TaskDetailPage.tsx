@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import TaskDetailTopTab from '@/features/task-detail/components/TaskDetailTopTab/TaskDetailTopTab';
-import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
+import { useTaskDetailQuery } from '@/features/task/hooks/query/useTaskDetailQuery';
 import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import TaskDetailLeftPane from '@/features/task-detail/components/TaskDetailLeftPane';

@@ -5,7 +5,7 @@ import { useCommentQuery } from '@/features/comment/hooks/useCommentQuery';
 import { useCreateCommentMutation } from '@/features/comment/hooks/useCreateCommentMutation';
 import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateCommentMutation';
 import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteCommentMutation';
-import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
+import { useTaskDetailQuery } from '@/features/task/hooks/query/useTaskDetailQuery';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import { useCommentSelect } from '@/features/task-detail/hooks/useCommentSelect';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
