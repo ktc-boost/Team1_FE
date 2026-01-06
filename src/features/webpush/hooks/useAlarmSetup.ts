@@ -18,7 +18,8 @@ export const useAlarmSetup = () => {
     isPending,
   } = useCreatePushSessionMutation({
     onSuccess: () => {
-      setRemainingTime(REFRESH_INTERVAL_MS / 1000);
+      const now = Date.now();
+      setExpiryTimestamp(now + REFRESH_INTERVAL_MS);
     },
     onError: () => {
       toast.error('QR 세션 생성에 실패했습니다. 잠시 후 다시 시도해주세요.');
@@ -26,8 +27,8 @@ export const useAlarmSetup = () => {
   });
   const { data: statusData } = usePushSessionStatusQuery(data?.token);
   const { mutate: enableServiceAlarm } = useEnableServiceAlarmMutation();
+  const [expiryTimestamp, setExpiryTimestamp] = useState<number | null>(null);
   const [remainingTime, setRemainingTime] = useState(REFRESH_INTERVAL_MS / 1000);
-
   // QR 데이터 URL 생성
   const qrData = data?.token
     ? `${window.location.origin}${ROUTE_PATH.ALARM_SETUP_MOBILE}?token=${data.token}`
@@ -44,27 +45,28 @@ export const useAlarmSetup = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [statusData?.status, navigate]);
 
-  // 세션 생성 + 5분마다 갱신 + 카운트다운
+  // 세션 생성 + 5분마다 QR 생성
   useEffect(() => {
     createPushSession();
-    setRemainingTime(REFRESH_INTERVAL_MS / 1000);
 
-    const interval = setInterval(() => {
+    const sessionInterval = setInterval(() => {
       createPushSession();
-      setRemainingTime(REFRESH_INTERVAL_MS / 1000);
     }, REFRESH_INTERVAL_MS);
 
-    const countdown = setInterval(() => {
-      setRemainingTime((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
+    return () => clearInterval(sessionInterval);
+  }, [createPushSession]); // 의존성 배열에 왜 넣는냐??
 
-    return () => {
-      clearInterval(interval);
-      clearInterval(countdown);
+  useEffect(() => {
+    if (!expiryTimestamp) return;
+    const updateTimer = () => {
+      const now = Date.now();
+      const diff = Math.max(0, Math.floor((expiryTimestamp - now) / 1000));
+      setRemainingTime(diff);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+    updateTimer();
+    const countdownInterval = setInterval(updateTimer, 1000);
+    return () => clearInterval(countdownInterval);
+  }, [expiryTimestamp]);
   const minutes = Math.floor(remainingTime / 60);
   const seconds = Math.floor(remainingTime % 60);
   const timeLeft = `${minutes}:${seconds.toString().padStart(2, '0')}`;
