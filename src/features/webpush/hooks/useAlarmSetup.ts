@@ -4,8 +4,8 @@ import { useCreatePushSessionMutation } from '@/features/webpush/hooks/useCreate
 import { useEnableServiceAlarmMutation } from '@/features/webpush/hooks/useEnableServiceAlarmMutation';
 import { usePushSessionStatusQuery } from '@/features/webpush/hooks/usePushSessionStatusQuery';
 import { WebPushStatus } from '@/features/webpush/types/pushApiTypes';
+import { webPushToast } from '@/features/webpush/ui/toast/webPushToast';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
 export const useAlarmSetup = () => {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export const useAlarmSetup = () => {
       setExpiryTimestamp(now + REFRESH_INTERVAL_MS);
     },
     onError: () => {
-      toast.error('QR 세션 생성에 실패했습니다. 잠시 후 다시 시도해주세요.');
+      webPushToast.connectFailed();
     },
   });
   const { data: statusData } = usePushSessionStatusQuery(data?.token);
@@ -39,7 +39,6 @@ export const useAlarmSetup = () => {
     if (statusData?.status === WebPushStatus.REGISTERED && !hasHandledStatus.current) {
       hasHandledStatus.current = true;
       enableServiceAlarm();
-      toast.success('알림이 활성화되었습니다!');
       navigate(ROUTE_PATH.MY_TASK);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
