@@ -1,5 +1,5 @@
 import { useProjectStore } from '@/features/project/store/useProjectStore';
-import EditField from '@/shared/components/ui/Form/EditField';
+import EditField from '@/shared/components/ui/form/EditField';
 
 const ProjectManageBasicInfo = () => {
   const { projectData, updateProjectData } = useProjectStore();

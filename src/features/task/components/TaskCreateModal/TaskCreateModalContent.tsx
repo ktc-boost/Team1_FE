@@ -15,7 +15,7 @@ import { Button } from '@/shared/components/shadcn/button';
 import { DialogFooter } from '@/shared/components/shadcn/dialog';
 import { Input } from '@/shared/components/shadcn/input';
 import { Textarea } from '@/shared/components/shadcn/textarea';
-import { FormField } from '@/shared/components/ui/Form/FormField';
+import { FormField } from '@/shared/components/ui/form/FormField';
 import { useModal } from '@/shared/hooks/useModal';
 import { toggleArrayItem } from '@/shared/utils/arrayUtils';
 import { cn } from '@/shared/lib/utils';
