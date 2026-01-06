@@ -12,10 +12,10 @@ const QRCodeSection = ({ isPending, qrData, timeLeft }: QRCodeSectionProps) => {
     <>
       {/* 상단 텍스트 */}
       <div aria-label="text" className="flex flex-col items-center gap-3">
-        <div className="text-4xl font-semibold text-center">
+        <div className="text-xl md:text-4xl font-semibold text-center leading-tight">
           <span className="text-boost-blue-light">알림</span>을 허용해보세요!
         </div>
-        <div className="text-gray-600 subtitle1-bold text-center">
+        <div className=" subtitle2-bold md:subtitle1-bold text-gray-600  text-center">
           모바일로 하단의 QR 코드를 스캔해주세요!
         </div>
         <ArrowDown className="text-boost-blue-light" />
@@ -37,7 +37,7 @@ const QRCodeSection = ({ isPending, qrData, timeLeft }: QRCodeSectionProps) => {
       </div>
 
       {/* 남은 시간 */}
-      <p className="text-gray-700 font-semibold text-sm">QR 갱신까지 남은 시간: {timeLeft}</p>
+      <p className="text-gray-700 font-semibold text-sm">{timeLeft}</p>
     </>
   );
 };
