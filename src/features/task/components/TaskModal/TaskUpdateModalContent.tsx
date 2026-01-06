@@ -8,10 +8,10 @@ import { Textarea } from '@/shared/components/shadcn/textarea';
 import { FormField } from '@/shared/components/ui/form/FormField';
 import { toggleArrayItem } from '@/shared/utils/arrayUtils';
 import { cn } from '@/shared/lib/utils';
-import StatusButtons from '@/features/task/components/TaskCreateModal/StatusButtons';
-import UrgentToggle from '@/features/task/components/TaskCreateModal/UrgentToggle';
-import AssigneeDropdown from '@/features/task/components/TaskCreateModal/AssigneeDropdown';
-import TagManager from '@/features/task/components/TaskCreateModal/TagInput/TagManager';
+import StatusButtons from '@/shared/components/ui/form/StatusButtons';
+import UrgentToggle from '@/shared/components/ui/form/UrgentToggle';
+import AssigneeDropdown from '@/shared/components/ui/form/AssigneeDropdown';
+import TagManager from '@/features/tag/components/TagInput/TagManager';
 import { statusList } from '@/features/board/types/boardTypes';
 import { useUpdateTaskMutation } from '@/features/task/hooks/useUpdateTaskMutation';
 import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
@@ -20,7 +20,7 @@ import { getTagIds } from '@/features/tag/utils/tagUtils';
 import type { TaskDetail } from '@/features/task/types/taskTypes';
 import { useUpdateTaskForm } from '@/features/task/hooks/useUpdateTaskForm';
 import { useModal } from '@/shared/hooks/useModal';
-import DueDatePicker from '@/features/task/components/TaskCreateModal/DueDatePicker';
+import DueDatePicker from '@/shared/components/ui/form/DueDatePicker';
 
 interface TaskUpdateModalContentProps {
   projectId: string;

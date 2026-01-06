@@ -19,11 +19,11 @@ import { FormField } from '@/shared/components/ui/form/FormField';
 import { useModal } from '@/shared/hooks/useModal';
 import { toggleArrayItem } from '@/shared/utils/arrayUtils';
 import { cn } from '@/shared/lib/utils';
-import StatusButtons from '@/features/task/components/TaskCreateModal/StatusButtons';
-import UrgentToggle from '@/features/task/components/TaskCreateModal/UrgentToggle';
-import AssigneeDropdown from '@/features/task/components/TaskCreateModal/AssigneeDropdown';
-import ProjectSelect from '@/features/task/components/TaskCreateModal/ProjectSelect';
-import TagManager from '@/features/task/components/TaskCreateModal/TagInput/TagManager';
+import StatusButtons from '@/shared/components/ui/form/StatusButtons';
+import UrgentToggle from '@/shared/components/ui/form/UrgentToggle';
+import AssigneeDropdown from '@/shared/components/ui/form/AssigneeDropdown';
+import ProjectSelect from '@/shared/components/ui/form/ProjectSelect';
+import TagManager from '@/features/tag/components/TagInput/TagManager';
 import { useCreateTaskForm } from '@/features/task/hooks/useCreateTaskForm';
 import { statusList } from '@/features/board/types/boardTypes';
 import { useProjectsQuery } from '@/features/project/hooks/useProjectsQuery';
@@ -31,7 +31,7 @@ import { useCreateTaskMutation } from '@/features/task/hooks/useCreateTaskMutati
 import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
 import type { Tag } from '@/features/tag/types/tagTypes';
 import { getTagIds } from '@/features/tag/utils/tagUtils';
-import DueDatePicker from '@/features/task/components/TaskCreateModal/DueDatePicker';
+import DueDatePicker from '@/shared/components/ui/form/DueDatePicker';
 
 interface TaskCreateModalContentProps {
   isMyTask: boolean;
