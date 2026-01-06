@@ -54,7 +54,7 @@ export const useAlarmSetup = () => {
     }, REFRESH_INTERVAL_MS);
 
     return () => clearInterval(sessionInterval);
-  }, [createPushSession]); // 의존성 배열에 왜 넣는냐??
+  }, [createPushSession]);
 
   useEffect(() => {
     if (!expiryTimestamp) return;
@@ -67,10 +67,10 @@ export const useAlarmSetup = () => {
     const countdownInterval = setInterval(updateTimer, 1000);
     return () => clearInterval(countdownInterval);
   }, [expiryTimestamp]);
+
   const minutes = Math.floor(remainingTime / 60);
   const seconds = Math.floor(remainingTime % 60);
   const timeLeft = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-  // useCallback 이 없을 때. 타이머 때문에 1초마다 숫자가 바뀔때마다 useAlarmpermission 훅이 호출 됨. handleSkip도 새로 만들어짐
   const handleSkip = useCallback(() => {
     const from = location.state?.from;
     if (from === ROUTE_PATH.AVATAR || from === ROUTE_PATH.SETTINGS) {
