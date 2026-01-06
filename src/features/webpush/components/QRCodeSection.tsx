@@ -24,15 +24,15 @@ const QRCodeSection = ({ isPending, qrData, timeLeft }: QRCodeSectionProps) => {
       {/* QR 코드 */}
       <div className="p-4 shadow-md rounded-md bg-white mt-[-20px]">
         {isPending ? (
-          <p className="text-gray-500 text-sm text-center w-40 h-40 flex items-center justify-center">
+          <div className="text-gray-500 text-sm text-center w-40 h-40 flex items-center justify-center">
             <InlineLoader size={6} text="QR 코드 생성 중.." />
-          </p>
+          </div>
         ) : qrData ? (
           <QRCodeSVG value={qrData} className="w-40 h-40" />
         ) : (
-          <p className="text-gray-500 text-sm text-center w-40 h-40 flex items-center justify-center">
+          <div className="text-gray-500 text-sm text-center w-40 h-40 flex items-center justify-center">
             <InlineLoader size={6} text="QR 데이터 불러오는 중.." />
-          </p>
+          </div>
         )}
       </div>
 
