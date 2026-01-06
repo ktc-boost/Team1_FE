@@ -10,7 +10,7 @@ import AssigneeSection from '@/features/task-detail/components/TaskDetailContent
 import DueDateSection from '@/features/task-detail/components/TaskDetailContent/DueDateInfo';
 import TagSection from '@/features/task-detail/components/TaskDetailContent/TagList';
 import TaskControlDropdown from '@/features/task-detail/components/TaskDetailContent/TaskControlDropdown';
-import TaskUpdateModalContent from '@/features/task/components/TaskUpdateModal/TaskUpdateModalContent';
+import TaskUpdateModalContent from '@/features/task/components/TaskModal/TaskUpdateModalContent';
 
 interface TaskDetailContentProps {
   task: TaskDetail;
