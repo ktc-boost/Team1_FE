@@ -21,7 +21,7 @@ import AssigneeDropdown from '@/shared/components/ui/form/AssigneeDropdown';
 import ProjectSelect from '@/shared/components/ui/form/ProjectSelect';
 import TagManager from '@/features/tag/components/TagInput/TagManager';
 import DueDatePicker from '@/shared/components/ui/form/DueDatePicker';
-import { statusList } from '@/features/board/types/boardTypes';
+import { statusList, type Status } from '@/features/board/types/boardTypes';
 import type { TaskFormValues } from '@/features/task/schemas/taskSchema';
 import type { Tag } from '@/features/tag/types/tagTypes';
 import type { Project } from '@/features/project/types/projectTypes';
@@ -66,7 +66,7 @@ const TaskFormField = ({
           <ProjectSelect
             selectedProjectId={watchProjectId}
             projects={projects}
-            onProjectSelect={(id) => setValue('projectId', id, { shouldValidate: true })}
+            onProjectSelect={(id: string) => setValue('projectId', id, { shouldValidate: true })}
           />
         </FormField>
       )}
@@ -84,12 +84,12 @@ const TaskFormField = ({
           <StatusButtons
             statusList={statusList}
             selectedStatus={status}
-            setStatus={(s) => setValue('status', s)}
+            setStatus={(s: Status) => setValue('status', s)}
           />
         </FormField>
 
         <FormField icon={Siren} label="긴급 여부">
-          <UrgentToggle urgent={urgent} setUrgent={(v) => setValue('urgent', v)} />
+          <UrgentToggle urgent={urgent} setUrgent={(v: boolean) => setValue('urgent', v)} />
         </FormField>
       </div>
 
@@ -98,7 +98,7 @@ const TaskFormField = ({
           <AssigneeDropdown
             disabled={!projectMembers?.length}
             assignees={assignees}
-            toggleAssignee={(name) =>
+            toggleAssignee={(name: string) =>
               setValue('assignees', toggleArrayItem(assignees, name), { shouldValidate: true })
             }
             members={projectMembers}
@@ -108,7 +108,7 @@ const TaskFormField = ({
         <FormField icon={Calendar} required label="마감일" error={errors.dueDate?.message}>
           <DueDatePicker
             value={watch('dueDate')}
-            onChange={(date) => setValue('dueDate', date, { shouldValidate: true })}
+            onChange={(date: string) => setValue('dueDate', date, { shouldValidate: true })}
           />
         </FormField>
       </div>
