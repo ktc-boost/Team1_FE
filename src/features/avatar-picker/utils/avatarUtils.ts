@@ -1,5 +1,4 @@
 import { AVATAR_BG_COLOR } from '@/features/avatar-picker/constants/avatarBgColor';
-const LCP_AVATAR_PUBLIC_URL = '/avatars/01.webp';
 
 type AvatarModule = { default: string };
 
@@ -21,7 +20,7 @@ const sortedAvatars = Object.entries(avatarModules)
   .map(([_, module]) => {
     return module.default;
   });
-export const avatarList = ['/avatars/01.webp', ...sortedAvatars.slice(2)];
+export const avatarList = [...sortedAvatars.slice(1)];
 export const getAvatarListUtils = () => avatarList;
 
 export const getRandomAvatarId = () => {
@@ -32,15 +31,10 @@ export const getAvatarSrc = (
   member: { avatar?: string | number } | undefined,
   propsAvatarList: string[] = avatarList,
 ) => {
-  if (!member) return LCP_AVATAR_PUBLIC_URL;
-
+  if (!member) return propsAvatarList[0];
   const index = Number(member.avatar);
-
-  if (index === 0) return LCP_AVATAR_PUBLIC_URL;
-
-  return propsAvatarList[index] ?? LCP_AVATAR_PUBLIC_URL;
+  return propsAvatarList[index] ?? propsAvatarList[0];
 };
-
 // 백엔드와 통신할 때 매핑 유틸
 export const getTokenFromHex = (hex: string) => {
   const entry = Object.values(AVATAR_BG_COLOR).find((c) => c.hex === hex);
