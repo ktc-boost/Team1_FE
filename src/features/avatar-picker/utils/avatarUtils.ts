@@ -20,13 +20,14 @@ const sortedAvatars = Object.entries(avatarModules)
   .map(([_, module]) => {
     return module.default;
   });
-export const avatarList = [...sortedAvatars.slice(1)];
+export const avatarList = sortedAvatars.slice(1); // 01.png ~ 80.png만 포함
 export const getAvatarListUtils = () => avatarList;
 
 export const getRandomAvatarId = () => {
   const randomIndex = Math.floor(Math.random() * avatarList.length);
   return String(randomIndex);
 };
+
 export const getAvatarSrc = (
   member: { avatar?: string | number } | undefined,
   propsAvatarList: string[] = avatarList,
