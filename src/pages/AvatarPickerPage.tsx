@@ -12,10 +12,12 @@ import { useUpdateAvatarMutation } from '@/features/settings/hooks/useUpdateAvat
 import type { User } from '@/features/user/types/userTypes';
 
 const AvatarSettingsPage = () => {
-  const { selectedAvatarId, selectedBgColor } = useAvatarStore();
-  const setAuth = useAuthStore((s) => s.setAuth);
-  const { mutateAsync: updateAvatar } = useUpdateAvatarMutation();
   const navigate = useNavigate();
+  const setAuth = useAuthStore((s) => s.setAuth);
+  const authUser = useAuthStore.getState().user;
+  const { selectedAvatarId, selectedBgColor } = useAvatarStore();
+
+  const { mutateAsync: updateAvatar } = useUpdateAvatarMutation();
 
   const handleSave = async () => {
     if (!selectedBgColor) {
@@ -23,7 +25,6 @@ const AvatarSettingsPage = () => {
       return;
     }
 
-    const authUser = useAuthStore.getState().user;
     if (!authUser) return;
 
     const avatarInfo = {
