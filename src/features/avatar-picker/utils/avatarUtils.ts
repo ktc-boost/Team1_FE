@@ -1,14 +1,15 @@
 import { AVATAR_BG_COLOR } from '@/features/avatar-picker/constants/avatarBgColor';
+const LCP_AVATAR_PUBLIC_URL = '/avatars/01.webp';
 
 type AvatarModule = { default: string };
 
-const avatarModules = import.meta.glob<AvatarModule>('@/shared/assets/images/avatars/*.png', {
+const avatarModules = import.meta.glob<AvatarModule>('@/shared/assets/images/avatars/*.webp', {
   eager: true,
 });
 const sortedAvatars = Object.entries(avatarModules)
   .sort(([pathA], [pathB]) => {
     const getNum = (path: string) => {
-      const matches = path.match(/\d+(?=\.png$)/g);
+      const matches = path.match(/\d+(?=\.webp$)/g);
       return matches ? parseInt(matches[matches.length - 1], 10) : 0;
     };
 
@@ -20,21 +21,24 @@ const sortedAvatars = Object.entries(avatarModules)
   .map(([_, module]) => {
     return module.default;
   });
-export const avatarList = sortedAvatars.slice(1); // 01.png ~ 80.png만 포함
+export const avatarList = ['/avatars/01.webp', ...sortedAvatars.slice(2)];
 export const getAvatarListUtils = () => avatarList;
 
 export const getRandomAvatarId = () => {
   const randomIndex = Math.floor(Math.random() * avatarList.length);
   return String(randomIndex);
 };
-
 export const getAvatarSrc = (
   member: { avatar?: string | number } | undefined,
   propsAvatarList: string[] = avatarList,
 ) => {
-  if (!member) return propsAvatarList[0];
+  if (!member) return LCP_AVATAR_PUBLIC_URL;
+
   const index = Number(member.avatar);
-  return propsAvatarList[index] ?? propsAvatarList[0];
+
+  if (index === 0) return LCP_AVATAR_PUBLIC_URL;
+
+  return propsAvatarList[index] ?? LCP_AVATAR_PUBLIC_URL;
 };
 
 // 백엔드와 통신할 때 매핑 유틸
