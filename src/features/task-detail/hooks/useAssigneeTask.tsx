@@ -3,8 +3,8 @@ import { toast } from 'react-hot-toast';
 import { isAxiosError } from 'axios';
 import { getRemainingSeconds, formatSecondsMMSS } from '@/shared/utils/dateUtils';
 import MovingBoo from '@/shared/components/ui/MovingBoo';
-import { useUpdateTaskStatusMutation } from '@/features/task/hooks/useUpdateTaskStatusMutation';
-import { useRequestReviewMutation } from '@/features/task/hooks/useRequestReviewMutation';
+import { useUpdateTaskStatusMutation } from '@/features/task/hooks/mutation/useUpdateTaskStatusMutation';
+import { useRequestReviewMutation } from '@/features/task/hooks/mutation/useRequestReviewMutation';
 import { ERROR } from '@/shared/constants/errorTypes';
 
 interface UseAssigneeTaskProps {

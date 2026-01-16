@@ -1,5 +1,5 @@
 import { useProjectStore } from '@/features/project/store/useProjectStore';
-import EditField from '@/shared/components/ui/Form/EditField';
+import EditField from '@/shared/components/ui/form/EditField';
 
 const ProjectManageBasicInfo = () => {
   const { projectData, updateProjectData } = useProjectStore();
@@ -9,15 +9,13 @@ const ProjectManageBasicInfo = () => {
       <EditField
         label="프로젝트 이름"
         value={projectData.name}
-        onSave={(newValue) => updateProjectData({ name: newValue as string })}
+        onSave={(newValue: string) => updateProjectData({ name: newValue })}
       />
       <EditField
         label="기본 검토 수"
         value={projectData.defaultReviewerCount}
         type="number"
-        onSave={(newValue) =>
-          updateProjectData({ ...projectData, defaultReviewerCount: newValue as number })
-        }
+        onSave={(newValue: number) => updateProjectData({ defaultReviewerCount: newValue })}
       />
     </div>
   );

@@ -6,8 +6,8 @@ import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailSt
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 import { commentToast } from '@/features/task-detail/utils/toast/commentToast';
 import { buildCreateCommentPayload, isBlank } from '@/features/task-detail/utils/commentPayload';
-import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
 import { useShallow } from 'zustand/react/shallow';
+import { useTaskDetailQuery } from '@/features/task/hooks/query/useTaskDetailQuery';
 
 export const useCommentActions = (projectId: string, taskId: string) => {
   const { mutate: createComment } = useCreateCommentMutation(projectId, taskId);
