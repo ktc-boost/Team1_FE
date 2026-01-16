@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import FormLabel from '@/shared/components/ui/Form/FormLabel';
+import FormLabel from '@/shared/components/ui/form/FormLabel';
 
 interface FormFieldProps {
   label: string;

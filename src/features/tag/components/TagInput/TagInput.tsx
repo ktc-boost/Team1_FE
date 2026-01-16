@@ -3,8 +3,8 @@ import { useState, useRef, useEffect } from 'react';
 import { Input } from '@/shared/components/shadcn/input';
 import { cn } from '@/shared/lib/utils';
 import TagChip from '@/features/tag/components/TagChip';
-import TagDropdownItem from '@/features/task/components/TaskCreateModal/TagInput/TagDropdownItem';
-import TagEmptyState from '@/features/task/components/TaskCreateModal/TagInput/TagEmptyState';
+import TagDropdownItem from '@/features/tag/components/TagInput/TagDropdownItem';
+import TagEmptyState from '@/features/tag/components/TagInput/TagEmptyState';
 import type { Tag, TagList } from '@/features/tag/types/tagTypes';
 
 interface TagInputProps {

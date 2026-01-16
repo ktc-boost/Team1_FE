@@ -1,6 +1,6 @@
 import { useModal } from '@/shared/hooks/useModal';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
-import TaskDeleteModalContent from '@/features/task/components/TaskDeleteModalContent';
+import TaskDeleteModalContent from '@/features/task/components/TaskModal/TaskDeleteModalContent';
 
 export const useTaskModals = () => {
   const { showCustom } = useModal();
