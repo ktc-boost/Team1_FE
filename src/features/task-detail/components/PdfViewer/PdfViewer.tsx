@@ -6,7 +6,7 @@ import { cn } from '@/shared/lib/utils';
 import Overlay from '@/features/task-detail/components/PdfViewer/PdfOverlay';
 import PdfControlBar from '@/features/task-detail/components/PdfViewer/PdfControlBar';
 import { usePdfDrag } from '@/features/task-detail/hooks/usePdfDrag';
-import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import { usePdfPinInteraction } from '@/features/task-detail/hooks/usePdfPinInteraction';
 import { usePdfDocument } from '@/features/task-detail/hooks/usePdfDocument';
 import PdfHeaderBar from '@/features/task-detail/components/PdfViewer/PdfHeaderBar';

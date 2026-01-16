@@ -1,9 +1,9 @@
-import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
 import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
 import type { FileInfo, PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
-import { commentToast } from '@/features/task-detail/ui/toast/commentToast';
+import { commentToast } from '@/features/task-detail/utils/toast/commentToast';
 
 export const useCommentSelect = () => {
   const { setSelectedFile, setPins, togglePdf } = useTaskDetailStore();
