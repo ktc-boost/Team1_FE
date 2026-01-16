@@ -1,5 +1,5 @@
-import { useAllProjectTasksQueries } from '@/features/task/hooks/useAllProjectTasksQueries';
-import { useAllMyTasksQueries } from '@/features/task/hooks/useAllMyTasksQueries';
+import { useAllProjectTasksQueries } from '@/features/task/hooks/query/useAllProjectTasksQueries';
+import { useAllMyTasksQueries } from '@/features/task/hooks/query/useAllMyTasksQueries';
 import { statusList, type ColumnData } from '@/features/board/types/boardTypes';
 import { useSortStore } from '@/features/board/store/useSortStore';
 import { useBoardSearchStore } from '@/features/board/store/useBoardSearchStore';

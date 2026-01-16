@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/shared/lib/utils';
-import { useInfiniteProjectTasksByMemberQuery } from '@/features/task/hooks/useInfiniteProjectTasksByMemberQuery';
+import { useInfiniteProjectTasksByMemberQuery } from '@/features/task/hooks/query/useInfiniteProjectTasksByMemberQuery';
 import { useVerticalScroll } from '@/features/board/hooks/useVerticalScroll';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
@@ -9,7 +9,7 @@ import { Separator } from '@/shared/components/shadcn/separator';
 import rocket from '@/shared/assets/images/boost/rocket-2d.png';
 import { columnOrder, columnStatus } from '@/features/board/types/boardTypes';
 import { COLLAPSIBLE_SCROLL_THRESHOLD } from '@/features/board/constants/scroll';
-import { useProjectTaskCountByMemberQuery } from '@/features/task/hooks/useProjectTaskCountByMemberQuery';
+import { useProjectTaskCountByMemberQuery } from '@/features/task/hooks/query/useProjectTaskCountByMemberQuery';
 import { getTaskCountByMember } from '@/features/task/utils/taskUtils';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 import type { MemberWithBoosting } from '@/features/project/types/projectTypes';

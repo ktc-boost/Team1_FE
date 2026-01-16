@@ -3,7 +3,7 @@ import { useModal } from '@/shared/hooks/useModal';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ProjectManageModalContent from '@/features/project/components/ProjectManageModal/ProjectManageModalContent';
 import ProjectJoinCodeViewModalContent from '@/features/project/components/ProjectJoinModal/ProjectJoinCodeViewModalContent';
-import TaskCreateModalContent from '@/features/task/components/TaskCreateModal/TaskCreateModalContent';
+import TaskCreateModalContent from '@/features/task/components/TaskModal/TaskCreateModalContent';
 import type { Project } from '@/features/project/types/projectTypes';
 import { ROUTES } from '@/app/routes/Router';
 import { ROLES } from '@/features/project/constants/projectConstants';
