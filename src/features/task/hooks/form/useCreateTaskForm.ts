@@ -17,16 +17,8 @@ export const useCreateTaskForm = (
   const { resetModal } = useModal();
   const [isLoading, setIsLoading] = useState(false);
   const projectData = useProjectStore((state) => state.projectData);
-  const { data: projectMembers = [] } = useProjectMembersQuery(initialProjectId);
-
-  const resolver = useMemo(() => {
-    return zodResolver(
-      createTaskSchema.superRefine((data, ctx) => validateReviewerCount(data, ctx, projectMembers)),
-    );
-  }, [projectMembers]);
 
   const form = useForm<CreateTaskInput>({
-    resolver,
     mode: 'onChange',
     defaultValues: {
       projectId: initialProjectId,
@@ -40,6 +32,21 @@ export const useCreateTaskForm = (
       urgent: false,
     },
   });
+
+  const currentProjectId = form.watch('projectId');
+  const { data: projectMembers = [] } = useProjectMembersQuery(
+    currentProjectId || initialProjectId,
+  );
+
+  const resolver = useMemo(() => {
+    return zodResolver(
+      createTaskSchema.superRefine((data, ctx) => validateReviewerCount(data, ctx, projectMembers)),
+    );
+  }, [projectMembers]);
+
+  useEffect(() => {
+    form.control._options.resolver = resolver;
+  }, [resolver, form]);
 
   const assignees = form.watch('assignees');
   const numAssignees = assignees?.length || 0;
@@ -64,7 +71,7 @@ export const useCreateTaskForm = (
     setIsLoading(true);
     try {
       const assigneeIds = data.assignees
-        .map((name) => projectMembers.find((m) => m.name === name)?.id)
+        .map((name) => projectMembers.find((m) => m.name === name || m.id === name)?.id)
         .filter((id): id is string => !!id);
 
       const payload: CreateTaskInput = {
