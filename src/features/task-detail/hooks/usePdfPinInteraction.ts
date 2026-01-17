@@ -3,12 +3,22 @@ import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType'
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import type { PageSize } from '@/features/task-detail/types/pdfTypes'; // width, height 타입
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
+import { useShallow } from 'zustand/react/shallow';
 
 export const usePdfPinInteraction = (pageNumber: number, pageSize: PageSize) => {
   const mouseMoved = useRef(false);
-  const { user } = useAuthStore();
+  const user = useAuthStore((s) => s.user);
   const { clearCurrentPin, persona, currentPin, setCurrentPin, selectedFile, isAnonymous } =
-    useTaskDetailStore();
+    useTaskDetailStore(
+      useShallow((s) => ({
+        clearCurrentPin: s.clearCurrentPin,
+        persona: s.persona,
+        currentPin: s.currentPin,
+        setCurrentPin: s.setCurrentPin,
+        selectedFile: s.selectedFile,
+        isAnonymous: s.isAnonymous,
+      })),
+    );
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (mouseMoved.current) return;
