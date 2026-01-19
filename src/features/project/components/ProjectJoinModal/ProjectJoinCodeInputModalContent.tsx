@@ -63,7 +63,7 @@ const ProjectJoinCodeInputModalContent = ({
           className="border-gray-400 h-10 focus:ring-transparent focus:border-gray-600"
         />
       </div>
-      <DialogFooter className="!mt-0 pt-4 border-t border-gray-300 flex !justify-between items-center">
+      <DialogFooter className="!mt-0 pt-4 border-t border-gray-300 flex flex-col-reverse sm:flex-row sm:justify-between gap-4">
         <Button
           onClick={() => {
             resetModal();
@@ -75,21 +75,21 @@ const ProjectJoinCodeInputModalContent = ({
         >
           생성할래요
         </Button>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           <Button
             onClick={backModal}
             variant="outline"
             disabled={isLoading}
-            className="border-gray-400 sm:w-20 hover:bg-gray-200 cursor-pointer"
+            className="border-gray-400 w-full sm:w-20 hover:bg-gray-200 cursor-pointer order-2 sm:order-1"
           >
             취소
           </Button>
           <Button
             onClick={handleConfirm}
             disabled={!joinCode || isLoading}
-            className="bg-boost-blue sm:w-20 hover:bg-boost-blue-pressed cursor-pointer"
+            className="bg-boost-blue w-full sm:w-20 hover:bg-boost-blue-pressed cursor-pointer order-1 sm:order-2"
           >
-            입력
+            참여
           </Button>
         </div>
       </DialogFooter>
