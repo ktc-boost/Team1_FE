@@ -46,7 +46,7 @@ const ProjectCreateModalContent = ({ onConfirm, onJoinClick }: ProjectCreateModa
           }}
           variant="outline"
           disabled={isLoading}
-          className="border-none text-gray-500 p-1 hover:text-gray-600 underline cursor-pointer hover:bg-gray-100"
+          className="border-none text-gray-500 p-1 underline hover:text-gray-600 hover:bg-gray-100"
         >
           참여할래요
         </Button>
@@ -56,7 +56,7 @@ const ProjectCreateModalContent = ({ onConfirm, onJoinClick }: ProjectCreateModa
             onClick={backModal}
             variant="outline"
             disabled={isLoading}
-            className="border-gray-400 sm:w-20 w-full hover:bg-gray-200"
+            className="border-gray-400 w-full sm:w-20 hover:bg-gray-200"
           >
             취소
           </Button>
@@ -64,7 +64,7 @@ const ProjectCreateModalContent = ({ onConfirm, onJoinClick }: ProjectCreateModa
           <Button
             onClick={handleConfirm}
             disabled={!projectName.trim() || isLoading}
-            className="bg-boost-blue sm:w-20 w-full hover:bg-boost-blue-pressed cursor-pointer"
+            className="bg-boost-blue w-full sm:w-20 hover:bg-boost-blue-pressed"
           >
             생성
           </Button>
