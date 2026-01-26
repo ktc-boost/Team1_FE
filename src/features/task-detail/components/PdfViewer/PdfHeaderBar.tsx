@@ -1,5 +1,5 @@
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
-import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import { useShallow } from 'zustand/react/shallow';
 
 const PdfHeaderBar = () => {

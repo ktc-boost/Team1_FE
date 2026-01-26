@@ -1,6 +1,6 @@
 import Header from '@/widgets/Header';
 import { useModal } from '@/shared/hooks/useModal';
-import TaskCreateModalContent from '@/features/task/components/TaskCreateModal/TaskCreateModalContent';
+import TaskCreateModalContent from '@/features/task/components/TaskModal/TaskCreateModalContent';
 
 const MyTaskHeader = ({ userName }: { userName: string }) => {
   const { showCustom } = useModal();

@@ -2,7 +2,7 @@ import { useTagsQuery } from '@/features/tag/hooks/useTagsQuery';
 import { useCreateTagMutation } from '@/features/tag/hooks/useCreateTagMutation';
 import { useDeleteTagMutation } from '@/features/tag/hooks/useDeleteTagMutation';
 import { useUpdateTagMutation } from '@/features/tag/hooks/useUpdateTagMutation';
-import TagInput from '@/features/task/components/TaskCreateModal/TagInput/TagInput';
+import TagInput from '@/features/tag/components/TagInput/TagInput';
 import type { Tag, TagList } from '@/features/tag/types/tagTypes';
 
 interface TagManagerProps {

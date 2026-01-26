@@ -16,7 +16,7 @@ import {
   useMoveTaskMutation,
   optimisticallyMoveTask,
   type MoveTaskParams,
-} from '@/features/task/hooks/useMoveTaskMutation';
+} from '@/features/task/hooks/mutation/useMoveTaskMutation';
 import { columnStatus } from '@/features/board/types/boardTypes';
 import type { TaskListItem } from '@/features/task/types/taskTypes';
 import { useStatusBoardQueries } from '@/features/board/hooks/useStatusBoardQueries';

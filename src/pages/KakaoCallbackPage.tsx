@@ -11,10 +11,7 @@ const KakaoCallbackPage = () => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
 
-    const redirectUri =
-      import.meta.env.VITE_IS_LOCAL === 'true'
-        ? 'http://localhost:5173/auth/callback'
-        : 'https://boost.ai.kr/auth/callback';
+    const redirectUri = import.meta.env.VITE_REDIRECT_URI;
 
     if (code) {
       kakaoLoginMutation({ code, redirectUri });

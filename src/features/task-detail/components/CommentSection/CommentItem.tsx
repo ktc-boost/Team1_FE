@@ -6,7 +6,7 @@ import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { CommentActionsMenu } from '@/features/task-detail/components/CommentSection/CommentActionsMenu';
 import { AuthorAvatar } from './AuthorAvatar';
-import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import { useShallow } from 'zustand/react/shallow';
 
 interface CommentItemProps {
