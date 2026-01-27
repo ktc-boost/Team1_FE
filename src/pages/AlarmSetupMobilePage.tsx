@@ -15,7 +15,7 @@ const AlarmSetupMobilePage = () => {
   const [params] = useSearchParams();
   const qrToken = params.get('token');
   const { mutate: connectPushSession } = useConnectPushSessionMutation();
-  const { registerPushSubscription, isLoading } = useAlarmPermission(qrToken!);
+  const { registerPushSubscription, isLoading } = useAlarmPermission(qrToken);
 
   const [permission, setPermission] = useState<WebPushStatusType>(WebPushStatus.CREATED);
 
