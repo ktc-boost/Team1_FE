@@ -13,7 +13,7 @@ export const useProjectModals = () => {
   const showCreateProjectModal = () => {
     showCustom({
       title: '프로젝트 생성하기',
-      description: '프로젝트 이름을 입력하면, 새로운 프로젝트를 생성할 수 있어요.',
+      description: '프로젝트 이름을 입력하면, 새 프로젝트를 생성할 수 있어요.',
       content: (
         <ProjectCreateModalContent
           onConfirm={async (projectName) => {
