@@ -10,6 +10,11 @@ import { useConnectPushSessionMutation } from '@/features/webpush/hooks/useConne
 import { getIsIOS, getIsStandalone } from '@/features/webpush/utils/deviceUtil';
 import { supportsWebPush } from '@/features/webpush/utils/pushSupportUtil';
 import StatusView from '@/features/webpush/components/StatusView';
+import {
+  disabledMessageMap,
+  type DisabledReasonType,
+} from '@/features/webpush/constants/disableReason';
+import IOSGuide from '@/features/webpush/components/IOSGuide';
 
 const AlarmSetupMobilePage = () => {
   const [params] = useSearchParams();
@@ -31,13 +36,15 @@ const AlarmSetupMobilePage = () => {
     !isQrValid ||
     !isWebPushSupported ||
     isIOSNotStandalone;
-  const disabledReason = !isQrValid
-    ? '유효하지 않은 QR 코드입니다. QR을 다시 인식해주세요.'
-    : !isWebPushSupported
-      ? '이 브라우저는 알림을 지원하지 않습니다.'
-      : isIOSNotStandalone
-        ? 'iOS는 안내를 따른 후 진행해주세요.'
-        : null;
+
+  const getDisabledReason = (): DisabledReasonType | null => {
+    if (!isQrValid) return 'INVALID_QR';
+    if (!isWebPushSupported) return 'NOT_SUPPORTED';
+    if (isIOSNotStandalone) return 'IOS_NOT_STANDALONE';
+    return null;
+  };
+
+  const disableReason = getDisabledReason();
 
   useEffect(() => {
     if (!qrToken && !hasShownError.current) {
@@ -46,12 +53,12 @@ const AlarmSetupMobilePage = () => {
       return;
     }
 
-    if (!supportsWebPush()) {
+    if (!isWebPushSupported) {
       toast.error('이 브라우저는 알림 기능을 지원하지 않습니다.');
       return;
     }
 
-    if (getIsIOS() && !getIsStandalone()) {
+    if (isIOSNotStandalone) {
       return;
     }
 
@@ -80,31 +87,21 @@ const AlarmSetupMobilePage = () => {
       bgClass={status.bgClass}
       textClass={status.textClass}
     >
-      {getIsIOS() && !getIsStandalone() && (
-        <div className="w-full max-w-xs mb-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-          <p className="text-sm text-amber-800 leading-relaxed">
-            <span className="text-md font-bold">📢 IOS 환경 사용자는 아래 단계로 진행해주세요</span>
-            <br />
-            1. Safari에서 <b>공유 버튼</b> 클릭하기
-            <br />
-            2. <b>홈 화면에 추가</b>하기
-            <br />
-            3. <b>허용 버튼</b> 클릭
-          </p>
-        </div>
-      )}
+      {disableReason === 'IOS_NOT_STANDALONE' && <IOSGuide />}
 
       {shouldShowButton && (
         <div className="space-y-2.5 pt-2 w-full max-w-xs mx-auto">
           <Button
             onClick={handleAllow}
-            disabled={isLoading || isAllowDisabled}
+            disabled={isAllowDisabled}
             className="w-full py-6 bg-boost-blue hover:bg-boost-blue-hover active:bg-boost-blue-pressed text-gray-100 title2-bold duration-300 shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <CheckCircle className="w-4 h-4" />
             {isLoading ? '처리 중...' : '허용'}
           </Button>
-          {disabledReason && <p className="text-xs text-gray-500 mt-2">{disabledReason}</p>}
+          {disableReason && (
+            <p className="text-xs text-gray-500 mt-2">{disabledMessageMap[disableReason]}</p>
+          )}
         </div>
       )}
     </StatusView>
