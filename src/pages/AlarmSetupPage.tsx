@@ -4,8 +4,8 @@ import AlarmBell from '@/shared/assets/images/boost/alarm-bell.png';
 import { shakeVariant } from '@/shared/utils/animations/motionVariants';
 import { Button } from '@/shared/components/shadcn/button';
 import { useAlarmSetup } from '@/features/webpush/hooks/useAlarmSetup';
-import QRCodeSection from './../features/webpush/components/QRCodeSection';
 import NotificationExamples from '@/features/webpush/components/NotificationExamples';
+import QRCodeSection from '@/features/webpush/components/QRCodeSection';
 
 const AlarmSetupPage = () => {
   const { qrData, isPending, timeLeft, handleSkip } = useAlarmSetup();

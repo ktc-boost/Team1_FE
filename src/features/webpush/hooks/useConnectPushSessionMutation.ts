@@ -3,7 +3,7 @@ import type {
   ConnectPushSessionRequest,
   ConnectPushSessionResponse,
 } from '@/features/webpush/types/pushApiTypes';
-import { webPushToast } from '@/features/webpush/ui/toast/webPushToast';
+import { webPushToast } from '@/features/webpush/utils/toast/webPushToast';
 import { useMutation } from '@tanstack/react-query';
 
 export const useConnectPushSessionMutation = () => {

@@ -6,7 +6,7 @@ import { getOrCreatePushSubscription } from '@/features/webpush/utils/getOrCreat
 import { buildPushSubscriptionRequest } from '@/features/webpush/utils/buildPushSubscriptionRequestUtil';
 import { requestNotificationPermission } from '@/features/webpush/utils/requestNotificationPermissionUtil';
 import { supportsWebPush } from '@/features/webpush/utils/pushSupportUtil';
-import { webPushToast } from '@/features/webpush/ui/toast/webPushToast';
+import { webPushToast } from '@/features/webpush/utils/toast/webPushToast';
 
 export const useAlarmPermission = (token: string | null) => {
   const [isLoading, setIsLoading] = useState(false);
