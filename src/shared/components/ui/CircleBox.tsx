@@ -10,7 +10,7 @@ interface CircleBoxProps extends MotionProps {
 const CircleBox = ({ className, children, ...props }: CircleBoxProps) => (
   <motion.div
     className={cn(
-      'flex flex-col items-center justify-center gap-2 w-[200px] h-[200px] rounded-full text-center font-semibold text-lg shadow-md text-white',
+      'hidden md:flex flex-col items-center justify-center gap-2 w-[200px] h-[200px] rounded-full text-center font-semibold text-lg shadow-md text-white',
       className,
     )}
     {...props}
