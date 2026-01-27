@@ -4,7 +4,7 @@ import { useCreatePushSessionMutation } from '@/features/webpush/hooks/useCreate
 import { useEnableServiceAlarmMutation } from '@/features/webpush/hooks/useEnableServiceAlarmMutation';
 import { usePushSessionStatusQuery } from '@/features/webpush/hooks/usePushSessionStatusQuery';
 import { WebPushStatus } from '@/features/webpush/types/pushApiTypes';
-import { webPushToast } from '@/features/webpush/ui/toast/webPushToast';
+import { webPushToast } from '@/features/webpush/utils/toast/webPushToast';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 export const useAlarmSetup = () => {
