@@ -1,9 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useCreateMemoMutation } from '@/features/memo/hooks/useCreateMemoMutation';
-import { useUpdateMemoMutation } from '@/features/memo/hooks/useUpdateMemoMutation';
-import { useMemoQuery } from '@/features/memo/hooks/useMemoQuery';
-import { useMemoModals } from '@/features/memo/hooks/useMemoModals';
+import { useCreateMemoMutation } from '@/features/memo/hooks/mutation/useCreateMemoMutation';
+import { useUpdateMemoMutation } from '@/features/memo/hooks/mutation/useUpdateMemoMutation';
+import { useMemoQuery } from '@/features/memo/hooks/query/useMemoQuery';
+import { useMemoModals } from '@/features/memo/hooks/modal/useMemoModals';
 import MemoEditorHeader from '@/features/memo/components/MemoEditor/MemoEditorHeader';
 import MemoEditorTitle from '@/features/memo/components/MemoEditor/MemoEditorTitle';
 import MemoEditorContent from '@/features/memo/components/MemoEditor/MemoEditorContent';

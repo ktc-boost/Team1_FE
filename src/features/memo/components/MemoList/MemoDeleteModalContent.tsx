@@ -4,7 +4,7 @@ import { ROUTES } from '@/app/routes/Router';
 import { type NavigateFunction } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Button } from '@/shared/components/shadcn/button';
-import { useDeleteMemoMutation } from '@/features/memo/hooks/useDeleteMemoMutation';
+import { useDeleteMemoMutation } from '@/features/memo/hooks/mutation/useDeleteMemoMutation';
 import MovingBoo from '@/shared/components/ui/MovingBoo';
 
 interface MemoDeleteModalContentProps {

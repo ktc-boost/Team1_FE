@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useMemosQuery } from '@/features/memo/hooks/useMemosQuery';
+import { useMemosQuery } from '@/features/memo/hooks/query/useMemosQuery';
 import MemoListHeader from '@/features/memo/components/MemoList/MemoListHeader';
 import MemoTable from '@/features/memo/components/MemoList/MemoTable';
 import { useNavigate } from 'react-router-dom';
-import { useMemoModals } from '@/features/memo/hooks/useMemoModals';
+import { useMemoModals } from '@/features/memo/hooks/modal/useMemoModals';
 import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 
 interface MemoListProps {
