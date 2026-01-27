@@ -1,9 +1,9 @@
-import { PinAvatar } from './PinAvatar';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
 import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import type { PageSize } from '@/features/task-detail/types/pdfTypes';
 import { useShallow } from 'zustand/react/shallow';
+import { PinAvatar } from '@/features/task-detail/components/PdfViewer/PinAvatar';
 interface OverlayProps {
   pageNumber: number;
   zoom: number;

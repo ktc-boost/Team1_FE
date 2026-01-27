@@ -1,8 +1,8 @@
 import { DropdownMenuSeparator } from '@/shared/components/shadcn/dropdown-menu';
 import { Bell } from 'lucide-react';
-import NotificationLoadMoreButton from './NotificationLoadMoreButton';
 import NotificationListItem from '@/features/notifications/components/notificationDropdownMenu/NotificationListItem';
 import type { NotificationItem } from '@/features/notifications/types/NotificationsType';
+import NotificationLoadMoreButton from '@/features/notifications/components/notificationDropdownMenu/NotificationLoadMoreButton';
 
 export interface NotificationListProps {
   notifications: NotificationItem[];

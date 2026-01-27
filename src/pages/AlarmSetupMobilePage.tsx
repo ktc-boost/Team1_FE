@@ -8,8 +8,8 @@ import { STATUS_CONTENT } from '@/features/webpush/constants/alarmStatusContent'
 import { WebPushStatus, type WebPushStatusType } from '@/features/webpush/types/pushApiTypes';
 import { useConnectPushSessionMutation } from '@/features/webpush/hooks/useConnectPushSessionMutation';
 import { getIsIOS, getIsStandalone } from '@/features/webpush/utils/deviceUtil';
-import StatusView from '../features/webpush/components/StatusView';
 import { supportsWebPush } from '@/features/webpush/utils/pushSupportUtil';
+import StatusView from '@/features/webpush/components/StatusView';
 
 const AlarmSetupMobilePage = () => {
   const [params] = useSearchParams();

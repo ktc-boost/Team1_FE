@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
-import CommentItem from './CommentItem';
 import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
 import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 import { useShallow } from 'zustand/react/shallow';
+import CommentItem from '@/features/task-detail/components/CommentSection/CommentItem';
 
 interface CommentListProps {
   comments: CommentUIType[];
