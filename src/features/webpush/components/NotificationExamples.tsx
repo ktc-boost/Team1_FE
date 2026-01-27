@@ -1,4 +1,5 @@
 import CircleBox from '@/shared/components/ui/CircleBox';
+import { cn } from '@/shared/lib/utils';
 import { floatVariant } from '@/shared/utils/animations/motionVariants';
 import { BellRing, AlarmClock, SquareCheck } from 'lucide-react';
 
@@ -60,9 +61,10 @@ const NotificationExamples = ({ position }: NotificationExamplesProps) => {
   return (
     <section
       aria-label={`${position} notification examples`}
-      className={`flex flex-col items-center w-[25%] h-full  py-24 box-border ${
-        position === 'left' ? 'justify-between pl-20 mr-5' : 'justify-center px-10'
-      }`}
+      className={cn(
+        'flex flex-col items-center w-[25%] h-full py-24 box-border',
+        position === 'left' ? 'justify-between pl-20 mr-5' : 'justify-center px-10',
+      )}
     >
       {items.map((item, index) => (
         <CircleBox
