@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 import { useShallow } from 'zustand/react/shallow';

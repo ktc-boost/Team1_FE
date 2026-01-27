@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fileApi } from '@/features/file/api/fileApi';
 import type { FileItemType } from '@/features/file/types/fileTypes';
 import { TASK_DETAIL_FILES_QUERY_KEY } from '@/features/task-detail/constants/taskDetailQueryKey';
-import { fileToast } from '@/features/task-detail/ui/toast/fileToast';
+import { fileToast } from '@/features/task-detail/utils/toast/fileToast';
 
 export const useDeleteFileMutation = (taskId: string) => {
   const queryClient = useQueryClient();

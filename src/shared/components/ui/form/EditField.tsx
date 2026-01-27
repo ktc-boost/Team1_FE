@@ -3,16 +3,21 @@ import { Pencil, Check, X } from 'lucide-react';
 import { Input } from '@/shared/components/shadcn/input';
 import { Button } from '@/shared/components/shadcn/button';
 
-interface EditFieldProps {
+interface EditFieldProps<T extends string | number> {
   label: string;
-  value: string | number;
+  value: T;
   type?: 'text' | 'number';
-  onSave: (newValue: string | number) => void;
+  onSave: (newValue: T) => void;
 }
 
-const EditField = ({ label, value, type = 'text', onSave }: EditFieldProps) => {
+const EditField = <T extends string | number>({
+  label,
+  value,
+  type = 'text',
+  onSave,
+}: EditFieldProps<T>) => {
   const [editing, setEditing] = useState(false);
-  const [inputValue, setInputValue] = useState(value);
+  const [inputValue, setInputValue] = useState<T>(value);
 
   const handleSave = () => {
     onSave(inputValue);
@@ -32,9 +37,10 @@ const EditField = ({ label, value, type = 'text', onSave }: EditFieldProps) => {
           <Input
             type={type}
             value={inputValue}
-            onChange={(e) =>
-              setInputValue(type === 'number' ? Number(e.target.value) : e.target.value)
-            }
+            onChange={(e) => {
+              const nextValue = type === 'number' ? Number(e.target.value) : e.target.value;
+              setInputValue(nextValue as T);
+            }}
             className="h-10 left-0 w-full subtitle2-regular focus:ring-transparent focus:border-gray-400"
             autoFocus
           />

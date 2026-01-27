@@ -3,19 +3,16 @@ import { Button } from '@/shared/components/shadcn/button';
 import { Textarea } from '@/shared/components/shadcn/textarea';
 import { Switch } from '@/shared/components/shadcn/switch';
 import Boo from '@/shared/assets/images/boost/boo.png';
-import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import toast from 'react-hot-toast';
-import type { FileInfo, PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
+import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import { CommentEditorActions } from '@/features/task-detail/components/CommentSection/CommentEditorActions';
 import { useAiTransformModals } from '@/features/ai-transform/hooks/useAiTransformModals';
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
 
 interface CommentEditorProps {
-  onCreate: (data: { content: string; isAnonymous: boolean; fileInfo?: FileInfo | null }) => void;
-  onUpdate: (
-    commentId: string,
-    data: { content: string; isAnonymous: boolean; fileInfo?: FileInfo | null },
-  ) => void;
+  onCreate: (data: { content: string; isAnonymous: boolean }) => void;
+  onUpdate: (commentId: string, data: { content: string; isAnonymous: boolean }) => void;
 }
 
 const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
@@ -26,7 +23,6 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
     setIsAnonymous,
     editingComment,
     setEditingComment,
-    currentPin,
     setCurrentPin,
     setPersona,
   } = useTaskDetailStore();
@@ -70,7 +66,6 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
     const data = {
       content: input,
       isAnonymous,
-      fileInfo: currentPin,
     };
 
     if (editingComment) {

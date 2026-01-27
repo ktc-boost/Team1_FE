@@ -1,7 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useMemo, useEffect } from 'react';
-import { updateTaskSchema, type UpdateTaskInput } from '@/features/task/schemas/taskSchema';
+import {
+  updateTaskSchema,
+  validateReviewerCount,
+  type UpdateTaskInput,
+} from '@/features/task/schemas/taskSchema';
 import { useModal } from '@/shared/hooks/useModal';
 import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
 import type { TaskDetail } from '@/features/task/types/taskTypes';
@@ -18,30 +22,7 @@ export const useUpdateTaskForm = (
 
   const resolver = useMemo(() => {
     return zodResolver(
-      updateTaskSchema.superRefine((data, ctx) => {
-        const numAssignees = data.assignees?.length || 0;
-        const maxReviewers = Math.max(projectMembers.length - numAssignees, 0);
-
-        if (numAssignees === 0) {
-          ctx.addIssue({
-            code: 'custom',
-            message: '담당자를 먼저 지정해주세요.',
-            path: ['requiredReviewerCount'],
-          });
-        } else if (maxReviewers <= 0 && data.requiredReviewerCount! > 0) {
-          ctx.addIssue({
-            code: 'custom',
-            message: '담당자로 모두 지정되어 검토 수를 지정할 수 없습니다. 0으로 설정해주세요.',
-            path: ['requiredReviewerCount'],
-          });
-        } else if (data.requiredReviewerCount! > maxReviewers) {
-          ctx.addIssue({
-            code: 'custom',
-            message: `검토 수는 담당자를 제외한 최대 ${maxReviewers}명까지 설정할 수 있습니다.`,
-            path: ['requiredReviewerCount'],
-          });
-        }
-      }),
+      updateTaskSchema.superRefine((data, ctx) => validateReviewerCount(data, ctx, projectMembers)),
     );
   }, [projectMembers]);
 
@@ -49,6 +30,7 @@ export const useUpdateTaskForm = (
     resolver,
     mode: 'onChange',
     defaultValues: {
+      projectId: projectId,
       title: task.title,
       description: task.description ?? '',
       requiredReviewerCount: task.requiredReviewerCount ?? 0,

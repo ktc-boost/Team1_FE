@@ -1,4 +1,4 @@
-import { useInfiniteProjectTasksByStatusQuery } from '@/features/task/hooks/useInfiniteProjectTasksByStatusQuery';
+import { useInfiniteProjectTasksByStatusQuery } from '@/features/task/hooks/query/useInfiniteProjectTasksByStatusQuery';
 import type { Status } from '@/features/board/types/boardTypes';
 import type { TaskQuery } from '@/features/task/types/taskTypes';
 import type { SortBy, Direction } from '@/features/board/types/sortTypes';

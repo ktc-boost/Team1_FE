@@ -1,4 +1,4 @@
-import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import type { TaskDetail } from '@/features/task/types/taskTypes';
 import FileSection from '@/features/task-detail/components/FileSection/FileSection';
 import TaskDetailContent from '@/features/task-detail/components/TaskDetailContent/TaskDetailContent';
@@ -11,10 +11,10 @@ interface TaskDetailLeftPaneProps {
 }
 const TaskDetailLeftPane = ({ task, taskId }: TaskDetailLeftPaneProps) => {
   const { isPdfOpen, setSelectedFile, togglePdf } = useTaskDetailStore(
-    useShallow((state) => ({
-      isPdfOpen: state.isPdfOpen,
-      setSelectedFile: state.setSelectedFile,
-      togglePdf: state.togglePdf,
+    useShallow((s) => ({
+      isPdfOpen: s.isPdfOpen,
+      setSelectedFile: s.setSelectedFile,
+      togglePdf: s.togglePdf,
     })),
   );
   return (

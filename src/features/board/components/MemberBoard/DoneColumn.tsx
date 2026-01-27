@@ -3,7 +3,7 @@ import { useState } from 'react';
 import type { TaskListItem } from '@/features/task/types/taskTypes';
 import { useVerticalScroll } from '@/features/board/hooks/useVerticalScroll';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
-import doneIcon from '@/shared/assets/images/done.png';
+import doneIcon from '@/shared/assets/images/etc/done.png';
 import { cn } from '@/shared/lib/utils';
 import { Avatar, AvatarImage } from '@/shared/components/shadcn/avatar';
 import { Separator } from '@/shared/components/shadcn/separator';

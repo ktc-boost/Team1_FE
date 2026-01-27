@@ -2,12 +2,12 @@ import { useCreateCommentMutation } from '@/features/comment/hooks/useCreateComm
 import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteCommentMutation';
 import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateCommentMutation';
 import { useCommentSelect } from '@/features/task-detail/hooks/useCommentSelect';
-import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
-import { commentToast } from '@/features/task-detail/ui/toast/commentToast';
+import { commentToast } from '@/features/task-detail/utils/toast/commentToast';
 import { buildCreateCommentPayload, isBlank } from '@/features/task-detail/utils/commentPayload';
-import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
 import { useShallow } from 'zustand/react/shallow';
+import { useTaskDetailQuery } from '@/features/task/hooks/query/useTaskDetailQuery';
 
 export const useCommentActions = (projectId: string, taskId: string) => {
   const { mutate: createComment } = useCreateCommentMutation(projectId, taskId);
@@ -43,10 +43,7 @@ export const useCommentActions = (projectId: string, taskId: string) => {
     createComment({ commentData: payload }, { onSuccess: clearCurrentPin });
   };
 
-  const handleUpdate = (
-    commentId: string,
-    data: { content: string; isAnonymous: boolean; fileInfo?: FileInfo | null },
-  ) => {
+  const handleUpdate = (commentId: string, data: { content: string; isAnonymous: boolean }) => {
     if (isBlank(data.content)) return commentToast.emptyContent();
 
     updateComment({
@@ -54,7 +51,7 @@ export const useCommentActions = (projectId: string, taskId: string) => {
       updatedData: {
         content: data.content,
         isAnonymous: data.isAnonymous,
-        ...(data.fileInfo !== undefined && { fileInfo: data.fileInfo }),
+        fileInfo: currentPin,
       },
     });
   };

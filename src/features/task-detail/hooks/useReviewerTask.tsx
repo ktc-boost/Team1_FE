@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useApproveTaskMutation } from '@/features/task/hooks/useApproveTaskMutation';
+import { useApproveTaskMutation } from '@/features/task/hooks/mutation/useApproveTaskMutation';
 
 interface UseReviewerTaskProps {
   projectId: string;

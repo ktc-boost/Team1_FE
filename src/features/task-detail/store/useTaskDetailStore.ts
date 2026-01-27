@@ -5,7 +5,7 @@ import type {
   PinSlice,
   TaskDetailDataState,
   TaskDetailState,
-} from '@/features/task-detail/store/taskDetail/types';
+} from '@/features/task-detail/types/TaskDetailStore.types';
 import { create } from 'zustand';
 import type { StateCreator } from 'zustand';
 

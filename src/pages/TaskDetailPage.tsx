@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import TaskDetailTopTab from '@/features/task-detail/components/TaskDetailTopTab/TaskDetailTopTab';
-import { useTaskDetailQuery } from '@/features/task/hooks/useTaskDetailQuery';
-import { useTaskDetailStore } from '@/features/task-detail/store/taskDetail/useTaskDetailStore';
+import { useTaskDetailQuery } from '@/features/task/hooks/query/useTaskDetailQuery';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import TaskDetailLeftPane from '@/features/task-detail/components/TaskDetailLeftPane';
 import { extractPinsFromComments } from '@/features/comment/utils/commentUtils';
 import TaskDetailRightPane from '@/features/task-detail/components/TaskDetailRightPane';
