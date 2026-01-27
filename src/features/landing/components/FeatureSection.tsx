@@ -1,28 +1,20 @@
 import { motion } from 'framer-motion';
-import {
-  fadeInDown,
-  fadeInLeft,
-  fadeInRight,
-  fadeInUp,
-  scaleUp,
-} from '@/shared/utils/animations/motionVariants';
 import { cn } from '@/shared/lib/utils';
+import { animationVariants, type AnimationType } from '@/shared/utils/animations/animationVariants';
 
 interface FeatureSectionProps {
   title: string;
   subtitle: string;
   description: string;
   image?: string;
-  animationType?: 'left' | 'right' | 'up' | 'down' | 'scale';
+  animationType?: AnimationType;
 }
 
-const animationVariants = {
-  left: fadeInLeft,
-  right: fadeInRight,
-  up: fadeInUp,
-  down: fadeInDown,
-  scale: scaleUp,
-};
+const motionBaseProps = {
+  initial: 'hidden',
+  whileInView: 'visible',
+  viewport: { once: true, amount: 0.3 },
+} as const;
 
 const FeaturesSection = ({
   title,
@@ -31,23 +23,28 @@ const FeaturesSection = ({
   image,
   animationType = 'left',
 }: FeatureSectionProps) => {
+  const isLeft = animationType === 'left';
+  const isRight = animationType === 'right';
+
   return (
     <div
       className={cn('flex flex-col w-fit items-center max-w-6xl mx-auto py-20 px-6 gap-12', {
-        'ml-30': animationType === 'left',
-        'mr-30': animationType === 'right',
+        'ml-30 ': isLeft,
+        'mr-30': isRight,
       })}
     >
       <motion.div
-        className={'flex-1'}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
+        className={cn(
+          'flex flex-col flex-1',
+          isLeft && 'items-end text-right sm:items-start sm:text-left',
+          isRight && 'items-start text-left sm:items-end sm:text-right',
+        )}
+        {...motionBaseProps}
         variants={animationVariants[animationType]}
       >
-        <h2 className="text-4xl font-bold mb-4 items-center">{title}</h2>
-        <p className="title1-regular text-gray-600 mb-4">{subtitle}</p>
-        <p className="subtitle1-regular text-gray-500">{description}</p>
+        <h2 className="text-xl sm:text-4xl font-bold mb-4 items-center">{title}</h2>
+        <p className="title2-regular sm:title1-regular text-gray-600 mb-2 sm:mb-4">{subtitle}</p>
+        <p className="body2-regular sm:subtitle1-regular text-gray-500">{description}</p>
       </motion.div>
 
       {image && (
@@ -55,9 +52,7 @@ const FeaturesSection = ({
           src={image}
           alt={title}
           className="flex-1 max-w-5xl"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          {...motionBaseProps}
           variants={animationVariants[animationType]}
         />
       )}
