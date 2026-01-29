@@ -15,26 +15,40 @@ const NotificationListItem = ({ notification, onMarkAsRead }: NotificationListIt
   return (
     <DropdownMenuItem
       className={cn(
-        'group relative p-3 transition-colors m-1 rounded-xl',
+        'group relative rounded-xl transition-colors m-1',
+        'p-2 sm:p-3',
         'hover:bg-transparent focus:bg-transparent',
         !n.read && 'bg-blue-50 hover:bg-blue-50 focus:bg-blue-50',
       )}
     >
-      <div className="flex gap-3 w-full">
-        <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-blue-100 mr-1">
-          <Bell className="w-5 h-5 text-boost-blue" />
+      <div className="flex gap-2 sm:gap-3 w-full">
+        <div
+          className="
+      flex-shrink-0
+      w-7 h-7
+      sm:w-10 sm:h-10
+      rounded-full
+      flex items-center justify-center
+      bg-blue-100
+    "
+        >
+          <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-boost-blue" />
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className={cn('body2-bold', n.read ? 'text-gray-500/70' : 'text-gray-800')}>
+          <p
+            className={cn(
+              'text-xs font-bold sm:text-[0.875rem] ',
+              n.read ? 'text-gray-500/70' : 'text-gray-800',
+            )}
+          >
             {n.title}
           </p>
-
-          <p className={cn('text-xs mb-1', n.read ? 'text-gray-500/70' : 'text-gray-700')}>
+          <p className={cn('text-xs mb-1 mt-1', n.read ? 'text-gray-500/70' : 'text-gray-700')}>
             {n.message}
           </p>
 
-          <p className="text-xs text-gray-500/60">
+          <p className="text-[10px] sm:text-xs text-gray-500/60">
             {new Date(n.createdAt).toLocaleString('ko-KR', {
               month: 'short',
               day: 'numeric',
@@ -43,21 +57,26 @@ const NotificationListItem = ({ notification, onMarkAsRead }: NotificationListIt
             })}
           </p>
         </div>
-      </div>
 
-      {!n.read && (
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-7 w-7 hover:bg-blue-100 cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-            onMarkAsRead(n.id);
-          }}
-        >
-          <Check className="h-4 w-4 text-boost-blue" />
-        </Button>
-      )}
+        {!n.read && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="
+          h-6 w-6
+          sm:h-7 sm:w-7
+          hover:bg-blue-100
+          cursor-pointer
+        "
+            onClick={(e) => {
+              e.stopPropagation();
+              onMarkAsRead(n.id);
+            }}
+          >
+            <Check className="h-3 w-3 sm:h-4 sm:w-4 text-boost-blue" />
+          </Button>
+        )}
+      </div>
     </DropdownMenuItem>
   );
 };
