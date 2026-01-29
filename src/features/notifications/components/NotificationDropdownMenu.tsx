@@ -1,4 +1,7 @@
-import { DropdownMenuContent } from '@/shared/components/shadcn/dropdown-menu';
+import {
+  DropdownMenuContent,
+  DropdownMenuSeparator,
+} from '@/shared/components/shadcn/dropdown-menu';
 import { useNotificationCountsQuery } from '@/features/notifications/hooks/useNotificationCountsQuery';
 import { useMarkNotificationAsReadMutation } from '@/features/notifications/hooks/useMarkNotificationAsReadMutation';
 import NotificationDropdownHeader from '@/features/notifications/components/notificationDropdownMenu/NotificationDropdownHeader';
@@ -38,6 +41,7 @@ const NotificationDropdownMenu = ({
         unreadCount={notificationCountData?.unreadCount}
         onMarkAll={markAllAsRead}
       />
+      <DropdownMenuSeparator />
 
       <NotificationList
         notifications={notifications}

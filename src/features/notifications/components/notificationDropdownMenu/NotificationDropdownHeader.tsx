@@ -18,7 +18,7 @@ const NotificationDropdownHeader = ({
   sm:py-3 sm:px-4
 "
     >
-      <span className="text-sm sm:text-base font-semibold">알림</span>
+      <span className="text-sm sm:text-base">알림</span>
 
       {unreadCount ? (
         <div className="flex items-center gap-3 sm:gap-4">
