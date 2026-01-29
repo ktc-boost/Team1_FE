@@ -19,7 +19,7 @@ const AvatarGrid = ({
 }: AvatarGridProps) => {
   return (
     <div className="px-24 py-6 max-h-96 overflow-y-auto">
-      <div role="listbox" aria-label="아바타 목록" className="grid grid-cols-4 gap-6">
+      <div aria-label="아바타 목록" className="grid grid-cols-4 gap-6">
         {avatarList.map((avatarUrl, index) => {
           const isSelected = selectedAvatarId === String(index);
           const isHovered = hoveredIndex === index;
@@ -28,9 +28,6 @@ const AvatarGrid = ({
             <div key={index} className="flex justify-center">
               <button
                 type="button"
-                role="option"
-                aria-selected={isSelected}
-                tabIndex={0}
                 className="group relative cursor-pointer outline-none"
                 onClick={() => setAvatarId(String(index))}
                 onMouseEnter={() => setHoveredIndex(index)}
