@@ -6,8 +6,7 @@ import LoginPage from '@/pages/LoginPage';
 import MyTaskPage from '@/pages/MyTaskPage';
 import ProjectPage from '@/pages/ProjectPage';
 import ServerErrorPage from '@/pages/ServerErrorPage';
-import TaskDetailPage from '@/pages/TaskDetailPage';
-import AvatarPickerPage from '@/pages/AvatarPickerPage';
+import AvatarPickerPage from '@/pages/AvatarSettingsPage';
 import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
 import AlarmSetupPage from '@/pages/AlarmSetupPage';
 import AlarmSetupMobilePage from '@/pages/AlarmSetupMobilePage';
@@ -19,6 +18,7 @@ import MemoDetail from '@/features/memo/components/MemoDetail/MemoDetail';
 import SettingsPage from '@/pages/SettingsPage';
 import PageErrorBoundary from '@/pages/PageErrorBoundary/PagaErrorBoundary';
 import RootFallback from '@/app/RootErrorBoundary/RootFallback';
+import TaskDetailPage from '@/pages/TaskDetailPage';
 
 export const ROUTE_PATH = {
   MAIN: '/',
