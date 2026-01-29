@@ -28,7 +28,11 @@ const NotificationDropdownMenu = ({
       side="right"
       align="start"
       sideOffset={16}
-      className="w-96 h-[450px] border border-gray-300 bg-white shadow-lg rounded-md flex flex-col"
+      className="
+    w-72 h-80
+    sm:w-96 sm:h-[450px]
+    border border-gray-300 bg-white shadow-lg rounded-md flex flex-col
+  "
     >
       <NotificationDropdownHeader
         unreadCount={notificationCountData?.unreadCount}
