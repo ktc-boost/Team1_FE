@@ -6,7 +6,7 @@ const KakaoLoginButton = ({ onClick }: KakaoLoginButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className="w-full bg-[#FEE500] hover:bg-[#FDD835] text-black/85 font-bold py-4 px-6 rounded-[12px] flex items-center justify-center gap-3 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 active:translate-y-0"
+      className="w-full bg-[#FEE500] hover:bg-[#FDD835] text-black/85 font-bold py-3 sm:py-4 px-6 rounded-[12px] flex items-center justify-center gap-3 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 active:translate-y-0"
     >
       <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
         <path
@@ -14,7 +14,7 @@ const KakaoLoginButton = ({ onClick }: KakaoLoginButtonProps) => {
           fill="#000000"
         />
       </svg>
-      <span className="text-[16px]">카카오 로그인</span>
+      <span className="text-[12px] sm:text-[16px]">카카오 로그인</span>
     </button>
   );
 };
