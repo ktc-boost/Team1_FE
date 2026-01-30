@@ -6,7 +6,6 @@ import LoginPage from '@/pages/LoginPage';
 import MyTaskPage from '@/pages/MyTaskPage';
 import ProjectPage from '@/pages/ProjectPage';
 import ServerErrorPage from '@/pages/ServerErrorPage';
-import TaskDetailPage from '@/pages/TaskDetailPage';
 import AvatarPickerPage from '@/pages/AvatarPickerPage';
 import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
 import AlarmSetupPage from '@/pages/AlarmSetupPage';
@@ -14,12 +13,14 @@ import AlarmSetupMobilePage from '@/pages/AlarmSetupMobilePage';
 import BoardSection from '@/features/board/components/BoardSection';
 import MemoSection from '@/features/memo/components/MemoSection';
 import FileSection from '@/features/file/components/FileSection';
-import MemoEditor from '@/features/memo/components/MemoEditor/MemoEditor';
-import MemoDetail from '@/features/memo/components/MemoDetail/MemoDetail';
 import SettingsPage from '@/pages/SettingsPage';
 import PageErrorBoundary from '@/pages/PageErrorBoundary/PagaErrorBoundary';
 import RootFallback from '@/app/RootErrorBoundary/RootFallback';
+import { lazy } from 'react';
 
+const TaskDetailPage = lazy(() => import('@/pages/TaskDetailPage'));
+const MemoDetail = lazy(() => import('@/features/memo/components/MemoDetail/MemoDetail'));
+const MemoEditor = lazy(() => import('@/features/memo/components/MemoEditor/MemoEditor'));
 export const ROUTE_PATH = {
   MAIN: '/',
   LOGIN: '/login',
