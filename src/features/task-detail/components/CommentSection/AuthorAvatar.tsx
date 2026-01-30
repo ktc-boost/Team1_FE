@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
 import { User } from 'lucide-react';
-import BOO from '@/shared/assets/images/boost/boo.png';
+import BOO from '@/shared/assets/images/boost/boo.webp';
 import type { PersonaType } from '@/features/comment/constants/personaConstants';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 

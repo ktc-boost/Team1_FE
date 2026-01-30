@@ -2,13 +2,13 @@ import { AVATAR_BG_COLOR } from '@/features/avatar-picker/constants/avatarBgColo
 
 type AvatarModule = { default: string };
 
-const avatarModules = import.meta.glob<AvatarModule>('@/shared/assets/images/avatars/*.png', {
+const avatarModules = import.meta.glob<AvatarModule>('@/shared/assets/images/avatars/*.webp', {
   eager: true,
 });
 const sortedAvatars = Object.entries(avatarModules)
   .sort(([pathA], [pathB]) => {
     const getNum = (path: string) => {
-      const matches = path.match(/\d+(?=\.png$)/g);
+      const matches = path.match(/\d+(?=\.webp$)/g);
       return matches ? parseInt(matches[matches.length - 1], 10) : 0;
     };
 
@@ -36,7 +36,6 @@ export const getAvatarSrc = (
   const index = Number(member.avatar);
   return propsAvatarList[index] ?? propsAvatarList[0];
 };
-
 // 백엔드와 통신할 때 매핑 유틸
 export const getTokenFromHex = (hex: string) => {
   const entry = Object.values(AVATAR_BG_COLOR).find((c) => c.hex === hex);
