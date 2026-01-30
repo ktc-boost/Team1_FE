@@ -11,13 +11,7 @@ const NotificationDropdownHeader = ({
   onMarkAll,
 }: NotificationDropdownHeaderProps) => {
   return (
-    <DropdownMenuLabel
-      className="
-  flex items-center justify-between
-  py-2 px-3
-  sm:py-3 sm:px-4
-"
-    >
+    <DropdownMenuLabel className="flex items-center justify-between py-2 px-3 sm:py-3 sm:px-4">
       <span className="text-sm sm:text-base">알림</span>
 
       {unreadCount ? (
@@ -26,11 +20,7 @@ const NotificationDropdownHeader = ({
           <Button
             variant="defaultBoost"
             onClick={onMarkAll}
-            className="
-          text-xs sm:label2-regular
-          px-2 py-0
-          sm:px-3
-        "
+            className="text-xs sm:label2-regular px-2 py-0 sm:px-3"
           >
             모두 읽음
           </Button>
