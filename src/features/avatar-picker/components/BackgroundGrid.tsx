@@ -18,7 +18,7 @@ const BackgroundGrid = ({ avatarBgColors, setBgColor, selectedBgColor }: Backgro
             key={hex}
             onClick={() => setBgColor(hex)}
             className={cn(
-              'relative w-12 h-12 rounded-full transition-all duration-200 hover:scale-110 focus:scale-120 hover:shadow-sm cursor-pointer',
+              'relative w-7 h-7 sm:w-12 sm:h-12 rounded-full transition-all duration-200 hover:scale-110 focus:scale-120 hover:shadow-sm cursor-pointer',
             )}
             style={{
               backgroundColor: token,

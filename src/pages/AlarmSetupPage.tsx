@@ -15,7 +15,7 @@ const AlarmSetupPage = () => {
       {/* 중앙 QR 영역 */}
       <section
         aria-label="QR code setup instructions"
-        className="flex flex-col items-center justify-between gap-6 w-[50%] pt-10 box-border"
+        className="flex flex-col items-center justify-between gap-6 w-[50%] pt-20 box-border"
       >
         <div className="flex flex-col items-center gap-4 w-full">
           <QRCodeSection isPending={isPending} qrData={qrData} timeLeft={timeLeft} />

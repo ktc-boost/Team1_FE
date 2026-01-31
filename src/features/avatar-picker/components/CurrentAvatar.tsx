@@ -11,7 +11,7 @@ const CurrentAvatar = () => {
         style={{
           backgroundColor: selectedBgColor || '#f3f4f6',
         }}
-        className="w-60 h-60 p-3 border-4 border-white shadow-xl relative overflow-hidden"
+        className="w-36 h-36 sm:w-60 sm:h-60 p-3 border-4 border-white shadow-xl relative overflow-hidden"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" />
         <AvatarImage

@@ -4,7 +4,6 @@ import { ROUTE_PATH } from '@/app/routes/Router';
 import AvatarHeader from '@/features/avatar-picker/components/AvatarHeader';
 import AvatarSelector from '@/features/avatar-picker/components/AvatarSelector';
 import AvatarInfo from '@/features/avatar-picker/components/AvatarInfo';
-import AvatarBackgroundDecorations from '@/features/avatar-picker/components/AvatarBackgroundDecorations';
 import AvatarSaveBtn from '@/features/avatar-picker/components/AvatarSaveBtn';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { useAvatarStore } from '@/features/avatar-picker/store/useAvatarStore';
@@ -44,13 +43,16 @@ const AvatarSettingsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 relative overflow-hidden">
-      <AvatarBackgroundDecorations />
-      <div className="max-w-md mx-auto items-center">
+    <div className="min-h-screen">
+      <div className="relative mx-auto flex min-h-screen flex-col">
         <AvatarHeader />
-        <AvatarSelector />
-        <AvatarInfo />
-        <AvatarSaveBtn handleSave={handleSave} />
+        <div className="flex flex-1 flex-col justify-center">
+          <AvatarSelector />
+          <AvatarInfo />
+        </div>
+        <div className="pb-30  mx-auto">
+          <AvatarSaveBtn handleSave={handleSave} />
+        </div>
       </div>
     </div>
   );
