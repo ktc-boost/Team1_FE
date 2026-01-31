@@ -6,7 +6,7 @@ import LoginPage from '@/pages/LoginPage';
 import MyTaskPage from '@/pages/MyTaskPage';
 import ProjectPage from '@/pages/ProjectPage';
 import ServerErrorPage from '@/pages/ServerErrorPage';
-import AvatarPickerPage from '@/pages/AvatarPickerPage';
+import AvatarPickerPage from '@/pages/AvatarSettingsPage';
 import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
 import AlarmSetupPage from '@/pages/AlarmSetupPage';
 import AlarmSetupMobilePage from '@/pages/AlarmSetupMobilePage';
