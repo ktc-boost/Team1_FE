@@ -11,13 +11,17 @@ const NotificationDropdownHeader = ({
   onMarkAll,
 }: NotificationDropdownHeaderProps) => {
   return (
-    <DropdownMenuLabel className="flex items-center justify-between py-3 px-4">
-      <span className="text-base font-semibold">알림</span>
+    <DropdownMenuLabel className="flex items-center justify-between py-2 px-3 sm:py-3 sm:px-4">
+      <span className="text-sm sm:text-base">알림</span>
 
       {unreadCount ? (
-        <div className="flex items-center gap-2">
-          <span className="label2-regular text-gray-500">안읽음 {unreadCount}</span>
-          <Button variant="defaultBoost" onClick={onMarkAll} className="label2-regular px-3 py-0">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <span className="text-xs sm:label2-regular text-gray-500">안읽음 {unreadCount}</span>
+          <Button
+            variant="defaultBoost"
+            onClick={onMarkAll}
+            className="text-xs sm:label2-regular px-2 py-0 sm:px-3"
+          >
             모두 읽음
           </Button>
         </div>
