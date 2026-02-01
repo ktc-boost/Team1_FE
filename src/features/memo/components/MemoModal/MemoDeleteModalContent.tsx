@@ -1,11 +1,12 @@
-import { useProjectStore } from '@/features/project/store/useProjectStore';
-import { useModal } from '@/shared/hooks/useModal';
-import { ROUTES } from '@/app/routes/Router';
-import { type NavigateFunction } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import type { NavigateFunction } from 'react-router-dom';
+import { ROUTES } from '@/app/routes/Router';
 import { Button } from '@/shared/components/shadcn/button';
-import { useDeleteMemoMutation } from '@/features/memo/hooks/mutation/useDeleteMemoMutation';
 import MovingBoo from '@/shared/components/ui/MovingBoo';
+import { useModal } from '@/shared/hooks/useModal';
+import { useDeleteMemoMutation } from '@/features/memo/hooks/mutation/useDeleteMemoMutation';
+import { useProjectStore } from '@/features/project/store/useProjectStore';
 
 interface MemoDeleteModalContentProps {
   memoIds: string[];
@@ -20,7 +21,7 @@ const MemoDeleteModalContent = ({
 }: MemoDeleteModalContentProps) => {
   const { projectData } = useProjectStore();
   const { resetModal } = useModal();
-  const { mutateAsync: deleteMemo } = useDeleteMemoMutation(projectData.id);
+  const { mutateAsync: deleteMemo, isPending } = useDeleteMemoMutation(projectData.id);
 
   if (!projectData) return null;
 
@@ -47,12 +48,24 @@ const MemoDeleteModalContent = ({
         <Button
           variant="outline"
           onClick={resetModal}
-          className="flex-1 border-gray-300 hover:bg-gray-200 cursor-pointer"
+          className="flex-1 border-gray-300 hover:bg-gray-200"
         >
           취소
         </Button>
-        <Button variant="defaultBoost" onClick={handleDeleteConfirm} className="flex-1">
-          삭제
+        <Button
+          variant="defaultBoost"
+          onClick={handleDeleteConfirm}
+          disabled={isPending}
+          className="flex-1"
+        >
+          {isPending ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              삭제 중...
+            </>
+          ) : (
+            '삭제'
+          )}
         </Button>
       </div>
     </div>
