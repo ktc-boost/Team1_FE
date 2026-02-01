@@ -2,8 +2,8 @@ import { useModal } from '@/shared/hooks/useModal';
 import toast from 'react-hot-toast';
 import ProjectCreateModalContent from '@/features/project/components/ProjectCreateModal/ProjectCreateModalContent';
 import ProjectJoinCodeInputModalContent from '@/features/project/components/ProjectJoinModal/ProjectJoinCodeInputModalContent';
-import { useCreateProjectMutation } from '@/features/project/hooks/useCreateProjectMutation';
-import { useJoinProjectMutation } from '@/features/project/hooks/useProjectJoinMutation';
+import { useCreateProjectMutation } from '@/features/project/hooks/mutation/useCreateProjectMutation';
+import { useJoinProjectMutation } from '@/features/project/hooks/mutation/useProjectJoinMutation';
 
 export const useProjectModals = () => {
   const { showCustom } = useModal();
