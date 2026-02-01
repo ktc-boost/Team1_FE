@@ -1,10 +1,10 @@
-import { Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { NavigateFunction } from 'react-router-dom';
 import { ROUTES } from '@/app/routes/Router';
 import { Button } from '@/shared/components/shadcn/button';
 import MovingBoo from '@/shared/components/ui/MovingBoo';
 import { useModal } from '@/shared/hooks/useModal';
+import SmallLoader from '@/shared/components/ui/loading/SmallLoader';
 import { useDeleteMemoMutation } from '@/features/memo/hooks/mutation/useDeleteMemoMutation';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
 
@@ -58,14 +58,7 @@ const MemoDeleteModalContent = ({
           disabled={isPending}
           className="flex-1"
         >
-          {isPending ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              삭제 중...
-            </>
-          ) : (
-            '삭제'
-          )}
+          {isPending ? <SmallLoader text="삭제 중.." /> : '삭제'}
         </Button>
       </div>
     </div>
