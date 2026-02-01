@@ -71,7 +71,7 @@ const AvatarGrid = ({
 
                 {isSelected && (
                   <div className="absolute top-1 -right-0 bg-boost-blue rounded-full p-1.5 shadow-lg">
-                    <Check size={12} className="text-white" />
+                    <Check className="text-white w-2 h-2 sm:w-4 sm:h-4" />
                   </div>
                 )}
               </button>

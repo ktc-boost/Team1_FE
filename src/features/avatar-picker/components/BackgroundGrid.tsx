@@ -28,7 +28,7 @@ const BackgroundGrid = ({ avatarBgColors, setBgColor, selectedBgColor }: Backgro
             {selectedBgColor === hex && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="bg-white rounded-full p-1 shadow-lg">
-                  <Check className="text-gray-800 w-4 h-4" strokeWidth={3} />
+                  <Check className="text-gray-800 w-2 h-2 sm:w-4 sm:h-4" strokeWidth={3} />
                 </div>
               </div>
             )}
