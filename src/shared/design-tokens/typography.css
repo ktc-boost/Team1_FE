@@ -68,96 +68,90 @@
   --label2-regular-font-weight: 400;
 }
 
-@layer utilities {
-  /* Title */
-  .title1-bold {
-    font-size: var(--title1-bold-font-size);
-    line-height: var(--title1-bold-line-height);
-    font-weight: var(--title1-bold-font-weight);
-  }
-  .title1-regular {
-    font-size: var(--title1-regular-font-size);
-    line-height: var(--title1-regular-line-height);
-    font-weight: var(--title1-regular-font-weight);
-  }
+/* 제목 (Title) */
+@utility title1-bold {
+  font-size: var(--title1-bold-font-size);
+  line-height: var(--title1-bold-line-height);
+  font-weight: var(--title1-bold-font-weight);
+}
+@utility title1-regular {
+  font-size: var(--title1-regular-font-size);
+  line-height: var(--title1-regular-line-height);
+  font-weight: var(--title1-regular-font-weight);
+}
+@utility title2-bold {
+  font-size: var(--title2-bold-font-size);
+  line-height: var(--title2-bold-line-height);
+  font-weight: var(--title2-bold-font-weight);
+}
+@utility title2-regular {
+  font-size: var(--title2-regular-font-size);
+  line-height: var(--title2-regular-line-height);
+  font-weight: var(--title2-regular-font-weight);
+}
 
-  .title2-bold {
-    font-size: var(--title2-bold-font-size);
-    line-height: var(--title2-bold-line-height);
-    font-weight: var(--title2-bold-font-weight);
-  }
-  .title2-regular {
-    font-size: var(--title2-regular-font-size);
-    line-height: var(--title2-regular-line-height);
-    font-weight: var(--title2-regular-font-weight);
-  }
+/* 부제목 (Subtitle) */
+@utility subtitle1-bold {
+  font-size: var(--subtitle1-bold-font-size);
+  line-height: var(--subtitle1-bold-line-height);
+  font-weight: var(--subtitle1-bold-font-weight);
+}
+@utility subtitle1-regular {
+  font-size: var(--subtitle1-regular-font-size);
+  line-height: var(--subtitle1-regular-line-height);
+  font-weight: var(--subtitle1-regular-font-weight);
+}
+@utility subtitle2-bold {
+  font-size: var(--subtitle2-bold-font-size);
+  line-height: var(--subtitle2-bold-line-height);
+  font-weight: var(--subtitle2-bold-font-weight);
+}
+@utility subtitle2-regular {
+  font-size: var(--subtitle2-regular-font-size);
+  line-height: var(--subtitle2-regular-line-height);
+  font-weight: var(--subtitle2-regular-font-weight);
+}
 
-  /* Subtitle */
-  .subtitle1-bold {
-    font-size: var(--subtitle1-bold-font-size);
-    line-height: var(--subtitle1-bold-line-height);
-    font-weight: var(--subtitle1-bold-font-weight);
-  }
-  .subtitle1-regular {
-    font-size: var(--subtitle1-regular-font-size);
-    line-height: var(--subtitle1-regular-line-height);
-    font-weight: var(--subtitle1-regular-font-weight);
-  }
+/* 본문 (Body) */
+@utility body1-bold {
+  font-size: var(--body1-bold-font-size);
+  line-height: var(--body1-bold-line-height);
+  font-weight: var(--body1-bold-font-weight);
+}
+@utility body1-regular {
+  font-size: var(--body1-regular-font-size);
+  line-height: var(--body1-regular-line-height);
+  font-weight: var(--body1-regular-font-weight);
+}
+@utility body2-bold {
+  font-size: var(--body2-bold-font-size);
+  line-height: var(--body2-bold-line-height);
+  font-weight: var(--body2-bold-font-weight);
+}
+@utility body2-regular {
+  font-size: var(--body2-regular-font-size);
+  line-height: var(--body2-regular-line-height);
+  font-weight: var(--body2-regular-font-weight);
+}
 
-  .subtitle2-bold {
-    font-size: var(--subtitle2-bold-font-size);
-    line-height: var(--subtitle2-bold-line-height);
-    font-weight: var(--subtitle2-bold-font-weight);
-  }
-  .subtitle2-regular {
-    font-size: var(--subtitle2-regular-font-size);
-    line-height: var(--subtitle2-regular-line-height);
-    font-weight: var(--subtitle2-regular-font-weight);
-  }
-
-  /* Body */
-  .body1-bold {
-    font-size: var(--body1-bold-font-size);
-    line-height: var(--body1-bold-line-height);
-    font-weight: var(--body1-bold-font-weight);
-  }
-  .body1-regular {
-    font-size: var(--body1-regular-font-size);
-    line-height: var(--body1-regular-line-height);
-    font-weight: var(--body1-regular-font-weight);
-  }
-
-  .body2-bold {
-    font-size: var(--body2-bold-font-size);
-    line-height: var(--body2-bold-line-height);
-    font-weight: var(--body2-bold-font-weight);
-  }
-  .body2-regular {
-    font-size: var(--body2-regular-font-size);
-    line-height: var(--body2-regular-line-height);
-    font-weight: var(--body2-regular-font-weight);
-  }
-
-  /* Label */
-  .label1-bold {
-    font-size: var(--label1-bold-font-size);
-    line-height: var(--label1-bold-line-height);
-    font-weight: var(--label1-bold-font-weight);
-  }
-  .label1-regular {
-    font-size: var(--label1-regular-font-size);
-    line-height: var(--label1-regular-line-height);
-    font-weight: var(--label1-regular-font-weight);
-  }
-
-  .label2-bold {
-    font-size: var(--label2-bold-font-size);
-    line-height: var(--label2-bold-line-height);
-    font-weight: var(--label2-bold-font-weight);
-  }
-  .label2-regular {
-    font-size: var(--label2-regular-font-size);
-    line-height: var(--label2-regular-line-height);
-    font-weight: var(--label2-regular-font-weight);
-  }
+/* 라벨 (Label) */
+@utility label1-bold {
+  font-size: var(--label1-bold-font-size);
+  line-height: var(--label1-bold-line-height);
+  font-weight: var(--label1-bold-font-weight);
+}
+@utility label1-regular {
+  font-size: var(--label1-regular-font-size);
+  line-height: var(--label1-regular-line-height);
+  font-weight: var(--label1-regular-font-weight);
+}
+@utility label2-bold {
+  font-size: var(--label2-bold-font-size);
+  line-height: var(--label2-bold-line-height);
+  font-weight: var(--label2-bold-font-weight);
+}
+@utility label2-regular {
+  font-size: var(--label2-regular-font-size);
+  line-height: var(--label2-regular-line-height);
+  font-weight: var(--label2-regular-font-weight);
 }
