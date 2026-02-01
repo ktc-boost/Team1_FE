@@ -1,4 +1,4 @@
-import { useKickProjectMemberMutation } from '@/features/project/hooks/useKickProjectMemberMutation';
+import { useKickProjectMemberMutation } from '@/features/project/hooks/mutation/useKickProjectMemberMutation';
 import { useModal } from '@/shared/hooks/useModal';
 import toast from 'react-hot-toast';
 import { Button } from '@/shared/components/shadcn/button';

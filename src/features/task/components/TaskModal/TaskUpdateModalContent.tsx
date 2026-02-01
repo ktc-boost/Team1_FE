@@ -5,7 +5,7 @@ import { Button } from '@/shared/components/shadcn/button';
 import { DialogFooter } from '@/shared/components/shadcn/dialog';
 import { useModal } from '@/shared/hooks/useModal';
 import { useUpdateTaskMutation } from '@/features/task/hooks/mutation/useUpdateTaskMutation';
-import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
+import { useProjectMembersQuery } from '@/features/project/hooks/query/useProjectMembersQuery';
 import { useUpdateTaskForm } from '@/features/task/hooks/form/useUpdateTaskForm';
 import TaskFormField from '@/features/task/components/TaskModal/TaskFormField';
 import type { TaskDetail } from '@/features/task/types/taskTypes';

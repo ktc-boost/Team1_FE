@@ -5,7 +5,7 @@ import { type NavigateFunction } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Button } from '@/shared/components/shadcn/button';
 import MovingBoo from '@/shared/components/ui/MovingBoo';
-import { useLeaveProjectMutation } from '@/features/project/hooks/useLeaveProjectMutation';
+import { useLeaveProjectMutation } from '@/features/project/hooks/mutation/useLeaveProjectMutation';
 
 interface ProjectLeaveModalContentProps {
   navigate: NavigateFunction;

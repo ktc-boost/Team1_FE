@@ -1,5 +1,5 @@
 import { useProjectStore } from '@/features/project/store/useProjectStore';
-import { useDeleteProjectMutation } from '@/features/project/hooks/useDeleteProjectMutation';
+import { useDeleteProjectMutation } from '@/features/project/hooks/mutation/useDeleteProjectMutation';
 import { useModal } from '@/shared/hooks/useModal';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { type NavigateFunction } from 'react-router-dom';

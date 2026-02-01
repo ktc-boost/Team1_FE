@@ -8,9 +8,9 @@ import ProjectBasicInfo from '@/features/project/components/ProjectManageModal/P
 import ProjectDeleteModalContent from '@/features/project/components/ProjectDeleteModal/ProjectDeleteModalContent';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
 import ProjectMembers from '@/features/project/components/ProjectMembersList';
-import { useUpdateProjectMutation } from '@/features/project/hooks/useUpdateProjectMutation';
-import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
-import { useProjectBoostingScoresQuery } from '@/features/project/hooks/useProjectBoostingScoresQuery';
+import { useUpdateProjectMutation } from '@/features/project/hooks/mutation/useUpdateProjectMutation';
+import { useProjectMembersQuery } from '@/features/project/hooks/query/useProjectMembersQuery';
+import { useProjectBoostingScoresQuery } from '@/features/project/hooks/query/useProjectBoostingScoresQuery';
 import { combineMembersWithBoostingScores } from '@/features/project/utils/memberUtils';
 
 interface ProjectUpdateModalProps {
