@@ -1,13 +1,17 @@
 import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import CommentSection from '@/features/task-detail/components/CommentSection/CommentSection';
 
-interface TaskDetailRightPaneProps {
+interface TaskDetailCommentSectionProps {
   projectId: string;
   taskId: string;
   comments: CommentUIType[];
 }
 
-const TaskDetailRightPane = ({ projectId, taskId, comments }: TaskDetailRightPaneProps) => {
+const TaskDetailCommentSection = ({
+  projectId,
+  taskId,
+  comments,
+}: TaskDetailCommentSectionProps) => {
   return (
     <aside
       id="right-pane"
@@ -19,4 +23,4 @@ const TaskDetailRightPane = ({ projectId, taskId, comments }: TaskDetailRightPan
     </aside>
   );
 };
-export default TaskDetailRightPane;
+export default TaskDetailCommentSection;

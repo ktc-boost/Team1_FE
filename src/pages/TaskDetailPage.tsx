@@ -3,11 +3,11 @@ import { useParams } from 'react-router-dom';
 import TaskDetailTopTab from '@/features/task-detail/components/TaskDetailTopTab/TaskDetailTopTab';
 import { useTaskDetailQuery } from '@/features/task/hooks/query/useTaskDetailQuery';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
-import TaskDetailLeftPane from '@/features/task-detail/components/TaskDetailLeftPane';
 import { extractPinsFromComments } from '@/features/comment/utils/commentUtils';
-import TaskDetailRightPane from '@/features/task-detail/components/TaskDetailRightPane';
 import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 import { useCommentQuery } from '@/features/comment/hooks/useCommentQuery';
+import TaskDetailInfoSection from '@/features/task-detail/components/TaskDetailInfoSection';
+import TaskDetailCommentSection from '@/features/task-detail/components/TaskDetailCommentSection';
 
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
@@ -32,8 +32,8 @@ const TaskDetailPage = () => {
     <div className="flex flex-col h-screen">
       <TaskDetailTopTab task={task} />
       <div className="flex flex-1 overflow-hidden">
-        <TaskDetailLeftPane task={task} taskId={taskId} />
-        <TaskDetailRightPane projectId={projectId} taskId={taskId} comments={comments} />
+        <TaskDetailInfoSection task={task} taskId={taskId} />
+        <TaskDetailCommentSection projectId={projectId} taskId={taskId} comments={comments} />
       </div>
     </div>
   );
