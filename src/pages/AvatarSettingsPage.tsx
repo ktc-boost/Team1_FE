@@ -31,15 +31,10 @@ const AvatarSettingsPage = () => {
       backgroundColor: selectedBgColor,
     };
 
-    try {
-      await updateAvatar(avatarInfo);
-      const updatedUser: User = { ...authUser, ...avatarInfo };
-      setAuth({ user: updatedUser });
-      navigate(ROUTE_PATH.ALARM_SETUP, { state: { from: ROUTE_PATH.AVATAR } });
-    } catch (error) {
-      console.log('아바타 업데이트 실패', error);
-      toast.error('아바타 업데이트에 실패했습니다 😢');
-    }
+    await updateAvatar(avatarInfo);
+    const updatedUser: User = { ...authUser, ...avatarInfo };
+    setAuth({ user: updatedUser });
+    navigate(ROUTE_PATH.ALARM_SETUP, { state: { from: ROUTE_PATH.AVATAR } });
   };
 
   return (
