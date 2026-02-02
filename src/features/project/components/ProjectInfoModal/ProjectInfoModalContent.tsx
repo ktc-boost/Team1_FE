@@ -1,41 +1,30 @@
 import { Trash2 } from 'lucide-react';
-import type { NavigateFunction } from 'react-router-dom';
 import { DialogFooter } from '@/shared/components/shadcn/dialog';
 import { Button } from '@/shared/components/shadcn/button';
 import { useModal } from '@/shared/hooks/useModal';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
 import ProjectMembers from '@/features/project/components/ProjectMembersList';
 import { useProjectMembersQuery } from '@/features/project/hooks/query/useProjectMembersQuery';
+import { useProjectModals } from '@/features/project/hooks/modal/useProjectModals';
 import { useProjectBoostingScoresQuery } from '@/features/project/hooks/query/useProjectBoostingScoresQuery';
-import ProjectLeaveModalContent from '@/features/project/components/ProjectInfoModal/ProjectLeaveModalContent';
 import ProjectInfoBasicInfo from '@/features/project/components/ProjectInfoModal/ProjectInfoBasicInfo';
 import { combineMembersWithBoostingScores } from '@/features/project/utils/memberUtils';
 
-interface ProjectInfoModalProps {
-  navigate: NavigateFunction;
-}
-
-const ProjectInfoModalContent = ({ navigate }: ProjectInfoModalProps) => {
-  const { showCustom, resetModal } = useModal();
-
+const ProjectInfoModalContent = () => {
   const projectData = useProjectStore((state) => state.projectData);
+
   const { data: projectMembers } = useProjectMembersQuery(projectData.id);
   const { data: projectBoostingScores } = useProjectBoostingScoresQuery(projectData.id);
+
+  const { showLeaveProjectModal } = useProjectModals();
+  const { resetModal } = useModal();
 
   const projectMembersWithBoosting = combineMembersWithBoostingScores(
     projectMembers,
     projectBoostingScores,
   );
 
-  const handleProjectLeaveClick = () => {
-    showCustom({
-      title: '프로젝트 떠나기',
-      description: '정말로 프로젝트를 떠나시나요? 🥹',
-      titleAlign: 'center',
-      size: 'sm',
-      content: <ProjectLeaveModalContent navigate={navigate} />,
-    });
-  };
+  const handleProjectLeaveClick = () => showLeaveProjectModal();
 
   return (
     <>
