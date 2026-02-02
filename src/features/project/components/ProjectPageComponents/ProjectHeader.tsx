@@ -39,14 +39,14 @@ const ProjectHeader = ({ project }: ProjectHeaderProps) => {
         title: '프로젝트 관리',
         size: 'lg',
         description: '프로젝트 기본 정보와 멤버를 관리합니다.',
-        content: <ProjectManageModalContent navigate={navigate} />,
+        content: <ProjectManageModalContent />,
       });
     } else {
       showCustom({
         title: '프로젝트 정보',
         size: 'lg',
         description: '프로젝트 기본 정보와 멤버를 확인합니다.',
-        content: <ProjectInfoModalContent navigate={navigate} />,
+        content: <ProjectInfoModalContent />,
       });
     }
   };
