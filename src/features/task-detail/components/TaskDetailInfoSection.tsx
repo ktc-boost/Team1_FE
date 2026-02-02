@@ -18,7 +18,7 @@ const TaskDetailInfoSection = ({ task, taskId }: TaskDetailInfoSectionProps) => 
     })),
   );
   return (
-    <div id="left" className="flex flex-col w-6/10 overflow-hidden">
+    <div className="w-full flex flex-col sm:w-6/10 overflow-hidden">
       {isPdfOpen ? (
         <PDFViewer />
       ) : (
