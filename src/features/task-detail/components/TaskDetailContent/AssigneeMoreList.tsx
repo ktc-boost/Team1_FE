@@ -34,7 +34,7 @@ const AssigneeMoreList = ({ assignees }: AssigneeMoreListProps) => {
                 {assignee.name.charAt(0)}
               </AvatarFallback>
             </Avatar>
-            <span className="body2-regular text-gray-700">{assignee.name}</span>
+            <span className="label2-regular sm:body2-regular text-gray-700">{assignee.name}</span>
           </div>
         ))}
 
