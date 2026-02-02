@@ -3,15 +3,20 @@ import type { TaskDetail } from '@/features/task/types/taskTypes';
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
 import BackButton from '@/shared/components/ui/BackButton';
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
-import { MessageSquare } from 'lucide-react';
+import { CheckCircle2, MessageSquare } from 'lucide-react';
 import TaskReviewActions from '@/features/task-detail/components/TaskDetailTopTab/TaskReviewActions';
 
 interface TaskDetailTopTabProps {
   task: TaskDetail;
   onOpenComments?: () => void;
+  onToggleReviewAction?: () => void;
 }
 
-const TaskDetailTopTab = ({ task, onOpenComments }: TaskDetailTopTabProps) => {
+const TaskDetailTopTab = ({
+  task,
+  onOpenComments,
+  onToggleReviewAction,
+}: TaskDetailTopTabProps) => {
   const resetAll = useTaskDetailStore((state) => state.resetAll);
   const resetAiComment = useAiTransformStore((state) => state.reset);
   const resetPdf = usePdfStore((state) => state.resetPdf);
@@ -29,14 +34,19 @@ const TaskDetailTopTab = ({ task, onOpenComments }: TaskDetailTopTabProps) => {
 
         {task.title}
       </div>
-      <div className="">
+      <div className="sm:hidden ">
         <button
           onClick={() => onOpenComments?.()}
-          className="sm:hidden relative text-sm right-2 px-3 py-1 bg-white"
+          className="relative text-xs right-2 px-3 py-1 bg-white"
         >
           <MessageSquare />
         </button>
-        {}
+        <button
+          onClick={() => onToggleReviewAction?.()}
+          className=" relative text-xs right-2 px-3 py-1 bg-white"
+        >
+          <CheckCircle2 />
+        </button>
       </div>
 
       <div className="hidden sm:flex">
