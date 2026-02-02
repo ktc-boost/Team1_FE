@@ -1,21 +1,25 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { isAxiosError } from 'axios';
 import { projectMembershipApi } from '@/features/project/api/projectMembershipApi';
 import type { Project } from '@/features/project/types/projectTypes';
-import { useNavigate } from 'react-router-dom';
 
-type JoinProjectContext = {
-  previousProjects?: Project[];
-};
+interface JoinProjectError {
+  type?: string;
+}
+
+interface UseJoinProjectMutationOptions {
+  onSuccess?: (project: Project) => void;
+  onError?: (error: JoinProjectError) => void;
+}
 
 // 프로젝트 참여
-export const useJoinProjectMutation = () => {
+export const useJoinProjectMutation = (options?: UseJoinProjectMutationOptions) => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: (joinCode: string) => projectMembershipApi.joinProject(joinCode),
 
-    onMutate: async (): Promise<JoinProjectContext> => {
+    onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: ['projects', 'me'] });
       const previousProjects = queryClient.getQueryData<Project[]>(['projects', 'me']);
       return { previousProjects };
@@ -23,12 +27,12 @@ export const useJoinProjectMutation = () => {
 
     onSuccess: (joinedProject) => {
       if (!joinedProject.projectId) {
-        console.error('프로젝트 ID가 없습니다.');
-        throw new Error('프로젝트 ID가 응답에 포함되지 않았습니다.');
+        throw new Error('프로젝트 ID가 응답에 없습니다.');
       }
+
       const project: Project = {
         id: joinedProject.projectId,
-        name: joinedProject.name || '',
+        name: joinedProject.name ?? '',
         defaultReviewerCount: joinedProject.defaultReviewerCount ?? 0,
         role: joinedProject.role,
       };
@@ -37,13 +41,16 @@ export const useJoinProjectMutation = () => {
         old ? [...old, project] : [project],
       );
 
-      navigate(`/project/${project.id}/board`);
+      options?.onSuccess?.(project);
     },
 
-    onError: (_error, _variables, context) => {
+    onError: (error, _variables, context) => {
       if (context?.previousProjects) {
         queryClient.setQueryData(['projects', 'me'], context.previousProjects);
       }
+
+      if (isAxiosError(error)) options?.onError?.({ type: error.response?.data?.type });
+      else options?.onError?.({});
     },
 
     onSettled: () => {

@@ -1,9 +1,15 @@
+import { isAxiosError } from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Project } from '@/features/project/types/projectTypes';
 import { projectMembershipApi } from '@/features/project/api/projectMembershipApi';
 
+interface UseLeaveProjectMutationOptions {
+  onSuccess?: (projectId: string) => void;
+  onError?: (error: unknown) => void;
+}
+
 // 프로젝트 떠나기
-export const useLeaveProjectMutation = () => {
+export const useLeaveProjectMutation = (options?: UseLeaveProjectMutationOptions) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -26,10 +32,16 @@ export const useLeaveProjectMutation = () => {
       if (context?.previousProjects) {
         queryClient.setQueryData(['projects', 'me'], context.previousProjects);
       }
+
+      if (options?.onError) {
+        if (isAxiosError(error)) options.onError(error);
+        else console.error('AxiosError가 아닌 에러 발생', error);
+      }
     },
 
     onSuccess: (_, projectId) => {
       queryClient.removeQueries({ queryKey: ['project', 'me', projectId] });
+      options?.onSuccess?.(projectId);
     },
 
     onSettled: () => {

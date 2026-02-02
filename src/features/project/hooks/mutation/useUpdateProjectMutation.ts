@@ -1,14 +1,20 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { projectApi } from '@/features/project/api/projectApi';
 import type { Project } from '@/features/project/types/projectTypes';
+import { isAxiosError } from 'axios';
 
-type UpdateProjectParams = {
+interface UpdateProjectParams {
   projectId: string;
   updatedData: Partial<Project>;
-};
+}
+
+interface UseUpdateProjectMutationOptions {
+  onSuccess?: (updatedProject: Project) => void;
+  onError?: (error: unknown) => void;
+}
 
 // 프로젝트 수정
-export const useUpdateProjectMutation = () => {
+export const useUpdateProjectMutation = (options?: UseUpdateProjectMutationOptions) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -31,6 +37,11 @@ export const useUpdateProjectMutation = () => {
       if (context?.previousProjects) {
         queryClient.setQueryData(['projects', 'me'], context.previousProjects);
       }
+
+      if (options?.onError) {
+        if (isAxiosError(error)) options.onError(error);
+        else console.error('AxiosError가 아닌 에러 발생', error);
+      }
     },
 
     onSuccess: (updatedProject) => {
@@ -39,6 +50,7 @@ export const useUpdateProjectMutation = () => {
         ['projects', 'me'],
         (old) => old?.map((p) => (p.id === updatedProject.id ? updatedProject : p)) ?? [],
       );
+      options?.onSuccess?.(updatedProject);
     },
 
     onSettled: (_, __, { projectId }) => {
