@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { projectMembershipApi } from '@/features/project/api/projectMembershipApi';
 import type { Project } from '@/features/project/types/projectTypes';
+import { PROJECT_QUERY_KEYS } from '@/features/project/constants/projectQueryKeys';
 
 interface JoinProjectError {
   type?: string;
@@ -20,8 +21,8 @@ export const useJoinProjectMutation = (options?: UseJoinProjectMutationOptions) 
     mutationFn: (joinCode: string) => projectMembershipApi.joinProject(joinCode),
 
     onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: ['projects', 'me'] });
-      const previousProjects = queryClient.getQueryData<Project[]>(['projects', 'me']);
+      await queryClient.cancelQueries({ queryKey: PROJECT_QUERY_KEYS.myProjects() });
+      const previousProjects = queryClient.getQueryData<Project[]>(PROJECT_QUERY_KEYS.myProjects());
       return { previousProjects };
     },
 
@@ -37,7 +38,7 @@ export const useJoinProjectMutation = (options?: UseJoinProjectMutationOptions) 
         role: joinedProject.role,
       };
 
-      queryClient.setQueryData<Project[]>(['projects', 'me'], (old) =>
+      queryClient.setQueryData<Project[]>(PROJECT_QUERY_KEYS.myProjects(), (old) =>
         old ? [...old, project] : [project],
       );
 
@@ -46,7 +47,7 @@ export const useJoinProjectMutation = (options?: UseJoinProjectMutationOptions) 
 
     onError: (error, _variables, context) => {
       if (context?.previousProjects) {
-        queryClient.setQueryData(['projects', 'me'], context.previousProjects);
+        queryClient.setQueryData(PROJECT_QUERY_KEYS.myProjects(), context.previousProjects);
       }
 
       if (isAxiosError(error)) options?.onError?.({ type: error.response?.data?.type });
@@ -54,7 +55,7 @@ export const useJoinProjectMutation = (options?: UseJoinProjectMutationOptions) 
     },
 
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['projects', 'me'] });
+      queryClient.invalidateQueries({ queryKey: PROJECT_QUERY_KEYS.myProjects() });
     },
   });
 };

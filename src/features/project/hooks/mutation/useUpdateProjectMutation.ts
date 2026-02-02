@@ -1,7 +1,8 @@
+import { isAxiosError } from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { projectApi } from '@/features/project/api/projectApi';
 import type { Project } from '@/features/project/types/projectTypes';
-import { isAxiosError } from 'axios';
+import { PROJECT_QUERY_KEYS } from '@/features/project/constants/projectQueryKeys';
 
 interface UpdateProjectParams {
   projectId: string;
@@ -22,11 +23,11 @@ export const useUpdateProjectMutation = (options?: UseUpdateProjectMutationOptio
       projectApi.updateProject(projectId, updatedData),
 
     onMutate: async ({ projectId, updatedData }) => {
-      await queryClient.cancelQueries({ queryKey: ['projects', 'me'] });
-      const previousProjects = queryClient.getQueryData<Project[]>(['projects', 'me']);
+      await queryClient.cancelQueries({ queryKey: PROJECT_QUERY_KEYS.myProjects() });
+      const previousProjects = queryClient.getQueryData<Project[]>(PROJECT_QUERY_KEYS.myProjects());
 
       queryClient.setQueryData<Project[]>(
-        ['projects', 'me'],
+        PROJECT_QUERY_KEYS.myProjects(),
         (old) => old?.map((p) => (p.id === projectId ? { ...p, ...updatedData } : p)) ?? [],
       );
       return { previousProjects };
@@ -35,7 +36,7 @@ export const useUpdateProjectMutation = (options?: UseUpdateProjectMutationOptio
     onError: (error, __, context) => {
       console.error('프로젝트 수정 실패:', error);
       if (context?.previousProjects) {
-        queryClient.setQueryData(['projects', 'me'], context.previousProjects);
+        queryClient.setQueryData(PROJECT_QUERY_KEYS.myProjects(), context.previousProjects);
       }
 
       if (options?.onError) {
@@ -45,17 +46,17 @@ export const useUpdateProjectMutation = (options?: UseUpdateProjectMutationOptio
     },
 
     onSuccess: (updatedProject) => {
-      queryClient.setQueryData(['project', 'me', updatedProject.id], updatedProject);
+      queryClient.setQueryData(PROJECT_QUERY_KEYS.detail(updatedProject.id), updatedProject);
       queryClient.setQueryData<Project[]>(
-        ['projects', 'me'],
+        PROJECT_QUERY_KEYS.myProjects(),
         (old) => old?.map((p) => (p.id === updatedProject.id ? updatedProject : p)) ?? [],
       );
       options?.onSuccess?.(updatedProject);
     },
 
     onSettled: (_, __, { projectId }) => {
-      queryClient.invalidateQueries({ queryKey: ['project', 'me', projectId] });
-      queryClient.invalidateQueries({ queryKey: ['projects', 'me'] });
+      queryClient.invalidateQueries({ queryKey: PROJECT_QUERY_KEYS.detail(projectId) });
+      queryClient.invalidateQueries({ queryKey: PROJECT_QUERY_KEYS.myProjects() });
     },
   });
 };

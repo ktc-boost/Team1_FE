@@ -3,6 +3,7 @@ import { projectApi } from '@/features/project/api/projectApi';
 import type { Project } from '@/features/project/types/projectTypes';
 import { v4 as uuidv4 } from 'uuid';
 import { ROLES } from '@/features/project/constants/projectConstants';
+import { PROJECT_QUERY_KEYS } from '@/features/project/constants/projectQueryKeys';
 
 // 프로젝트 생성
 export const useCreateProjectMutation = () => {
@@ -12,8 +13,8 @@ export const useCreateProjectMutation = () => {
     mutationFn: (projectName: string) => projectApi.createProject(projectName),
 
     onMutate: async (projectName: string) => {
-      await queryClient.cancelQueries({ queryKey: ['projects', 'me'] });
-      const previousProjects = queryClient.getQueryData<Project[]>(['projects', 'me']);
+      await queryClient.cancelQueries({ queryKey: PROJECT_QUERY_KEYS.myProjects() });
+      const previousProjects = queryClient.getQueryData<Project[]>(PROJECT_QUERY_KEYS.myProjects());
 
       const tempId = `temp-${uuidv4()}`;
 
@@ -24,7 +25,7 @@ export const useCreateProjectMutation = () => {
         role: ROLES.MEMBER,
       };
 
-      queryClient.setQueryData<Project[]>(['projects', 'me'], (old) => [
+      queryClient.setQueryData<Project[]>(PROJECT_QUERY_KEYS.myProjects(), (old) => [
         ...(old ?? []),
         newTempProject,
       ]);
@@ -33,7 +34,7 @@ export const useCreateProjectMutation = () => {
     },
 
     onSuccess: (createdProject, _, context) => {
-      queryClient.setQueryData<Project[]>(['projects', 'me'], (old) =>
+      queryClient.setQueryData<Project[]>(PROJECT_QUERY_KEYS.myProjects(), (old) =>
         old ? old.map((p) => (p.id === context?.tempId ? createdProject : p)) : [createdProject],
       );
     },
@@ -41,12 +42,12 @@ export const useCreateProjectMutation = () => {
     onError: (error, __, context) => {
       console.error('프로젝트 생성 실패:', error);
       if (context?.previousProjects) {
-        queryClient.setQueryData(['projects', 'me'], context.previousProjects);
+        queryClient.setQueryData(PROJECT_QUERY_KEYS.myProjects(), context.previousProjects);
       }
     },
 
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['projects', 'me'] });
+      queryClient.invalidateQueries({ queryKey: PROJECT_QUERY_KEYS.myProjects() });
     },
   });
 };

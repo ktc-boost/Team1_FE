@@ -2,6 +2,7 @@ import { isAxiosError } from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Project } from '@/features/project/types/projectTypes';
 import { projectMembershipApi } from '@/features/project/api/projectMembershipApi';
+import { PROJECT_QUERY_KEYS } from '@/features/project/constants/projectQueryKeys';
 
 interface UseLeaveProjectMutationOptions {
   onSuccess?: (projectId: string) => void;
@@ -16,11 +17,11 @@ export const useLeaveProjectMutation = (options?: UseLeaveProjectMutationOptions
     mutationFn: (projectId: string) => projectMembershipApi.leaveProject(projectId),
 
     onMutate: async (projectId: string) => {
-      await queryClient.cancelQueries({ queryKey: ['projects', 'me'] });
-      const previousProjects = queryClient.getQueryData<Project[]>(['projects', 'me']);
+      await queryClient.cancelQueries({ queryKey: PROJECT_QUERY_KEYS.myProjects() });
+      const previousProjects = queryClient.getQueryData<Project[]>(PROJECT_QUERY_KEYS.myProjects());
 
       queryClient.setQueryData<Project[]>(
-        ['projects', 'me'],
+        PROJECT_QUERY_KEYS.myProjects(),
         (old) => old?.filter((p) => p.id !== projectId) ?? [],
       );
 
@@ -30,7 +31,7 @@ export const useLeaveProjectMutation = (options?: UseLeaveProjectMutationOptions
     onError: (error, __, context) => {
       console.error('프로젝트 떠나기 실패:', error);
       if (context?.previousProjects) {
-        queryClient.setQueryData(['projects', 'me'], context.previousProjects);
+        queryClient.setQueryData(PROJECT_QUERY_KEYS.myProjects(), context.previousProjects);
       }
 
       if (options?.onError) {
@@ -40,12 +41,12 @@ export const useLeaveProjectMutation = (options?: UseLeaveProjectMutationOptions
     },
 
     onSuccess: (_, projectId) => {
-      queryClient.removeQueries({ queryKey: ['project', 'me', projectId] });
+      queryClient.removeQueries({ queryKey: PROJECT_QUERY_KEYS.detail(projectId) });
       options?.onSuccess?.(projectId);
     },
 
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['projects', 'me'] });
+      queryClient.invalidateQueries({ queryKey: PROJECT_QUERY_KEYS.myProjects() });
     },
   });
 };
