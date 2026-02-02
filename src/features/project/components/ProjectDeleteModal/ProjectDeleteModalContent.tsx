@@ -1,55 +1,60 @@
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { ROUTE_PATH } from '@/app/routes/Router';
+import { useModal } from '@/shared/hooks/useModal';
+import { Button } from '@/shared/components/shadcn/button';
+import MovingBoo from '@/shared/components/ui/MovingBoo';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
 import { useDeleteProjectMutation } from '@/features/project/hooks/mutation/useDeleteProjectMutation';
-import { useModal } from '@/shared/hooks/useModal';
-import { ROUTE_PATH } from '@/app/routes/Router';
-import { type NavigateFunction } from 'react-router-dom';
-import toast from 'react-hot-toast';
-import { Button } from '@/shared/components/shadcn/button';
 import ProjectDeleteRotatingText from '@/features/project/components/ProjectDeleteModal/ProjectDeleteRotatingText';
-import MovingBoo from '@/shared/components/ui/MovingBoo';
 
-interface ProjectDeleteModalContentProps {
-  navigate: NavigateFunction;
-}
-
-const ProjectDeleteModalContent = ({ navigate }: ProjectDeleteModalContentProps) => {
+const ProjectDeleteModalContent = () => {
   const projectData = useProjectStore((state) => state.projectData);
   const { resetModal, backModal } = useModal();
-  const { mutateAsync: deleteProject } = useDeleteProjectMutation();
+  const navigate = useNavigate();
 
-  if (!projectData) return null;
-
-  const handleDeleteConfirm = async () => {
-    try {
-      await deleteProject(projectData.id);
+  const { mutate: deleteProjectMutation, isPending } = useDeleteProjectMutation({
+    onSuccess: () => {
       resetModal();
-      navigate(ROUTE_PATH.MY_TASK);
       toast.success('프로젝트가 삭제되었습니다.');
-    } catch (error) {
-      toast.error(
-        `프로젝트 삭제 실패: ${error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.'}`,
-      );
-    }
-  };
+      navigate(ROUTE_PATH.MY_TASK);
+    },
+    onError: () => toast.error('프로젝트 삭제를 실패했습니다.'),
+  });
+
+  if (!projectData) {
+    return (
+      <div className="flex items-center justify-center py-8 label1-bold text-gray-500">
+        삭제할 프로젝트 정보가 없습니다.
+      </div>
+    );
+  }
+
+  const handleDeleteProject = () => deleteProjectMutation(projectData.id);
 
   return (
     <div className="flex flex-col items-center gap-4">
       <MovingBoo size={28} />
       <ProjectDeleteRotatingText />
+
       <div className="flex gap-2 mt-2 w-full">
         <Button
           variant="outline"
           onClick={backModal}
-          className="flex flex-1 border-gray-300 hover:bg-gray-100"
+          className="flex-1 border-gray-300 hover:bg-gray-100"
+          disabled={isPending}
         >
           취소
         </Button>
+
+        {/* TODO: SmallLoader 컴포넌트 병합 후 적용 예정 */}
         <Button
-          variant="destructive"
-          onClick={handleDeleteConfirm}
-          className="flex-1 bg-boost-blue hover:bg-boost-blue-pressed text-gray-100"
+          variant="defaultBoost"
+          onClick={handleDeleteProject}
+          className="flex-1"
+          disabled={isPending}
         >
-          삭제
+          {isPending ? '삭제 중...' : '삭제'}
         </Button>
       </div>
     </div>
