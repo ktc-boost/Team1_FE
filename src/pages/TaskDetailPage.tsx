@@ -10,6 +10,7 @@ import TaskDetailInfoSection from '@/features/task-detail/components/TaskDetailI
 import TaskDetailCommentSection from '@/features/task-detail/components/TaskDetailCommentSection';
 import CommentSection from '@/features/task-detail/components/CommentSection/CommentSection';
 import { Drawer, DrawerContent } from '@/shared/components/shadcn/drawer';
+import TaskReviewActions from '@/features/task-detail/components/TaskDetailTopTab/TaskReviewActions';
 
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
@@ -32,7 +33,10 @@ const TaskDetailPage = () => {
   }
   return (
     <div className="flex flex-col h-screen">
-      <TaskDetailTopTab task={task} />
+      <TaskDetailTopTab task={task} onOpenComments={() => setIsCommentOpen(true)} />
+      <div className="sm:hidden bg-gray-50 border-b border-gray-200 px-4 py-2">
+        <TaskReviewActions task={task} />
+      </div>
       <div className="flex flex-1 overflow-hidden">
         <TaskDetailInfoSection task={task} taskId={taskId} />
         <TaskDetailCommentSection projectId={projectId!} taskId={taskId!} comments={comments} />
@@ -50,5 +54,4 @@ const TaskDetailPage = () => {
     </div>
   );
 };
-
 export default TaskDetailPage;
