@@ -48,7 +48,7 @@ export const AssigneeActionButton = ({
         onClick={handleAction}
         disabled={isCompleted || isCompleting}
         className={cn(
-          'flex flex-row gap-2 rounded-md text-white',
+          'text-xs sm:label2-regular flex flex-row gap-2 rounded-md text-white',
           isCompleted
             ? 'bg-green-600 opacity-70 cursor-not-allowed'
             : 'bg-green-700 hover:bg-green-600',
