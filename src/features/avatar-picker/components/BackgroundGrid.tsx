@@ -12,7 +12,7 @@ interface BackgroundGridProps {
 const BackgroundGrid = ({ avatarBgColors, setBgColor, selectedBgColor }: BackgroundGridProps) => {
   return (
     <div className="flex items-center px-6 py-6 border-b border-gray-100 mb-2">
-      <div className="gap-3 flex justify-center dm:gap-5 flex-wrap mx-auto">
+      <div className="gap-3 flex justify-center sm:gap-5 flex-wrap mx-auto">
         {avatarBgColors.map(({ token, hex }) => (
           <button
             key={hex}
