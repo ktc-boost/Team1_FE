@@ -65,7 +65,7 @@ export const AssigneeActionButton = ({
       onClick={onAction}
       disabled={isCompleting}
       className={cn(
-        'rounded-md flex flex-row gap-2 text-white',
+        'text-xs sm:label2-regular rounded-md flex flex-row gap-2 text-white',
         isReview
           ? 'bg-boost-orange hover:bg-boost-orange-hover'
           : 'bg-boost-blue hover:bg-boost-blue-hover',

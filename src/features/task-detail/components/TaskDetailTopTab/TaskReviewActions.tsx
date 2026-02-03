@@ -37,7 +37,7 @@ const TaskReviewActions = ({ task }: TaskReviewActionsProps) => {
   return (
     <>
       {isAssignee ? (
-        <div className="flex items-center gap-3 bg-transparent">
+        <div className="flex items-center gap-7 sm:gap-3 bg-transparent">
           <div
             className={cn(
               'text-xs sm:label2-regular rounded-full border h-9 px-4 py-2 flex items-center ',

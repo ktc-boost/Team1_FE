@@ -47,7 +47,7 @@ const TaskDetailPage = () => {
               isReviewActionOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
             )}
           >
-            <div className="overflow-hidden bg-gray-50">
+            <div className="overflow-hidden bg-gray-50 flex justify-center">
               <div className="p-2">
                 <TaskReviewActions task={task} />
               </div>
