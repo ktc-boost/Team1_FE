@@ -55,7 +55,7 @@ const TaskDetailContent = ({ task }: TaskDetailContentProps) => {
     <div className="relative flex flex-col h-full overflow-hidden bg-gray-100">
       {isAssignee && <TaskControlDropdown onClickDelete={handleDelete} onEdit={handleEdit} />}
 
-      <div className="flex flex-col flex-1 p-4 gap-4 overflow-hidden">
+      <div className="flex flex-col flex-1  p-3 sm:p-4 gap-4 overflow-hidden">
         <div className="px-2.5">
           <AssigneeSection assignees={task.assignees} />
         </div>

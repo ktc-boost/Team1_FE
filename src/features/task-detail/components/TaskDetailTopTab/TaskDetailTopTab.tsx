@@ -34,18 +34,19 @@ const TaskDetailTopTab = ({
 
         {task.title}
       </div>
-      <div className="sm:hidden ">
+      <div className="sm:hidden flex gap-6">
         <button
-          onClick={() => onOpenComments?.()}
-          className="relative text-xs right-2 px-3 py-1 bg-white"
+          onClick={onOpenComments}
+          className="sm:hidden size-8 flex items-center justify-center rounded-md bg-white text-gray-700"
         >
-          <MessageSquare />
+          <MessageSquare className="size-5" />
         </button>
+
         <button
-          onClick={() => onToggleReviewAction?.()}
-          className=" relative text-xs right-2 px-3 py-1 bg-white"
+          onClick={onToggleReviewAction}
+          className="sm:hidden size-8 flex items-center justify-center rounded-md bg-white text-gray-700"
         >
-          <CheckCircle2 />
+          <CheckCircle2 className="size-5" />
         </button>
       </div>
 
