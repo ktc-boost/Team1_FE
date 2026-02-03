@@ -23,7 +23,7 @@ const TaskControlDropdown = ({ onEdit, onClickDelete }: TaskControlDropdownProps
           variant="ghost"
           className="absolute top-5 right-5 hover:bg-gray-100 transition-colors z-10 cursor-pointer"
         >
-          <MoreVertical className="text-gray-500 !w-6 !h-6" />
+          <MoreVertical className="text-gray-500 w-5 h-5 sm:w-6 sm:h-6" />
         </Button>
       </DropdownMenuTrigger>
 
