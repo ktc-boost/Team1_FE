@@ -1,14 +1,14 @@
 import FilterToggle from '@/shared/components/ui/FilterToggle';
 import SortDropDown from '@/shared/components/ui/SortDropDown';
-import SearchInput from '@/shared/components/ui/SearchInput';
-
-import type { BoardKey } from '@/features/board/types/boardTypes';
-import TagSearchInput from '@/shared/components/ui/TagSearchInput';
+import SearchInput from '@/features/search/components/TaskSearchInput';
+import TagSearchInput from '@/features/search/components/TagSearchInput';
+import type { BoardKey, BoardType } from '@/features/board/types/boardTypes';
+import SearchButtons from '@/features/search/components/SearchButtons';
 
 interface FilterTabProps {
   boardKey: BoardKey;
-  value?: 'status' | 'member';
-  onChange?: (value: 'status' | 'member') => void;
+  value?: BoardType;
+  onChange?: (value: BoardType) => void;
   showFilterToggle?: boolean;
   showTagSearchInput?: boolean;
   showSearchInput?: boolean;
@@ -24,20 +24,38 @@ const FilterTab = ({
   showSearchInput = true,
   showSortDropDown = true,
 }: FilterTabProps) => {
+  const hasTitleSearch = showSearchInput;
+  const hasTagSearch = showTagSearchInput;
+  const hasBothSearch = hasTitleSearch && hasTagSearch;
+
   return (
-    <div className="flex flex-row p-2 pr-4 pl-4 justify-between items-center gap-4">
-      <div className="flex flex-row gap-4">
-        {showSearchInput && <SearchInput boardKey={boardKey} />}
-        {showTagSearchInput && <TagSearchInput />}
+    <>
+      <div className="hidden lg:flex items-center justify-between gap-4 p-2 px-4">
+        <div className="flex gap-4">
+          {showSearchInput && <SearchInput boardKey={boardKey} />}
+          {showTagSearchInput && <TagSearchInput />}
+        </div>
+
+        <div className="flex gap-4">
+          {showSortDropDown && <SortDropDown />}
+          {showFilterToggle && value !== undefined && onChange && (
+            <FilterToggle value={value} onChange={onChange} />
+          )}
+        </div>
       </div>
 
-      <div className="flex flex-row gap-4">
-        {showSortDropDown && <SortDropDown />}
-        {showFilterToggle && value !== undefined && onChange && (
-          <FilterToggle value={value} onChange={onChange} />
-        )}
+      <div className="flex items-center justify-between p-2 px-4 lg:hidden">
+        {hasBothSearch && <SearchButtons boardKey={boardKey} />}
+        {!hasBothSearch && hasTitleSearch && <SearchInput boardKey={boardKey} />}
+
+        <div className="flex gap-2">
+          {showSortDropDown && <SortDropDown />}
+          {showFilterToggle && value !== undefined && onChange && (
+            <FilterToggle value={value} onChange={onChange} />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
