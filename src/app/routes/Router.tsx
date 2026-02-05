@@ -127,10 +127,6 @@ export const router = createBrowserRouter([
       })),
     ],
   },
-  {
-    path: '*',
-    element: <NotFoundPage />,
-  },
 ]);
 
 export const AppRouter = () => {
