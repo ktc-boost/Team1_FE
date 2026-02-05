@@ -27,7 +27,7 @@ const TopTab = ({ activeTab, onChangeTab, showTabs = true }: TopTabProps) => {
                 role="tab"
                 aria-selected={activeTab === label}
                 className={cn(
-                  'flex h-12 items-center gap-2 px-4 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-boost-blue',
+                  'flex h-12 items-center gap-2 px-4 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-boost-blue transition-colors duration-300',
                   activeTab === label
                     ? 'text-boost-blue border-b-2 border-b-boost-blue'
                     : 'subtitle2-regular text-gray-600 hover:text-gray-700 border-b-2 border-b-transparent',
