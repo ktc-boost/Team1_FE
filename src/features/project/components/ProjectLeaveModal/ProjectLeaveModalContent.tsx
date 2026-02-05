@@ -4,33 +4,32 @@ import { ROUTE_PATH } from '@/app/routes/Router';
 import { useModal } from '@/shared/hooks/useModal';
 import { Button } from '@/shared/components/shadcn/button';
 import MovingBoo from '@/shared/components/ui/MovingBoo';
-import { useProjectStore } from '@/features/project/store/useProjectStore';
-import { useDeleteProjectMutation } from '@/features/project/hooks/mutation/useDeleteProjectMutation';
 import ProjectDeleteRotatingText from '@/features/project/components/ProjectDeleteModal/ProjectDeleteRotatingText';
+import { useProjectStore } from '@/features/project/store/useProjectStore';
+import { useLeaveProjectMutation } from '@/features/project/hooks/mutation/useLeaveProjectMutation';
 
-const ProjectDeleteModalContent = () => {
+const ProjectLeaveModalContent = () => {
   const projectData = useProjectStore((state) => state.projectData);
   const { resetModal, backModal } = useModal();
   const navigate = useNavigate();
 
-  const { mutate: deleteProjectMutation, isPending } = useDeleteProjectMutation({
+  const { mutate: leaveProjectMutation, isPending } = useLeaveProjectMutation({
     onSuccess: () => {
       resetModal();
-      toast.success('프로젝트가 삭제되었습니다.');
       navigate(ROUTE_PATH.MY_TASK);
+      toast.success('프로젝트를 떠났습니다.');
     },
-    onError: () => toast.error('프로젝트 삭제를 실패했습니다.'),
+    onError: () => toast.error('프로젝트 떠나기를 실패했습니다.'),
   });
 
-  if (!projectData) {
+  if (!projectData)
     return (
       <div className="flex items-center justify-center py-8 label1-bold text-gray-500">
-        삭제할 프로젝트 정보가 없습니다.
+        떠날 프로젝트 정보가 없습니다.
       </div>
     );
-  }
 
-  const handleDeleteProject = () => deleteProjectMutation(projectData.id);
+  const handleProjectLeaveClick = () => leaveProjectMutation(projectData.id);
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -50,15 +49,15 @@ const ProjectDeleteModalContent = () => {
         {/* TODO: SmallLoader 컴포넌트 병합 후 적용 예정 */}
         <Button
           variant="defaultBoost"
-          onClick={handleDeleteProject}
+          onClick={handleProjectLeaveClick}
           className="flex-1"
           disabled={isPending}
         >
-          {isPending ? '삭제 중...' : '삭제'}
+          {isPending ? '떠나는 중...' : '떠나기'}
         </Button>
       </div>
     </div>
   );
 };
 
-export default ProjectDeleteModalContent;
+export default ProjectLeaveModalContent;

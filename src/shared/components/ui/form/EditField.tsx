@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Pencil, Check, X } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import { Input } from '@/shared/components/shadcn/input';
 import { Button } from '@/shared/components/shadcn/button';
+import ActionButtons from '@/shared/components/ui/ActionButtons';
 
 interface EditFieldProps<T extends string | number> {
   label: string;
@@ -20,7 +21,7 @@ const EditField = <T extends string | number>({
   const [inputValue, setInputValue] = useState<T>(value);
 
   const handleSave = () => {
-    onSave(inputValue);
+    if (inputValue !== value) onSave(inputValue);
     setEditing(false);
   };
 
@@ -29,40 +30,27 @@ const EditField = <T extends string | number>({
     setEditing(false);
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nextValue = type === 'number' ? Number(e.target.value) : e.target.value;
+    setInputValue(nextValue as T);
+  };
+
   return (
-    <div className="flex flex-col gap-1 border-b border-gray-300 pb-2">
-      <span className="subtitle1-bold">{label}</span>
+    <div className="flex flex-col gap-1 pb-2 border-b border-gray-300">
+      <span className="body2-bold md:subtitle1-bold">{label}</span>
       {editing ? (
-        <div className="flex items-center">
+        <div className="flex items-center gap-1">
           <Input
             type={type}
             value={inputValue}
-            onChange={(e) => {
-              const nextValue = type === 'number' ? Number(e.target.value) : e.target.value;
-              setInputValue(nextValue as T);
-            }}
-            className="h-10 left-0 w-full subtitle2-regular focus:ring-transparent focus:border-gray-400"
+            onChange={handleChange}
+            className="w-full h-8 md:h-10 left-0 body2-regular md:subtitle2-regular focus:ring-transparent focus:border-gray-400"
             autoFocus
           />
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-9 w-9 text-boost-blue hover:text-boost-blue-hover hover:bg-boost-blue/10"
-            onClick={handleSave}
-          >
-            <Check className="w-5 h-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-9 w-9 text-boost-orange hover:text-boost-orange-pressed hover:bg-boost-orange/10"
-            onClick={handleCancel}
-          >
-            <X className="w-5 h-5" />
-          </Button>
+          <ActionButtons onSave={handleSave} onCancel={handleCancel} />
         </div>
       ) : (
-        <div className="h-10 flex items-center gap-2 subtitle2-regular pl-1">
+        <div className="flex items-center gap-2 h-9 md:h-10 pl-1 body2-regular md:subtitle2-regular">
           <span className="text-gray-800">
             {value}
             {type === 'number' ? '명' : ''}

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import ProjectHeader from '@/features/project/components/ProjectPageComponents/ProjectHeader';
 import ProjectTopTab from '@/features/project/components/ProjectPageComponents/ProjectTopTab';
 import { Separator } from '@/shared/components/shadcn/separator';
-import { useProjectQuery } from '@/features/project/hooks/useProjectQuery';
+import { useProjectQuery } from '@/features/project/hooks/query/useProjectQuery';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
 import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 

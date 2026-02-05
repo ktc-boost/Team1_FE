@@ -7,7 +7,7 @@ import {
   type CreateTaskInput,
 } from '@/features/task/schemas/taskSchema';
 import { useModal } from '@/shared/hooks/useModal';
-import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
+import { useProjectMembersQuery } from '@/features/project/hooks/query/useProjectMembersQuery';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
 
 export const useCreateTaskForm = (
