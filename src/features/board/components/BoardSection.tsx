@@ -30,7 +30,7 @@ const BoardSection = ({ type, boardTab: initialTab }: BoardSectionProps) => {
 
   useEffect(() => {
     clearTags();
-  }, [projectId]);
+  }, [projectId, clearTags]);
 
   const [boardTab, setBoardTab] = useState<'status' | 'member'>(
     initialTab === 'status' || initialTab === 'member' ? initialTab : 'status',
