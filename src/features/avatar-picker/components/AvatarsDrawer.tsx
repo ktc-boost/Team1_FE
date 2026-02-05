@@ -70,10 +70,10 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
         <DrawerTrigger asChild>
           <button
             type="button"
-            className="absolute -bottom-2 -right-2 bg-boost-blue hover:bg-boost-blue-hover text-white p-4 rounded-full shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-boost-blue/30 cursor-pointer"
+            className="absolute -bottom-2 -right-2 bg-boost-blue hover:bg-boost-blue-hover text-white p-4 rounded-full shadow-lg focus:boost-blue/30 cursor-pointer"
             aria-label="아바타 변경"
           >
-            <Pen size={20} />
+            <Pen className="h-4 w-4 sm:h-5 sm:w-5" />
             <span className="absolute inset-0 bg-white rounded-full opacity-20 pointer-events-none" />
           </button>
         </DrawerTrigger>
@@ -81,8 +81,10 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
 
       <DrawerContent className="max-h-[95vh] border-gray-300">
         <DrawerHeader className="pt-8 pb-4 text-center border-b border-gray-100">
-          <DrawerTitle className="text-3xl font-bold text-gray-800 mb-2">아바타 선택</DrawerTitle>
-          <DrawerDescription className="text-gray-600 text-lg">
+          <DrawerTitle className="title2-bold sm:title1-bold font-bold text-gray-800 mb-2">
+            아바타 선택
+          </DrawerTitle>
+          <DrawerDescription className="body2-regular text-gray-600 sm:body1-regular">
             아바타와 배경색상을 골라보세요!
           </DrawerDescription>
         </DrawerHeader>

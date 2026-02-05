@@ -72,7 +72,7 @@ export const useAlarmSetup = () => {
   const timeLeft = `${minutes}:${seconds.toString().padStart(2, '0')}`;
   const handleSkip = useCallback(() => {
     const from = location.state?.from;
-    if (from === ROUTE_PATH.AVATAR || from === ROUTE_PATH.SETTINGS) {
+    if (from === ROUTE_PATH.SETTINGS) {
       navigate(from);
     } else {
       navigate(ROUTE_PATH.MY_TASK);
