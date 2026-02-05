@@ -1,8 +1,8 @@
-import { useProjectsQuery } from '@/features/project/hooks/useProjectsQuery';
+import { useProjectsQuery } from '@/features/project/hooks/query/useProjectsQuery';
 import { useModal } from '@/shared/hooks/useModal';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { useProjectsStore } from '@/features/project/store/useProjectsStore';
-import { useProjectModals } from '@/features/project/hooks/useProjectModals';
+import { useProjectModals } from '@/features/project/hooks/modal/useProjectModals';
 import { useEffect, useRef } from 'react';
 import { Separator } from '@/shared/components/shadcn/separator';
 import MyTaskHeader from '@/features/my-task/components/MyTaskPageComponents/MyTaskHeader';

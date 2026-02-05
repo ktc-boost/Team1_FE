@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
-import Boo from '@/shared/assets/images/boost/boo.png';
-import Boost from '@/shared/assets/images/boost/boost-logo-3d.png';
+import Boo from '@/shared/assets/images/boost/boo.webp';
+import Boost from '@/shared/assets/images/boost/boost-logo-3d-low.webp';
 
 const SplashScreen = () => {
   return (

@@ -1,19 +1,22 @@
 import { Button } from '@/shared/components/shadcn/button';
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
 import { MAX_ZOOM, MIN_ZOOM } from '@/features/task-detail/types/pdfTypes';
+import { useShallow } from 'zustand/react/shallow';
 
 const PdfControlBar = () => {
-  const {
-    numPages,
-    pageNumber,
-    zoom,
-    pageSize,
-
-    goPrevPage,
-    goNextPage,
-    zoomIn,
-    zoomOut,
-  } = usePdfStore();
+  const { numPages, pageNumber, zoom, pageSize, goPrevPage, goNextPage, zoomIn, zoomOut } =
+    usePdfStore(
+      useShallow((s) => ({
+        numPages: s.numPages,
+        pageNumber: s.pageNumber,
+        zoom: s.zoom,
+        pageSize: s.pageSize,
+        goPrevPage: s.goPrevPage,
+        goNextPage: s.goNextPage,
+        zoomIn: s.zoomIn,
+        zoomOut: s.zoomOut,
+      })),
+    );
 
   return (
     <>

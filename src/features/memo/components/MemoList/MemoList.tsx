@@ -1,10 +1,13 @@
-import { useState } from 'react';
-import { useMemosQuery } from '@/features/memo/hooks/useMemosQuery';
+import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 import MemoListHeader from '@/features/memo/components/MemoList/MemoListHeader';
 import MemoTable from '@/features/memo/components/MemoList/MemoTable';
-import { useNavigate } from 'react-router-dom';
-import { useMemoModals } from '@/features/memo/hooks/useMemoModals';
-import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
+import { useMemoModals } from '@/features/memo/hooks/modal/useMemoModals';
+import { useRowSelection } from '@/features/memo/hooks/ui/useRowSelection';
+import { usePagination } from '@/features/memo/hooks/ui/usePagination';
+import { useMemosQuery } from '@/features/memo/hooks/query/useMemosQuery';
+import { HEADER_HEIGHT, ROW_HEIGHT } from '@/features/memo/constants/memo.ui.constants';
 
 interface MemoListProps {
   projectId: string;
@@ -13,83 +16,54 @@ interface MemoListProps {
 
 const MemoList = ({ projectId, onSelectMemo }: MemoListProps) => {
   const { data: memos, isLoading } = useMemosQuery(projectId);
+  const tableContainerRef = useRef<HTMLDivElement>(null);
 
-  const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
-  const [currentPage, setCurrentPage] = useState(0);
-
-  const { showDeleteMemoModal } = useMemoModals();
   const navigate = useNavigate();
+  const { showDeleteMemoModal } = useMemoModals();
 
-  const pageSize = 10;
-  const pageCount = Math.ceil((memos?.length || 0) / pageSize);
-  const currentData = memos?.slice(currentPage * pageSize, (currentPage + 1) * pageSize);
+  const { selectedRows, toggleSelectAll, toggleSelectRow, removeSelected } = useRowSelection();
+  const { currentPage, setCurrentPage, pageSize, pageCount, currentData } = usePagination({
+    data: memos,
+    containerRef: tableContainerRef,
+    headerHeight: HEADER_HEIGHT,
+    rowHeight: ROW_HEIGHT,
+  });
 
-  const handleSelectAll = () => {
-    if (selectedRows.size === (currentData?.length || 0)) {
-      setSelectedRows(new Set());
-    } else {
-      setSelectedRows(new Set(currentData?.map((m) => m.id) || []));
-    }
-  };
-
-  const handleSelectRow = (id: string) => {
-    const newSelected = new Set(selectedRows);
-    if (newSelected.has(id)) newSelected.delete(id);
-    else newSelected.add(id);
-    setSelectedRows(newSelected);
-  };
-
-  const handleDeleteSelected = () => {
-    if (selectedRows.size === 0) {
-      alert('삭제할 메모를 선택해주세요.');
-      return;
-    }
-
-    showDeleteMemoModal(Array.from(selectedRows), navigate, (deletedIds) => {
-      setSelectedRows((prev) => {
-        const newSet = new Set(prev);
-        deletedIds.forEach((id) => newSet.delete(id));
-        return newSet;
-      });
+  const handleDelete = (ids: string[]) => {
+    showDeleteMemoModal(ids, navigate, (deletedIds) => {
+      removeSelected(deletedIds);
     });
   };
 
-  const handleDeleteOne = (id: string) => {
-    showDeleteMemoModal([id], navigate, (deletedIds) => {
-      setSelectedRows((prev) => {
-        const newSet = new Set(prev);
-        deletedIds.forEach((id) => newSet.delete(id));
-        return newSet;
-      });
-    });
-  };
-
-  if (isLoading) {
-    return <FullPageLoader text="메모 목록 불러오는 중.." />;
-  }
+  if (isLoading) return <FullPageLoader text="메모 목록 불러오는 중.." />;
 
   return (
-    <div className="flex flex-col h-full space-y-4 p-4 bg-gray-50">
+    <section className="flex flex-col h-full space-y-4 p-4 bg-gray-50 overflow-hidden">
       <MemoListHeader
         memos={memos}
         selectedRows={selectedRows}
-        onDeleteSelected={handleDeleteSelected}
+        onDeleteSelected={() => handleDelete(Array.from(selectedRows))}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         pageCount={pageCount}
       />
 
-      <MemoTable
-        currentData={currentData}
-        selectedRows={selectedRows}
-        onSelectAll={handleSelectAll}
-        onSelectRow={handleSelectRow}
-        onSelectMemo={onSelectMemo}
-        onDeleteOne={handleDeleteOne}
-        pageSize={pageSize}
-        currentPage={currentPage}
-      />
-    </div>
+      <section
+        ref={tableContainerRef}
+        className="flex-1 min-h-0 bg-white rounded-md border border-gray-200"
+      >
+        <MemoTable
+          currentData={currentData}
+          selectedRows={selectedRows}
+          onSelectAll={() => toggleSelectAll(currentData?.map((m) => m.id))}
+          onSelectRow={toggleSelectRow}
+          onSelectMemo={onSelectMemo}
+          onDeleteOne={(id) => handleDelete([id])}
+          pageSize={pageSize}
+          currentPage={currentPage}
+        />
+      </section>
+    </section>
   );
 };
 

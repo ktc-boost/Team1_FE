@@ -19,50 +19,60 @@ const MemoListHeader = ({
   setCurrentPage,
   pageCount,
 }: MemoListHeaderProps) => {
+  const selectedCount = selectedRows.size;
+  const totalCount = memos?.length ?? 0;
+
+  const isFirstPage = currentPage === 0;
+  const isLastPage = currentPage + 1 >= pageCount;
+
+  const goPrevPage = () => setCurrentPage((p) => p - 1);
+  const goNextPage = () => setCurrentPage((p) => p + 1);
+
+  const paginationBtnClass =
+    'rounded-full border disabled:border-gray-500 disabled:bg-white disabled:text-gray-600';
+
   return (
-    <div className="flex items-center justify-between px-2">
-      <div className="text-sm text-gray-500 flex items-center gap-3">
-        {selectedRows.size > 0 ? (
+    <header className="flex items-center justify-between px-2">
+      <div className="flex items-center gap-3 label2-regular md:label1-regular text-gray-500">
+        {selectedCount > 0 ? (
           <>
-            <span className="font-medium text-boost-blue-600">
-              {selectedRows.size}개 항목 선택됨
-            </span>
+            <span>{selectedCount}개 항목 선택됨</span>
             <Button
               variant="secondaryBoost"
               size="sm"
               onClick={onDeleteSelected}
-              className="text-xs rounded-md px-3"
+              className="rounded-full px-3 !label2-regular"
             >
               <Trash2 />
               선택 삭제
             </Button>
           </>
         ) : (
-          <span>총 {memos?.length || 0}개 메모</span>
+          <span>총 {totalCount}개 메모</span>
         )}
       </div>
 
-      <div className="flex items-center gap-2 pr-2">
+      <nav className="flex items-center gap-2 pr-2">
         <Button
           variant="defaultBoost"
           size="icon"
-          disabled={currentPage === 0}
-          onClick={() => setCurrentPage((p) => p - 1)}
-          className="disabled:bg-white disabled:text-gray-600 border disabled:border-gray-500 rounded-full"
+          disabled={isFirstPage}
+          onClick={goPrevPage}
+          className={paginationBtnClass}
         >
           <ChevronLeft />
         </Button>
         <Button
           variant="defaultBoost"
           size="icon"
-          disabled={currentPage + 1 >= pageCount}
-          onClick={() => setCurrentPage((p) => p + 1)}
-          className="disabled:bg-white disabled:text-gray-600 border disabled:border-gray-500 rounded-full"
+          disabled={isLastPage}
+          onClick={goNextPage}
+          className={paginationBtnClass}
         >
           <ChevronRight />
         </Button>
-      </div>
-    </div>
+      </nav>
+    </header>
   );
 };
 

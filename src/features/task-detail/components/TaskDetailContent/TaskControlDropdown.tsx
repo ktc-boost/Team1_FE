@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/shared/components/shadcn/dropdown-menu';
-import { useTaskModals } from '@/features/task/hooks/useTaskModals';
+import { useTaskModals } from '@/features/task/hooks/modal/useTaskModals';
 
 interface TaskControlDropdownProps {
   onEdit?: () => void;

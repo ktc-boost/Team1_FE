@@ -4,10 +4,8 @@ const AvatarHeader = () => {
   return (
     <div className="text-center pt-20">
       <div className="inline-flex items-center gap-2 mb-4">
-        <Sparkles className="w-8 h-8 text-blue-500 animate-pulse" />
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-          아바타를 설정해주세요
-        </h1>
+        <Sparkles className="w-5 h-5 sm:w-8 sm:h-8 text-boost-blue animate-pulse" />
+        <h1 className="title1-bold text-gray-800">아바타를 설정해주세요</h1>
       </div>
     </div>
   );

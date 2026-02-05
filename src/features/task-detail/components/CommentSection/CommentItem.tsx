@@ -5,8 +5,9 @@ import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { CommentActionsMenu } from '@/features/task-detail/components/CommentSection/CommentActionsMenu';
-import { AuthorAvatar } from './AuthorAvatar';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
+import { useShallow } from 'zustand/react/shallow';
+import { AuthorAvatar } from '@/features/task-detail/components/CommentSection/AuthorAvatar';
 
 interface CommentItemProps {
   comment: CommentUIType;
@@ -21,10 +22,17 @@ interface CommentItemProps {
 
 const CommentItem = forwardRef<HTMLDivElement, CommentItemProps>(
   ({ comment, onEdit, onDelete, onSelectPin, isEditing, isSelected, isPinHighlighted }, ref) => {
+    const { setActivePinCommentId, clearCurrentPin } = useTaskDetailStore(
+      useShallow((s) => ({
+        setActivePinCommentId: s.setActivePinCommentId,
+        clearCurrentPin: s.clearCurrentPin,
+      })),
+    );
+    const user = useAuthStore((s) => s.user);
+
     const isAnonymous = comment.isAnonymous;
-    const { user } = useAuthStore();
     const isAuthor = user?.id === comment.authorInfo.memberId;
-    const { setActivePinCommentId, clearCurrentPin } = useTaskDetailStore();
+
     return (
       <div ref={ref} className="flex py-3">
         <div className="flex-1">

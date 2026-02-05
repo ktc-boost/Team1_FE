@@ -1,23 +1,27 @@
+import { lazy } from 'react';
 import { createBrowserRouter, generatePath, RouterProvider } from 'react-router-dom';
 import ProtectedRoute from '@/app/routes/ProtectedRoute';
+import RootFallback from '@/app/RootErrorBoundary/RootFallback';
 import AppLayout from '@/app/layout/AppLayout';
 import LandingPage from '@/pages/LandingPage';
 import LoginPage from '@/pages/LoginPage';
 import MyTaskPage from '@/pages/MyTaskPage';
 import ProjectPage from '@/pages/ProjectPage';
+import SettingsPage from '@/pages/SettingsPage';
+import PageErrorBoundary from '@/pages/PageErrorBoundary/PagaErrorBoundary';
 import ServerErrorPage from '@/pages/ServerErrorPage';
-import TaskDetailPage from '@/pages/TaskDetailPage';
-import AvatarPickerPage from '@/pages/AvatarPickerPage';
+import AvatarPickerPage from '@/pages/AvatarSettingsPage';
 import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
 import AlarmSetupPage from '@/pages/AlarmSetupPage';
-import AlarmPermissionPage from '@/pages/AlarmPermissionPage';
+import AlarmSetupMobilePage from '@/pages/AlarmSetupMobilePage';
+import ModalRenderer from '@/shared/components/ui/modal/ModalRenderer';
 import BoardSection from '@/features/board/components/BoardSection';
 import MemoSection from '@/features/memo/components/MemoSection';
 import FileSection from '@/features/file/components/FileSection';
-import MemoEditor from '@/features/memo/components/MemoEditor/MemoEditor';
-import MemoDetail from '@/features/memo/components/MemoDetail/MemoDetail';
-import SettingsPage from '@/pages/SettingsPage';
-import NotFoundPage from '@/pages/NotFoundPage';
+
+const TaskDetailPage = lazy(() => import('@/pages/TaskDetailPage'));
+const MemoDetail = lazy(() => import('@/features/memo/components/MemoDetail/MemoDetail'));
+const MemoEditor = lazy(() => import('@/features/memo/components/MemoEditor/MemoEditor'));
 
 export const ROUTE_PATH = {
   MAIN: '/',
@@ -57,7 +61,7 @@ const PUBLIC_ROUTES = [
   { path: ROUTE_PATH.LOGIN, element: <LoginPage /> },
   { path: ROUTE_PATH.ERROR, element: <ServerErrorPage /> },
   { path: ROUTE_PATH.CALLBACK, element: <KakaoCallbackPage /> },
-  { path: ROUTE_PATH.ALARM_SETUP_MOBILE, element: <AlarmPermissionPage /> },
+  { path: ROUTE_PATH.ALARM_SETUP_MOBILE, element: <AlarmSetupMobilePage /> },
 ];
 
 const PROTECTED_ROUTES = [
@@ -82,30 +86,46 @@ const PROTECTED_ROUTES_NO_LAYOUT = [
   { path: ROUTE_PATH.ALARM_SETUP, element: <AlarmSetupPage /> },
 ];
 
+const AppLayoutWithModal = () => {
+  return (
+    <>
+      <ModalRenderer />
+      <AppLayout />
+    </>
+  );
+};
+
 export const router = createBrowserRouter([
-  // 공개 라우트
   ...PUBLIC_ROUTES,
 
-  // 사이드바 없는 보호 라우트
   ...PROTECTED_ROUTES_NO_LAYOUT.map((route) => ({
     ...route,
-    element: <ProtectedRoute>{route.element}</ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <PageErrorBoundary>{route.element}</PageErrorBoundary>
+      </ProtectedRoute>
+    ),
   })),
 
   {
     path: '/',
-    element: <AppLayout />,
+    element: <AppLayoutWithModal />,
+    errorElement: (
+      <RootFallback
+        error={new Error('라우터 레벨 디자인 테스트')}
+        resetErrorBoundary={() => window.location.reload()}
+      />
+    ),
     children: [
-      // 보호된 라우트
       ...PROTECTED_ROUTES.map((route) => ({
         ...route,
-        element: <ProtectedRoute>{route.element}</ProtectedRoute>,
+        element: (
+          <ProtectedRoute>
+            <PageErrorBoundary>{route.element}</PageErrorBoundary>
+          </ProtectedRoute>
+        ),
       })),
     ],
-  },
-  {
-    path: '*',
-    element: <NotFoundPage />,
   },
 ]);
 

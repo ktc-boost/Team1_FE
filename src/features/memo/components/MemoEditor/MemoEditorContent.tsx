@@ -1,6 +1,6 @@
+import { FileText } from 'lucide-react';
 import MDEditor from '@uiw/react-md-editor';
 import { Label } from '@/shared/components/shadcn/label';
-import { FileText } from 'lucide-react';
 
 interface MemoEditorContentProps {
   content: string;
@@ -8,14 +8,22 @@ interface MemoEditorContentProps {
 }
 
 const MemoEditorContent = ({ content, setContent }: MemoEditorContentProps) => {
+  const handleChange = (val?: string) => setContent(val ?? '');
+
   return (
     <div className="flex-1 overflow-hidden p-4 pt-1">
-      <Label className="flex mb-3 items-center label1-bold text-gray-700">
-        <FileText className="w-4 h-4 text-gray-500" />
-        내용
-      </Label>
+      <div className="mb-3 flex items-center gap-2">
+        <Label className="flex items-center gap-1 !label1-bold text-gray-700">
+          <FileText className="h-4 w-4 text-gray-500" />
+          내용
+        </Label>
+        <p className="md:hidden text-gray-500 label2-regular">
+          ※ 작성 공간이 좁다면 전체화면을 이용해 주세요.
+        </p>
+      </div>
+
       <div className="h-[calc(100%-2rem)]" data-color-mode="light">
-        <MDEditor value={content} onChange={(val) => setContent(val || '')} height="100%" />
+        <MDEditor value={content} onChange={handleChange} height="100%" />
       </div>
     </div>
   );

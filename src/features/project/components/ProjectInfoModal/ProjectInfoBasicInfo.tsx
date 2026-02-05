@@ -1,3 +1,4 @@
+import InfoRow from '@/shared/components/ui/InfoRow';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
 
 const ProjectInfoBasicInfo = () => {
@@ -5,19 +6,8 @@ const ProjectInfoBasicInfo = () => {
 
   return (
     <div className="flex-1 rounded-xl p-1 space-y-6 pt-3 pl-2">
-      <div className="flex flex-col gap-1 border-b border-gray-300 pb-2">
-        <span className="subtitle1-bold">프로젝트 이름</span>
-        <div className="h-10 flex items-center gap-2 subtitle2-regular pl-1">
-          <span className="text-gray-800">{projectData.name}</span>
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-1 border-b border-gray-300 pb-2">
-        <span className="subtitle1-bold">기본 검토 수</span>
-        <div className="h-10 flex items-center gap-2 subtitle2-regular pl-1">
-          <span className="text-gray-800">{projectData.defaultReviewerCount}명</span>
-        </div>
-      </div>
+      <InfoRow label="프로젝트 이름" value={projectData.name} />
+      <InfoRow label="기본 검토 수" value={`${projectData.defaultReviewerCount}명`} />
     </div>
   );
 };

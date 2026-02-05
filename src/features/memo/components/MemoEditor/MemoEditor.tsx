@@ -1,67 +1,105 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useCreateMemoMutation } from '@/features/memo/hooks/useCreateMemoMutation';
-import { useUpdateMemoMutation } from '@/features/memo/hooks/useUpdateMemoMutation';
-import { useMemoQuery } from '@/features/memo/hooks/useMemoQuery';
-import { useMemoModals } from '@/features/memo/hooks/useMemoModals';
+import { ROUTES } from '@/app/routes/Router';
+import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
+import { useCreateMemoMutation } from '@/features/memo/hooks/mutation/useCreateMemoMutation';
+import { useUpdateMemoMutation } from '@/features/memo/hooks/mutation/useUpdateMemoMutation';
+import { useMemoQuery } from '@/features/memo/hooks/query/useMemoQuery';
+import { useMemoModals } from '@/features/memo/hooks/modal/useMemoModals';
 import MemoEditorHeader from '@/features/memo/components/MemoEditor/MemoEditorHeader';
 import MemoEditorTitle from '@/features/memo/components/MemoEditor/MemoEditorTitle';
 import MemoEditorContent from '@/features/memo/components/MemoEditor/MemoEditorContent';
-import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
+import { useMemoEditorStore } from '@/features/memo/store/useMemoEditorStore';
 
 const MemoEditor = () => {
   const navigate = useNavigate();
+  const { projectId, memoId } = useParams<{ projectId: string; memoId?: string }>();
+  const setIsDirty = useMemoEditorStore((state) => state.setIsDirty);
+
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
-  const { projectId, memoId } = useParams<{ projectId: string; memoId?: string }>();
+  const isEditMode = Boolean(memoId);
 
   const { data: memo, isLoading } = useMemoQuery(projectId ?? '', memoId ?? '');
   const createMutation = useCreateMemoMutation(projectId ?? '');
   const updateMutation = useUpdateMemoMutation(projectId ?? '', memoId ?? '');
+
   const { showEmptyFieldsModal, showUnsavedChangesModal } = useMemoModals();
 
-  const isEditMode = !!memoId;
+  const initialRef = useRef({ title: '', content: '' });
 
   useEffect(() => {
-    if (!isEditMode || !memo) return;
+    if (isEditMode && memo) {
+      setTitle(memo.title);
+      setContent(memo.content);
+      initialRef.current = { title: memo.title, content: memo.content };
+    } else if (!isEditMode) {
+      setTitle('');
+      setContent('');
+      initialRef.current = { title: '', content: '' };
+    }
+  }, [isEditMode, memo, memoId]);
 
-    setTitle(memo.title);
-    setContent(memo.content);
-  }, [memo, isEditMode]);
+  const hasUnsavedChanges =
+    title !== initialRef.current.title || content !== initialRef.current.content;
 
-  if (!projectId) return <div className="p-4">프로젝트 ID를 찾을 수 없습니다.</div>;
+  useEffect(() => {
+    setIsDirty(hasUnsavedChanges);
+    return () => setIsDirty(false);
+  }, [hasUnsavedChanges, setIsDirty]);
 
-  if (isLoading && isEditMode) return <FullPageLoader text="메모 불러오는 중.." />;
+  const isValid = title.trim() && content.trim();
+  const isSaving = createMutation.isPending || updateMutation.isPending;
 
-  const handleSave = () => {
-    if (!title.trim() || !content.trim()) {
+  const executeMemoMutation = (mutation: typeof createMutation | typeof updateMutation) => {
+    mutation.mutate(
+      { title, content },
+      {
+        onSuccess: () => {
+          initialRef.current = { title, content };
+          setIsDirty(false);
+        },
+      },
+    );
+  };
+
+  const handleSaveMemo = () => {
+    if (!isValid) {
       showEmptyFieldsModal();
       return;
     }
-
-    if (isEditMode) updateMutation.mutate({ title, content });
-    else createMutation.mutate({ title, content });
+    executeMemoMutation(isEditMode ? updateMutation : createMutation);
   };
 
-  const handleCancel = () => showUnsavedChangesModal(projectId, navigate);
+  const handleCancelEdit = () => {
+    if (!hasUnsavedChanges) {
+      navigate(ROUTES.PROJECT_MEMO_DETAIL(projectId ?? '', memoId ?? ''));
+      return;
+    }
+    showUnsavedChangesModal(projectId ?? '', navigate);
+  };
+
+  if (!projectId) return <div className="p-4">프로젝트 ID를 찾을 수 없습니다.</div>;
+  if (isLoading && isEditMode) return <FullPageLoader text="메모 불러오는 중.." />;
 
   return (
-    <div className="flex flex-col h-full overflow-hidden bg-gray-200 border-t border-gray-300">
-      <div className="flex flex-col gap-4 p-1 h-full overflow-hidden bg-gray-100 m-3 rounded-xl shadow-[0_0_6px_rgba(0,0,0,0.08)]">
+    <article className="flex flex-col h-full bg-gray-200 border-t border-gray-300">
+      <div className="flex flex-col h-full gap-4 p-1 m-3 overflow-hidden bg-gray-100 rounded-xl shadow-[0_0_6px_rgba(0,0,0,0.08)]">
         <MemoEditorHeader
           isEditMode={isEditMode}
-          onCancel={handleCancel}
-          handleSave={handleSave}
-          disableSave={
-            !title.trim() || !content.trim() || createMutation.isPending || updateMutation.isPending
-          }
-          isSaving={createMutation.isPending || updateMutation.isPending}
+          onCancel={handleCancelEdit}
+          onSave={handleSaveMemo}
+          disableSave={!isValid || isSaving}
+          isSaving={isSaving}
         />
-        <MemoEditorTitle title={title} setTitle={setTitle} />
-        <MemoEditorContent content={content} setContent={setContent} />
+
+        <section className="flex flex-col h-full gap-4">
+          <MemoEditorTitle title={title} setTitle={setTitle} />
+          <MemoEditorContent content={content} setContent={setContent} />
+        </section>
       </div>
-    </div>
+    </article>
   );
 };
 

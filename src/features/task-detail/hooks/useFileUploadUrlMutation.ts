@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fileUploadApi } from '@/features/task-detail/api/fileUploadApi';
 import { uploadToS3 } from '@/features/task-detail/utils/fileUploadUtil';
-import toast from 'react-hot-toast';
 import { formatBytes } from '@/features/file/utils/fileUtils';
 import { v4 as uuidv4 } from 'uuid';
 import { fetchFileDownloadUrl } from '@/features/file/api/fileDownloadApi';
-import { isAxiosError } from 'axios';
 import type { FileItemType } from '@/features/file/types/fileTypes';
 import type { FileStatus } from '@/features/task-detail/types/taskDetailType';
+import { TASK_DETAIL_FILES_QUERY_KEY } from '@/features/task-detail/constants/taskDetailQueryKey';
+import { calculateTimeLeft } from '@/features/task-detail/utils/calculateTimeLeftUtil';
 
 export const useUploadFileMutation = () => {
   const queryClient = useQueryClient();
@@ -19,9 +19,17 @@ export const useUploadFileMutation = () => {
         contentType: file.type,
         sizeBytes: file.size,
       });
-
+      const startTime = Date.now();
       // 2️⃣ S3에 실제 업로드
-      await uploadToS3(file, presigned.url, presigned.headers);
+      await uploadToS3(file, presigned.url, presigned.headers, (progressEvent) => {
+        const timeLeft = calculateTimeLeft(progressEvent, startTime);
+
+        queryClient.setQueryData(
+          TASK_DETAIL_FILES_QUERY_KEY.list(taskId),
+          (old: FileItemType[] = []) =>
+            old.map((item) => (item.status === 'uploading' ? { ...item, timeLeft } : item)),
+        );
+      });
 
       // 3️⃣ 업로드 완료 콜백 (서버에 알림)
       await fileUploadApi.completeFileUpload({
@@ -39,63 +47,52 @@ export const useUploadFileMutation = () => {
 
     onMutate: async (variables) => {
       const { taskId } = variables;
-      await queryClient.cancelQueries({ queryKey: ['uploadedFile', taskId] });
-      const prevFiles = queryClient.getQueryData<FileItemType[]>(['uploadedFile', taskId]);
+      await queryClient.cancelQueries({ queryKey: TASK_DETAIL_FILES_QUERY_KEY.list(taskId) });
+      const prevFiles = queryClient.getQueryData<FileItemType[]>(
+        TASK_DETAIL_FILES_QUERY_KEY.list(taskId),
+      );
       const tempId = uuidv4();
       const newFile: FileItemType = {
         fileId: tempId,
         fileName: variables.file.name,
         fileUrl: '',
         fileSize: formatBytes(variables.file.size),
-        timeLeft: '방금',
+        timeLeft: '',
         status: 'uploading' as FileStatus,
       };
-      queryClient.setQueryData(['uploadedFile', taskId], (old: FileItemType[] = []) => [
-        ...old,
-        newFile,
-      ]);
+      queryClient.setQueryData(
+        TASK_DETAIL_FILES_QUERY_KEY.list(taskId),
+        (old: FileItemType[] = []) => [...old, newFile],
+      );
       return { prevFiles, tempId, taskId };
     },
 
     onSuccess: (data, { taskId }, context) => {
-      queryClient.setQueryData(['uploadedFile', taskId], (old: FileItemType[] = []) =>
-        old.map((file) =>
-          file.fileId === context?.tempId
-            ? {
-                ...file,
-                status: 'success',
-                fileId: data.fileId,
-                fileUrl: data.downloadUrl,
-              }
-            : file,
-        ),
+      queryClient.setQueryData(
+        TASK_DETAIL_FILES_QUERY_KEY.list(taskId),
+        (old: FileItemType[] = []) =>
+          old.map((file) =>
+            file.fileId === context?.tempId
+              ? {
+                  ...file,
+                  status: 'success',
+                  fileId: data.fileId,
+                  fileUrl: data.downloadUrl,
+                  timeLeft: '완료',
+                }
+              : file,
+          ),
       );
     },
 
-    onError: (error, _variables, context) => {
-      console.error('파일 업로드 실패:', error);
-
-      if (isAxiosError(error)) {
-        const status = error.response?.status;
-
-        if (status === 400) {
-          toast.error('PDF 파일만 업로드할 수 있습니다.');
-        } else if (status === 403) {
-          toast.error('담당자만 파일을 업로드할 수 있습니다.');
-        } else if (status === 413) {
-          toast.error('파일 크기가 너무 커서 업로드할 수 없습니다.');
-        } else {
-          toast.error('파일 업로드에 실패했습니다.');
-        }
-      } else {
-        toast.error('파일 업로드에 실패했습니다.');
-      }
-
+    onError: (_error, variables, context) => {
+      const { taskId } = variables;
       if (context?.prevFiles) {
-        queryClient.setQueryData(['uploadedFile', context.taskId], context.prevFiles);
+        queryClient.setQueryData(TASK_DETAIL_FILES_QUERY_KEY.list(taskId), context.prevFiles);
       } else {
-        queryClient.setQueryData(['uploadedFile', context?.taskId], (old: FileItemType[] = []) =>
-          old.filter((file) => file.fileId !== context?.tempId),
+        queryClient.setQueryData(
+          TASK_DETAIL_FILES_QUERY_KEY.list(taskId),
+          (old: FileItemType[] = []) => old.filter((file) => file.fileId !== context?.tempId),
         );
       }
     },

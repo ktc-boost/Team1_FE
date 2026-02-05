@@ -3,11 +3,13 @@ import { useModal } from '@/shared/hooks/useModal';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ProjectManageModalContent from '@/features/project/components/ProjectManageModal/ProjectManageModalContent';
 import ProjectJoinCodeViewModalContent from '@/features/project/components/ProjectJoinModal/ProjectJoinCodeViewModalContent';
-import TaskCreateModalContent from '@/features/task/components/TaskCreateModal/TaskCreateModalContent';
+import TaskCreateModalContent from '@/features/task/components/TaskModal/TaskCreateModalContent';
 import type { Project } from '@/features/project/types/projectTypes';
 import { ROUTES } from '@/app/routes/Router';
 import { ROLES } from '@/features/project/constants/projectConstants';
 import ProjectInfoModalContent from '@/features/project/components/ProjectInfoModal/ProjectInfoModalContent';
+import { useMemoEditorStore } from '@/features/memo/store/useMemoEditorStore';
+import { useMemoModals } from '@/features/memo/hooks/modal/useMemoModals';
 
 interface ProjectHeaderProps {
   project: Project;
@@ -17,11 +19,17 @@ const ProjectHeader = ({ project }: ProjectHeaderProps) => {
   const { showCustom } = useModal();
   const navigate = useNavigate();
   const location = useLocation();
+  const { showUnsavedChangesModal } = useMemoModals();
+  const isDirty = useMemoEditorStore((state) => state.isDirty);
 
   const isOwner = project?.role === ROLES.OWNER;
 
   const handleButtonClick = () => {
     if (location.pathname.includes('/memo')) {
+      if (isDirty) {
+        showUnsavedChangesModal(project.id, navigate);
+        return;
+      }
       navigate(ROUTES.PROJECT_MEMO_EDIT(project.id));
     } else {
       showCustom({
@@ -39,14 +47,14 @@ const ProjectHeader = ({ project }: ProjectHeaderProps) => {
         title: '프로젝트 관리',
         size: 'lg',
         description: '프로젝트 기본 정보와 멤버를 관리합니다.',
-        content: <ProjectManageModalContent navigate={navigate} />,
+        content: <ProjectManageModalContent />,
       });
     } else {
       showCustom({
         title: '프로젝트 정보',
         size: 'lg',
         description: '프로젝트 기본 정보와 멤버를 확인합니다.',
-        content: <ProjectInfoModalContent navigate={navigate} />,
+        content: <ProjectInfoModalContent />,
       });
     }
   };

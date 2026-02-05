@@ -5,12 +5,19 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:qa": "vite --mode qa",
+    "dev:prod": "vite --mode production",
     "build": "tsc -b && vite build",
+    "build:qa": "tsc -b && vite build --mode qa",
+    "build:prod": "tsc -b && vite build --mode production",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "preview": "vite preview",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "img:webp": "tsx scripts/convert-images.ts",
+    "img:webp:member-avatar": "tsx scripts/convert-images.ts member-avatar",
+    "img:webp:one": "tsx scripts/convert-images.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -81,9 +88,12 @@
     "globals": "^16.3.0",
     "husky": "^9.1.7",
     "jiti": "^2.5.1",
+    "lint-staged": "^16.2.7",
     "postcss": "^8.5.6",
     "prettier": "3.6.2",
+    "sharp": "^0.34.5",
     "tailwindcss": "4.1.12",
+    "tsx": "^4.21.0",
     "tw-animate-css": "^1.3.7",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.1",
@@ -91,7 +101,10 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": "eslint --cache --fix"
+    "*.{js,ts,tsx}": [
+      "eslint --cache --fix",
+      "prettier --write"
+    ]
   },
   "pnpm": {
     "overrides": {

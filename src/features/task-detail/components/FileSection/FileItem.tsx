@@ -1,4 +1,4 @@
-import fileIcon from '@/shared/assets/images/file_icon.png';
+import fileIcon from '@/shared/assets/images/file-icon/file_icon.png';
 import { EllipsisVertical } from 'lucide-react';
 import { FileStatusImages } from '@/features/task-detail/utils/fileStatusImageUtil';
 import {
@@ -41,7 +41,7 @@ const FileItem = ({
         <div className="flex-1">
           <p className="text-sm">{fileName}</p>
           <p className="text-xs pt-1 text-gray-500">
-            {fileSize} | {timeLeft} left |
+            {fileSize} | {timeLeft} |
             <img src={FileStatusImages[status]} alt={status} className="inline-block w-4 h-4" />
             {status}
           </p>
