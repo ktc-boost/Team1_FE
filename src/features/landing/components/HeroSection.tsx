@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { Button } from '@/shared/components/shadcn/button';
-import Boost_3D from '@/shared/assets/images/boost/boost-logo-3d.png';
+import Boost_3D from '@/shared/assets/images/boost/webp/boost-logo-3d.webp';
 import { floatVariant } from '@/shared/utils/animations/motionVariants';
 
 const HeroSection = () => {

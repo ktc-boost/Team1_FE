@@ -1,9 +1,9 @@
 import { CardDescription, CardContent, CardTitle, Card } from '@/shared/components/shadcn/card';
-import AvatarLJH from '@/shared/assets/images/member-avatar/ljh-avatar.png';
-import AvatarKWH from '@/shared/assets/images/member-avatar/kwh-avatar.png';
-import AvatarKHM from '@/shared/assets/images/member-avatar/khm-avatar.png';
-import AvatarSYJ from '@/shared/assets/images/member-avatar/syj-avatar.png';
-import AvatarYDY from '@/shared/assets/images/member-avatar/ydy-avatar.png';
+import AvatarLJH from '@/shared/assets/images/member-avatar/webp/ljh-avatar.webp';
+import AvatarKWH from '@/shared/assets/images/member-avatar/webp/kwh-avatar.webp';
+import AvatarKHM from '@/shared/assets/images/member-avatar/webp/khm-avatar.webp';
+import AvatarSYJ from '@/shared/assets/images/member-avatar/webp/syj-avatar.webp';
+import AvatarYDY from '@/shared/assets/images/member-avatar/webp/ydy-avatar.webp';
 import { cn } from '@/shared/lib/utils';
 
 const TeamSection = () => {
