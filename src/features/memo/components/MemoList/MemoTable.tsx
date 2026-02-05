@@ -6,10 +6,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/shared/components/shadcn/table';
+import { cn } from '@/shared/lib/utils';
 import { Checkbox } from '@/shared/components/shadcn/checkbox';
 import MemoTableRow from '@/features/memo/components/MemoList/MemoTableRow';
 import type { Memo } from '@/features/memo/types/memoTypes';
-import { cn } from '@/shared/lib/utils';
 
 interface MemoTableProps {
   currentData?: Memo[];
@@ -32,32 +32,32 @@ const MemoTable = ({
   currentPage,
   pageSize,
 }: MemoTableProps) => {
-  const defaultFont = 'text-gray-800 subtitle2-bold';
+  const mobileHiddenClass = 'hidden md:table-cell';
+
+  const currentIds = currentData?.map((memo) => memo.id) ?? [];
+  const isAllSelected = currentIds.length > 0 && currentIds.every((id) => selectedRows.has(id));
 
   return (
-    <div className="flex-1 overflow-auto rounded-xl border border-gray-200 shadow-[0_0_6px_rgba(0,0,0,0.08)]">
-      <Table className="min-w-full table-fixed">
-        <TableHeader>
-          <TableRow className="border-b border-gray-300 bg-white h-12 hover:bg-whtie">
-            <TableHead className="w-[6%] px-5">
+    <div className="flex flex-col h-full overflow-hidden rounded-xl border border-gray-200 shadow-[0_0_6px_rgba(0,0,0,0.08)] bg-white">
+      <Table className="min-w-full table-fixed border-collapse">
+        <TableHeader className="sticky top-0 z-10 bg-white text-gray-800 subtitle2-bold">
+          <TableRow className="border-b border-gray-300 h-12 hover:bg-white">
+            <TableHead className="w-[60px] px-5">
               <Checkbox
-                checked={
-                  selectedRows.size === (currentData?.length || 0) && (currentData?.length || 0) > 0
-                }
+                checked={isAllSelected}
                 onCheckedChange={onSelectAll}
-                aria-label="Select all"
                 className="rounded-md"
               />
             </TableHead>
-            <TableHead className={cn('w-[8%]', defaultFont)}>번호</TableHead>
-            <TableHead className={cn('w-[24%]', defaultFont)}>제목</TableHead>
-            <TableHead className={cn('w-[25%]', defaultFont)}>생성일</TableHead>
-            <TableHead className={cn('w-[25%]', defaultFont)}>수정일</TableHead>
-            <TableHead className={cn('w-[12%] text-center', defaultFont)}>삭제</TableHead>
+            <TableHead className={cn('w-[80px]')}>번호</TableHead>
+            <TableHead>제목</TableHead>
+            <TableHead className={cn('w-[200px]', mobileHiddenClass)}>생성일</TableHead>
+            <TableHead className={cn('w-[200px]', mobileHiddenClass)}>수정일</TableHead>
+            <TableHead className={cn('w-[80px] text-center', mobileHiddenClass)}>삭제</TableHead>
           </TableRow>
         </TableHeader>
 
-        <TableBody>
+        <TableBody className="flex-1">
           {currentData && currentData.length > 0 ? (
             currentData.map((memo, index) => (
               <MemoTableRow
@@ -74,8 +74,8 @@ const MemoTable = ({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={6} className="text-center">
-                <div className="flex flex-col items-center justify-center text-gray-400 pt-16 h-full">
+              <TableCell colSpan={6}>
+                <div className="flex flex-col items-center justify-center text-gray-400 h-64">
                   <div className="text-4xl mb-2">📄</div>
                   <div className="body1-regular">메모가 존재하지 않아요!</div>
                 </div>

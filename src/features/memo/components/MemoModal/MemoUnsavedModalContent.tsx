@@ -25,7 +25,7 @@ const MemoUnsavedModalContent = ({ projectId, navigate }: MemoUnsavedModalConten
         <Button
           variant="outline"
           onClick={resetModal}
-          className="flex-1 border-gray-300 hover:bg-gray-200 cursor-pointer"
+          className="flex-1 border-gray-300 hover:bg-gray-200"
         >
           취소
         </Button>

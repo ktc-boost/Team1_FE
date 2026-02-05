@@ -1,9 +1,9 @@
-import { useModal } from '@/shared/hooks/useModal';
 import type { NavigateFunction } from 'react-router-dom';
-import MemoDeleteModalContent from '@/features/memo/components/MemoList/MemoDeleteModalContent';
-import MemoUnsavedModalContent from '@/features/memo/components/MemoEditor/MemoUnsavedModalContent';
+import MemoDeleteModalContent from '@/features/memo/components/MemoModal/MemoDeleteModalContent';
+import MemoUnsavedModalContent from '@/features/memo/components/MemoModal/MemoUnsavedModalContent';
+import MemoEmptyFieldsModalContent from '@/features/memo/components/MemoModal/MemoEmptyFieldsModalContent';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
-import MemoEmptyFieldsModalContent from '@/features/memo/components/MemoEditor/MemoEmptyFieldsModalContent';
+import { useModal } from '@/shared/hooks/useModal';
 
 export const useMemoModals = () => {
   const { showCustom } = useModal();

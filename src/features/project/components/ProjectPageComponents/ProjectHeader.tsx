@@ -8,6 +8,8 @@ import type { Project } from '@/features/project/types/projectTypes';
 import { ROUTES } from '@/app/routes/Router';
 import { ROLES } from '@/features/project/constants/projectConstants';
 import ProjectInfoModalContent from '@/features/project/components/ProjectInfoModal/ProjectInfoModalContent';
+import { useMemoEditorStore } from '@/features/memo/store/useMemoEditorStore';
+import { useMemoModals } from '@/features/memo/hooks/modal/useMemoModals';
 
 interface ProjectHeaderProps {
   project: Project;
@@ -17,11 +19,17 @@ const ProjectHeader = ({ project }: ProjectHeaderProps) => {
   const { showCustom } = useModal();
   const navigate = useNavigate();
   const location = useLocation();
+  const { showUnsavedChangesModal } = useMemoModals();
+  const isDirty = useMemoEditorStore((state) => state.isDirty);
 
   const isOwner = project?.role === ROLES.OWNER;
 
   const handleButtonClick = () => {
     if (location.pathname.includes('/memo')) {
+      if (isDirty) {
+        showUnsavedChangesModal(project.id, navigate);
+        return;
+      }
       navigate(ROUTES.PROJECT_MEMO_EDIT(project.id));
     } else {
       showCustom({
