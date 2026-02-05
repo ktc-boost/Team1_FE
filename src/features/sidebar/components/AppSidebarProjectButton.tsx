@@ -1,6 +1,6 @@
 import { DropdownMenuItem } from '@/shared/components/shadcn/dropdown-menu';
 import { SquarePlus } from 'lucide-react';
-import { useProjectModals } from '@/features/project/hooks/useProjectModals';
+import { useProjectModals } from '@/features/project/hooks/modal/useProjectModals';
 
 const ProjectCreateButton = () => {
   const { showJoinProjectModal } = useProjectModals();

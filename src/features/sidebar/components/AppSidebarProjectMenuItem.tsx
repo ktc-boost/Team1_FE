@@ -11,7 +11,7 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/components/shadcn/tooltip';
 import { SidebarMenuButton, SidebarMenuItem } from '@/shared/components/shadcn/sidebar';
 import ProjectCreateButton from '@/features/sidebar/components/AppSidebarProjectButton';
-import { useProjectsQuery } from '@/features/project/hooks/useProjectsQuery';
+import { useProjectsQuery } from '@/features/project/hooks/query/useProjectsQuery';
 import type { SidebarItem } from '@/features/sidebar/types/menuTypes';
 import { ROUTES } from '@/app/routes/Router';
 

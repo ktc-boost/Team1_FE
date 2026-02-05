@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
+import { Search } from 'lucide-react';
+import { Input } from '@/shared/components/shadcn/input';
+import { useDebounce } from '@/shared/hooks/useDebounce';
 import type { BoardKey } from '@/features/board/types/boardTypes';
 import { useBoardSearchStore } from '@/features/board/store/useBoardSearchStore';
-import { Input } from '@/shared/components/shadcn/input';
-import { Search } from 'lucide-react';
-import { useDebounce } from '@/shared/hooks/useDebounce';
 
 interface SearchInputProps {
   boardKey: BoardKey;
 }
 
-const SearchInput = ({ boardKey }: SearchInputProps) => {
+const TaskSearchInput = ({ boardKey }: SearchInputProps) => {
   const setSearch = useBoardSearchStore((state) => state.setSearch);
   const clearOtherBoardSearch = useBoardSearchStore((state) => state.clearOtherBoardSearch);
 
@@ -23,15 +23,15 @@ const SearchInput = ({ boardKey }: SearchInputProps) => {
 
   return (
     <div className="relative w-[300px]">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
       <Input
         value={localValue}
         onChange={(e) => setLocalValue(e.target.value)}
-        className="w-full pl-10 pr-3 py-2 h-10 rounded-lg border-gray-300 focus:border-gray-500 focus:ring-transparent placeholder-gray-400 transition"
         placeholder="검색어를 입력하세요"
+        className="w-full h-9 sm:h-10 px-3 pl-10 rounded-lg border-gray-300 transition-colors focus:border-gray-500 focus:ring-transparent placeholder:text-gray-400 placeholder:label1-regular hover:border-gray-400"
       />
     </div>
   );
 };
 
-export default SearchInput;
+export default TaskSearchInput;

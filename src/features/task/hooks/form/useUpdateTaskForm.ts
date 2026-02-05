@@ -7,7 +7,7 @@ import {
   type UpdateTaskInput,
 } from '@/features/task/schemas/taskSchema';
 import { useModal } from '@/shared/hooks/useModal';
-import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
+import { useProjectMembersQuery } from '@/features/project/hooks/query/useProjectMembersQuery';
 import type { TaskDetail } from '@/features/task/types/taskTypes';
 import type { Status } from '@/features/board/types/boardTypes';
 

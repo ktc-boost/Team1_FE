@@ -18,8 +18,8 @@ const AvatarGrid = ({
   selectedBgColor,
 }: AvatarGridProps) => {
   return (
-    <div className="px-24 py-6 max-h-96 overflow-y-auto">
-      <div aria-label="아바타 목록" className="grid grid-cols-4 gap-6">
+    <div className="px-10 sm:px-24 sm:py-6 max-h-96 overflow-y-auto">
+      <div aria-label="아바타 목록" className="grid grid-cols-4 gap-6 sm:gap-8 pt-2 ">
         {avatarList.map((avatarUrl, index) => {
           const isSelected = selectedAvatarId === String(index);
           const isHovered = hoveredIndex === index;
@@ -44,7 +44,7 @@ const AvatarGrid = ({
 
                 <Avatar
                   className={cn(
-                    'w-30 h-30 border-4 rounded-full transition-all p-1 duration-300 relative flex items-center justify-center',
+                    'w-16 h-16 sm:w-30 sm:h-30 border-4 rounded-full transition-all p-1 duration-300 relative flex items-center justify-center',
                     isSelected
                       ? 'shadow-lg scale-105'
                       : 'border-gray-200 group-hover:shadow-md group-hover:scale-105',
@@ -59,7 +59,7 @@ const AvatarGrid = ({
                       : '#ffffff',
                   }}
                 >
-                  <AvatarImage src={avatarUrl} alt={`Avatar ${index + 1}`} className="w-24 h-24" />
+                  <AvatarImage src={avatarUrl} alt={`Avatar ${index + 1}`} />
                   <AvatarFallback
                     style={{
                       backgroundColor: selectedBgColor || '#f3f4f6',
@@ -71,7 +71,7 @@ const AvatarGrid = ({
 
                 {isSelected && (
                   <div className="absolute top-1 -right-0 bg-boost-blue rounded-full p-1.5 shadow-lg">
-                    <Check size={12} className="text-white" />
+                    <Check className="text-white w-2 h-2 sm:w-4 sm:h-4" />
                   </div>
                 )}
               </button>

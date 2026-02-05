@@ -1,5 +1,5 @@
-import { Button } from '@/shared/components/shadcn/button';
 import { MoreVertical, PlusCircle, UserPlus } from 'lucide-react';
+import { Button } from '@/shared/components/shadcn/button';
 
 interface HeaderProps {
   title: string;
@@ -25,36 +25,57 @@ const Header = ({
     weekday: 'short',
   });
 
+  const projectActionButtons = showProjectActions && (
+    <>
+      <Button
+        onClick={onProjectManageClick}
+        variant="outline"
+        size="icon-sm"
+        className="border-gray-300"
+      >
+        <MoreVertical />
+      </Button>
+      <Button
+        onClick={onProjectJoinCodeClick}
+        variant="outline"
+        size="icon-sm"
+        className="border-gray-300"
+      >
+        <UserPlus />
+      </Button>
+    </>
+  );
+
   return (
-    <div className="flex items-center justify-between w-full h-26 p-6 bg-white shadow-sm">
-      <div className="flex flex-col justify-center gap-1">
-        <span className="label1-regular text-gray-500">{today}</span>
-        <span className="title1-bold !text-3xl">{title}</span>
+    <div className="w-full bg-white shadow-sm">
+      <div className="hidden sm:flex items-center justify-between p-6 h-26">
+        <div className="flex flex-col gap-1">
+          <span className="text-gray-500 label1-regular">{today}</span>
+          <span className="text-3xl title1-bold">{title}</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {projectActionButtons}
+
+          <Button variant="defaultBoost" onClick={onCreate} className="h-8">
+            <PlusCircle />
+            {createLabel}
+          </Button>
+        </div>
       </div>
 
-      <div className="flex items-center gap-2">
-        {showProjectActions && (
-          <>
-            <Button
-              onClick={onProjectManageClick}
-              size="icon"
-              variant="outline"
-              className="border-gray-300"
-            >
-              <MoreVertical />
-            </Button>
-            <Button
-              onClick={onProjectJoinCodeClick}
-              size="icon"
-              variant="outline"
-              className="border-gray-300"
-            >
-              <UserPlus />
-            </Button>
-          </>
-        )}
+      <div className="flex flex-col gap-2 p-4 sm:hidden">
+        <span className="text-gray-500 label2-regular">{today}</span>
 
-        <Button variant="defaultBoost" className="h-8" onClick={onCreate}>
+        <div className="flex items-center justify-between">
+          <span className="title1-bold">{title}</span>
+
+          {showProjectActions && (
+            <div className="flex items-center gap-1 ml-2">{projectActionButtons}</div>
+          )}
+        </div>
+
+        <Button variant="defaultBoost" onClick={onCreate} className="w-full">
           <PlusCircle />
           {createLabel}
         </Button>

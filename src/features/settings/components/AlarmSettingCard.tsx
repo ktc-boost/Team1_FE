@@ -3,7 +3,7 @@ import { Switch } from '@/shared/components/shadcn/switch';
 import { SettingsSectionCard } from '@/features/settings/components/SettingsSectionCard';
 import { Card } from '@/shared/components/shadcn/card';
 import { cn } from '@/shared/lib/utils';
-import { useProjectsQuery } from '@/features/project/hooks/useProjectsQuery';
+import { useProjectsQuery } from '@/features/project/hooks/query/useProjectsQuery';
 import { useUpdateNotificationSettingsMutation } from '@/features/settings/hooks/useUpdateNotificationSettingsMutation';
 import { useUpdateProjectNotificationSettingsMutation } from '@/features/settings/hooks/useUpdateProjectNotificationSettingsMutation';
 import { useMyInfoQuery } from '@/features/settings/hooks/useMyInfoQuery';

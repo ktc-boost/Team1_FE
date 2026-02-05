@@ -23,3 +23,4 @@ export type ColumnData = {
 };
 
 export type BoardKey = (typeof BOARD_KEYS)[keyof typeof BOARD_KEYS];
+export type BoardType = 'status' | 'member';

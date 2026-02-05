@@ -1,64 +1,51 @@
 import { Trash2 } from 'lucide-react';
-import type { NavigateFunction } from 'react-router-dom';
 import { DialogFooter } from '@/shared/components/shadcn/dialog';
 import { Button } from '@/shared/components/shadcn/button';
 import { useModal } from '@/shared/hooks/useModal';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
 import ProjectMembers from '@/features/project/components/ProjectMembersList';
-import { useProjectMembersQuery } from '@/features/project/hooks/useProjectMembersQuery';
-import { useProjectBoostingScoresQuery } from '@/features/project/hooks/useProjectBoostingScoresQuery';
-import ProjectLeaveModalContent from '@/features/project/components/ProjectInfoModal/ProjectLeaveModalContent';
+import { useProjectMembersQuery } from '@/features/project/hooks/query/useProjectMembersQuery';
+import { useProjectModals } from '@/features/project/hooks/modal/useProjectModals';
+import { useProjectBoostingScoresQuery } from '@/features/project/hooks/query/useProjectBoostingScoresQuery';
 import ProjectInfoBasicInfo from '@/features/project/components/ProjectInfoModal/ProjectInfoBasicInfo';
 import { combineMembersWithBoostingScores } from '@/features/project/utils/memberUtils';
 
-interface ProjectInfoModalProps {
-  navigate: NavigateFunction;
-}
-
-const ProjectInfoModalContent = ({ navigate }: ProjectInfoModalProps) => {
-  const { showCustom, resetModal } = useModal();
-
+const ProjectInfoModalContent = () => {
   const projectData = useProjectStore((state) => state.projectData);
+
   const { data: projectMembers } = useProjectMembersQuery(projectData.id);
   const { data: projectBoostingScores } = useProjectBoostingScoresQuery(projectData.id);
+
+  const { showLeaveProjectModal } = useProjectModals();
+  const { resetModal } = useModal();
 
   const projectMembersWithBoosting = combineMembersWithBoostingScores(
     projectMembers,
     projectBoostingScores,
   );
 
-  const handleProjectLeaveClick = () => {
-    showCustom({
-      title: '프로젝트 떠나기',
-      description: '정말로 프로젝트를 떠나시나요? 🥹',
-      titleAlign: 'center',
-      size: 'sm',
-      content: <ProjectLeaveModalContent navigate={navigate} />,
-    });
-  };
+  const handleProjectLeaveClick = () => showLeaveProjectModal();
 
   return (
     <>
-      <div className="flex flex-row gap-8 py-4 max-h-[400px] px-1 ">
+      <div className="flex flex-col-reverse md:flex-row gap-8 py-4 px-1">
         <ProjectMembers members={projectMembersWithBoosting} />
         <ProjectInfoBasicInfo />
       </div>
 
-      <DialogFooter className="!mt-0 pt-4 border-t border-gray-300 flex !justify-between items-center">
+      <DialogFooter className="flex flex-row !mt-0 pt-4 border-t border-gray-300 !justify-between items-center">
         <Button
-          variant="outline"
-          className="flex flex-row bg-gray-100 subtitle2-bold text-boost-orange border border-boost-orange hover:bg-boost-orange hover:text-gray-100 duration-300"
+          variant="outlineSecondaryBoost"
+          className="rounded-full"
           onClick={handleProjectLeaveClick}
         >
-          <Trash2 className="mr-1 h-5 w-5" />
-          프로젝트 떠나기
+          <Trash2 className="h-5 w-5" />
+          <span className="hidden md:inline subtitle2-bold">프로젝트 떠나기</span>
         </Button>
 
-        <div className="flex gap-2">
-          <Button variant="defaultBoost" onClick={resetModal}>
-            닫기
-          </Button>
-        </div>
+        <Button variant="defaultBoost" onClick={resetModal} className="px-3 md:px-5">
+          닫기
+        </Button>
       </DialogFooter>
     </>
   );

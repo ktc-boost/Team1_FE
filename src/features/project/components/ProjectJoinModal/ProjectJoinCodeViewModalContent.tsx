@@ -4,9 +4,9 @@ import { DialogFooter } from '@/shared/components/shadcn/dialog';
 import useModalStore from '@/shared/store/useModalStore';
 import toast from 'react-hot-toast';
 import { Copy, RefreshCw } from 'lucide-react';
-import { useJoinCode } from '@/features/project/hooks/useJoinCode';
+import { useJoinCode } from '@/features/project/hooks/domain/useJoinCode';
 import { formatSecondsToHHMMSS, getRemainingSeconds } from '@/shared/utils/dateUtils';
-import { useCreateJoinCodeMutation } from '@/features/project/hooks/useCreateJoinCodeMutation';
+import { useCreateJoinCodeMutation } from '@/features/project/hooks/mutation/useCreateJoinCodeMutation';
 
 interface ProjectJoinCodeViewModalContentProps {
   projectId: string;

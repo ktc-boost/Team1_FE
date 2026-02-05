@@ -1,26 +1,28 @@
+import { lazy } from 'react';
 import { createBrowserRouter, generatePath, RouterProvider } from 'react-router-dom';
 import ProtectedRoute from '@/app/routes/ProtectedRoute';
+import RootFallback from '@/app/RootErrorBoundary/RootFallback';
 import AppLayout from '@/app/layout/AppLayout';
 import LandingPage from '@/pages/LandingPage';
 import LoginPage from '@/pages/LoginPage';
 import MyTaskPage from '@/pages/MyTaskPage';
 import ProjectPage from '@/pages/ProjectPage';
+import SettingsPage from '@/pages/SettingsPage';
+import PageErrorBoundary from '@/pages/PageErrorBoundary/PagaErrorBoundary';
 import ServerErrorPage from '@/pages/ServerErrorPage';
 import AvatarPickerPage from '@/pages/AvatarSettingsPage';
 import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
 import AlarmSetupPage from '@/pages/AlarmSetupPage';
 import AlarmSetupMobilePage from '@/pages/AlarmSetupMobilePage';
+import ModalRenderer from '@/shared/components/ui/modal/ModalRenderer';
 import BoardSection from '@/features/board/components/BoardSection';
 import MemoSection from '@/features/memo/components/MemoSection';
 import FileSection from '@/features/file/components/FileSection';
-import SettingsPage from '@/pages/SettingsPage';
-import PageErrorBoundary from '@/pages/PageErrorBoundary/PagaErrorBoundary';
-import RootFallback from '@/app/RootErrorBoundary/RootFallback';
-import { lazy } from 'react';
 
 const TaskDetailPage = lazy(() => import('@/pages/TaskDetailPage'));
 const MemoDetail = lazy(() => import('@/features/memo/components/MemoDetail/MemoDetail'));
 const MemoEditor = lazy(() => import('@/features/memo/components/MemoEditor/MemoEditor'));
+
 export const ROUTE_PATH = {
   MAIN: '/',
   LOGIN: '/login',
@@ -84,6 +86,15 @@ const PROTECTED_ROUTES_NO_LAYOUT = [
   { path: ROUTE_PATH.ALARM_SETUP, element: <AlarmSetupPage /> },
 ];
 
+const AppLayoutWithModal = () => {
+  return (
+    <>
+      <ModalRenderer />
+      <AppLayout />
+    </>
+  );
+};
+
 export const router = createBrowserRouter([
   ...PUBLIC_ROUTES,
 
@@ -98,8 +109,7 @@ export const router = createBrowserRouter([
 
   {
     path: '/',
-
-    element: <AppLayout />,
+    element: <AppLayoutWithModal />,
     errorElement: (
       <RootFallback
         error={new Error('라우터 레벨 디자인 테스트')}
