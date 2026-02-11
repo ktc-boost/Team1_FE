@@ -5,6 +5,7 @@ import BackButton from '@/shared/components/ui/BackButton';
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
 import { CheckCircle2, MessageSquare } from 'lucide-react';
 import TaskReviewActions from '@/features/task-detail/components/TaskDetailTopTab/TaskReviewActions';
+import { Button } from '@/shared/components/shadcn/button';
 
 interface TaskDetailTopTabProps {
   task: TaskDetail;
@@ -35,19 +36,13 @@ const TaskDetailTopTab = ({
         {task.title}
       </div>
       <div className="sm:hidden flex gap-6">
-        <button
-          onClick={onOpenComments}
-          className="sm:hidden size-8 flex items-center justify-center rounded-md bg-white text-gray-700"
-        >
+        <Button onClick={onOpenComments} variant={'ghost'}>
           <MessageSquare className="size-5" />
-        </button>
+        </Button>
 
-        <button
-          onClick={onToggleReviewAction}
-          className="sm:hidden size-8 flex items-center justify-center rounded-md bg-white text-gray-700"
-        >
+        <Button onClick={onToggleReviewAction} variant={'ghost'}>
           <CheckCircle2 className="size-5" />
-        </button>
+        </Button>
       </div>
 
       <div className="hidden sm:flex">
