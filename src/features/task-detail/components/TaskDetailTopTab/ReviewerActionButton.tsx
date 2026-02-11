@@ -28,10 +28,7 @@ export const ReviewerActionButton = ({
     <Button
       onClick={onApprove}
       disabled={disabled}
-      className={cn(
-        'w-[50%] !label2-regular flex flex-row gap-2 rounded-md text-white',
-        getButtonClass(),
-      )}
+      className={cn('!label2-regular flex flex-row gap-2 rounded-md text-white', getButtonClass())}
     >
       {isApprovedByMe ? (
         <CheckCircle className={defaultIconClass} />

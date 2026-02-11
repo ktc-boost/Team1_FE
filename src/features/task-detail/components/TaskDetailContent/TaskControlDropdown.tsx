@@ -21,7 +21,7 @@ const TaskControlDropdown = ({ onEdit, onClickDelete }: TaskControlDropdownProps
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="absolute top-5 right-5 hover:bg-gray-100 transition-colors z-10 cursor-pointer"
+          className="absolute top-2 right-2 sm:top-5 sm:right-5 hover:bg-gray-100 transition-colors z-10 cursor-pointer"
         >
           <MoreVertical className="text-gray-500 w-5 h-5 sm:w-6 sm:h-6" />
         </Button>
