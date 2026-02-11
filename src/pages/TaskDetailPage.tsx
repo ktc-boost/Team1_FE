@@ -8,11 +8,10 @@ import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 import { useCommentQuery } from '@/features/comment/hooks/useCommentQuery';
 import TaskDetailInfoSection from '@/features/task-detail/components/TaskDetailInfoSection';
 import TaskDetailCommentSection from '@/features/task-detail/components/TaskDetailCommentSection';
-import CommentSection from '@/features/task-detail/components/CommentSection/CommentSection';
-import { Drawer, DrawerContent } from '@/shared/components/shadcn/drawer';
 import TaskReviewActions from '@/features/task-detail/components/TaskDetailTopTab/TaskReviewActions';
 import { cn } from '@/shared/lib/utils';
 import { Collapsible, CollapsibleContent } from '@/shared/components/shadcn/collapsible';
+import CommentDrawerMobile from '@/features/task-detail/components/CommentSection/CommentDrawerMobile';
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
   const { data: comments = [] } = useCommentQuery(projectId!, taskId!);
@@ -62,13 +61,13 @@ const TaskDetailPage = () => {
       </div>
 
       <div className="sm:hidden">
-        <Drawer open={isCommentOpen} onOpenChange={setIsCommentOpen}>
-          <DrawerContent className="h-[90vh]">
-            <div className="flex-1 overflow-y-auto px-4 pb-4">
-              <CommentSection projectId={projectId!} taskId={taskId!} comments={comments} />
-            </div>
-          </DrawerContent>
-        </Drawer>
+        <CommentDrawerMobile
+          isCommentOpen={isCommentOpen}
+          setIsCommentOpen={setIsCommentOpen}
+          projectId={projectId}
+          taskId={taskId}
+          comments={comments}
+        />{' '}
       </div>
     </div>
   );
