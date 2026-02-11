@@ -37,10 +37,10 @@ const TaskReviewActions = ({ task }: TaskReviewActionsProps) => {
   return (
     <>
       {isAssignee ? (
-        <div className="flex items-center gap-7 sm:gap-3 bg-transparent">
+        <div className="w-full flex justify-around gap-2 sm:gap-3 bg-transparent">
           <div
             className={cn(
-              'text-xs sm:label2-regular rounded-full border h-9 px-4 py-2 flex items-center ',
+              'w-[50%] sm:w-auto label1-regular rounded-full border h-9 px-4 py-2 flex items-center justify-center text-center',
               assigneeTask.getBadgeClass(),
             )}
           >
@@ -59,10 +59,10 @@ const TaskReviewActions = ({ task }: TaskReviewActionsProps) => {
         </div>
       ) : (
         assigneeTask.uiStatus === 'REVIEW' && (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <div
               className={cn(
-                'rounded-full border h-9 px-4 py-2 flex items-center text-sm font-medium',
+                'w-full sm:w-auto label1-regular rounded-full border h-9 px-4 py-2 flex items-center justify-center text-center',
                 reviewerTask.getBadgeClass(),
               )}
             >

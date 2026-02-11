@@ -46,7 +46,7 @@ const TaskDetailPage = () => {
               isReviewActionOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
             )}
           >
-            <div className="overflow-hidden bg-gray-50 flex justify-center">
+            <div className="overflow-hidden bg-gray-50">
               <div className="p-2">
                 <TaskReviewActions task={task} />
               </div>
@@ -67,7 +67,7 @@ const TaskDetailPage = () => {
           projectId={projectId}
           taskId={taskId}
           comments={comments}
-        />{' '}
+        />
       </div>
     </div>
   );

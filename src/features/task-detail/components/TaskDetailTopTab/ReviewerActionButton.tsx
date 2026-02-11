@@ -29,7 +29,7 @@ export const ReviewerActionButton = ({
       onClick={onApprove}
       disabled={disabled}
       className={cn(
-        'text-xs sm:!label2-regular flex flex-row gap-2 rounded-md text-white',
+        'w-[50%] !label2-regular flex flex-row gap-2 rounded-md text-white',
         getButtonClass(),
       )}
     >

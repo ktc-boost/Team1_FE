@@ -49,7 +49,7 @@ export const AssigneeActionButton = ({
         onClick={handleAction}
         disabled={disabled}
         className={cn(
-          'text-xs sm:label2-regular flex flex-row gap-2 rounded-md text-white',
+          'w-[50%] sm:w-auto !label1-regular flex flex-row gap-2 rounded-md text-white',
           isCompleted
             ? 'bg-green-600 opacity-70 cursor-not-allowed'
             : 'bg-green-700 hover:bg-green-600',
@@ -66,7 +66,7 @@ export const AssigneeActionButton = ({
       onClick={onAction}
       disabled={disabled}
       className={cn(
-        'text-xs sm:!label2-regular rounded-md flex flex-row gap-2 text-white',
+        'w-[50%] sm:w-auto !label1-regular rounded-md flex flex-row gap-2 text-white',
         isReview
           ? 'bg-boost-orange hover:bg-boost-orange-hover'
           : 'bg-boost-blue hover:bg-boost-blue-hover',
