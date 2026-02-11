@@ -20,7 +20,7 @@ export const ReviewerActionButton = ({
   const defaultIconClass = 'w-5 h-5 text-white';
 
   const getButtonClass = () => {
-    if (isApprovedByMe || isFullyApproved) return 'bg-green-700 hover:bg-green-600';
+    if (disabled) return 'bg-green-600 opacity-70 cursor-not-allowed';
     return 'bg-boost-blue hover:bg-boost-blue-hover';
   };
 
@@ -29,15 +29,14 @@ export const ReviewerActionButton = ({
       onClick={onApprove}
       disabled={disabled}
       className={cn(
-        'rounded-md flex flex-row gap-2 transition-colors text-white',
-        disabled ? 'opacity-80 cursor-not-allowed' : '',
+        'text-xs sm:!label2-regular flex flex-row gap-2 rounded-md text-white',
         getButtonClass(),
       )}
     >
       {isApprovedByMe ? (
-        <CheckCircle className={cn(defaultIconClass)} />
+        <CheckCircle className={defaultIconClass} />
       ) : (
-        <CircleArrowLeft className={cn(defaultIconClass)} />
+        <CircleArrowLeft className={defaultIconClass} />
       )}
       {isApprovedByMe ? '검토 완료됨' : isFullyApproved ? '검토 마감됨' : '승인하기'}
     </Button>

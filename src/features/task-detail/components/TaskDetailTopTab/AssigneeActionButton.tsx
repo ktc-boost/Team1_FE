@@ -23,6 +23,7 @@ export const AssigneeActionButton = ({
   const isDoneReady = approvedCount >= requiredReviewerCount;
   const isReview = uiStatus === 'REVIEW';
   const defaultIconClass = 'w-5 h-5 text-white';
+  const disabled = isDoneReady ? isCompleted || isCompleting : isCompleting;
 
   useEffect(() => {
     if (uiStatus === 'DONE') setIsCompleted(true);
@@ -46,7 +47,7 @@ export const AssigneeActionButton = ({
     return (
       <Button
         onClick={handleAction}
-        disabled={isCompleted || isCompleting}
+        disabled={disabled}
         className={cn(
           'text-xs sm:label2-regular flex flex-row gap-2 rounded-md text-white',
           isCompleted
@@ -54,7 +55,7 @@ export const AssigneeActionButton = ({
             : 'bg-green-700 hover:bg-green-600',
         )}
       >
-        <CheckCircle className={cn(defaultIconClass)} />
+        <CheckCircle className={defaultIconClass} />
         {isCompleted ? '할 일 완료됨' : isCompleting ? '완료 중...' : '할 일 완료하기'}
       </Button>
     );
@@ -63,7 +64,7 @@ export const AssigneeActionButton = ({
   return (
     <Button
       onClick={onAction}
-      disabled={isCompleting}
+      disabled={disabled}
       className={cn(
         'text-xs sm:!label2-regular rounded-md flex flex-row gap-2 text-white',
         isReview
