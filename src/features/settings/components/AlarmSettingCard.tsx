@@ -58,22 +58,24 @@ const AlarmSettingCard = () => {
       desc="서비스 알림과 프로젝트별 알림을 관리할 수 있습니다 🔔"
     >
       {/* 기기 등록 버튼 */}
-      <div className="px-1 mb-4">
+      <div className="px-1 mb-4 sm:mb-7">
         <Button
-          className="w-50 h-10 text-white bg-boost-blue/90 hover:bg-boost-blue cursor-pointer disabled:opacity-50"
+          variant={'defaultBoost'}
           onClick={() => navigate(ROUTE_PATH.ALARM_SETUP, { state: { from: ROUTE_PATH.SETTINGS } })}
         >
           새로운 기기 등록하기
         </Button>
       </div>
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4 sm:gap-7">
         {/* 서비스 알림 섹션 */}
         <Card className="p-4 bg-gray-50 border-gray-200">
           <div className="flex items-center justify-between">
             <div className="flex flex-col gap-1">
-              <span className="font-semibold text-gray-900">서비스 알림</span>
-              <span className="text-xs text-gray-500">모든 프로젝트 알림을 한번에 제어합니다</span>
+              <span className="body2-regular">서비스 알림</span>
+              <span className="label2-regular text-gray-500">
+                모든 프로젝트 알림을 한번에 제어합니다
+              </span>
             </div>
             <Switch checked={isServiceAlarmOn} onCheckedChange={handleServiceToggle} />
           </div>
@@ -82,43 +84,41 @@ const AlarmSettingCard = () => {
         {/* 프로젝트별 알림 섹션 */}
         <div
           className={cn(
-            'flex flex-col gap-3 transition-opacity duration-300',
+            'px-4 flex flex-col gap-3 transition-opacity duration-300',
             !isServiceAlarmOn && 'opacity-60 pointer-events-none',
           )}
         >
-          <p className="text-sm text-gray-800 px-1">프로젝트별 알림</p>
+          <p className="body2-regular px-1">프로젝트별 알림</p>
 
-          <div className="border border-gray-200 rounded-lg bg-gray-50">
-            {projectsData && projectsData.length === 0 && (
-              <div className="flex items-center justify-center py-8 text-gray-500 text-sm">
-                참여 중인 프로젝트가 없습니다
-              </div>
-            )}
+          {projectsData && projectsData.length === 0 && (
+            <div className="flex items-center justify-center py-8 text-gray-500 body2-regular">
+              참여 중인 프로젝트가 없습니다
+            </div>
+          )}
 
-            {projectsData?.map((project) => {
-              const enabled = projectAlarms[project.id] ?? false;
-              return (
-                <div
-                  key={project.id}
-                  className="flex items-center justify-between px-4 py-3 bg-white hover:bg-gray-50 transition-colors border-b border-gray-300 last:border-b-0"
+          {projectsData?.map((project) => {
+            const enabled = projectAlarms[project.id] ?? false;
+            return (
+              <div
+                key={project.id}
+                className="flex items-center justify-between px-3 py-2 sm:px-4 sm:py-3"
+              >
+                <span
+                  className={cn(
+                    'label1-regular transition-colors',
+                    !enabled ? 'text-gray-400' : 'text-gray-900',
+                  )}
                 >
-                  <span
-                    className={cn(
-                      'text-sm font-medium transition-colors',
-                      !enabled ? 'text-gray-400' : 'text-gray-900',
-                    )}
-                  >
-                    {project.name}
-                  </span>
-                  <Switch
-                    checked={enabled}
-                    onCheckedChange={(val) => handleProjectToggle(project.id, val)}
-                    disabled={!isServiceAlarmOn}
-                  />
-                </div>
-              );
-            })}
-          </div>
+                  {project.name}
+                </span>
+                <Switch
+                  checked={enabled}
+                  onCheckedChange={(val) => handleProjectToggle(project.id, val)}
+                  disabled={!isServiceAlarmOn}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </SettingsSectionCard>
