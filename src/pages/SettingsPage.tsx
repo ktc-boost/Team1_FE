@@ -14,7 +14,7 @@ export default function SettingsPage() {
   if (isLoading || !myInfo) return <FullPageLoader text="정보 불러오는 중.." />;
 
   return (
-    <div className="flex flex-col pr-10 pl-10 space-y-8">
+    <div className="flex flex-col px-2 sm:px-10 space-y-4 overflow-y-auto">
       {/* 내 정보 */}
       <UserInfoCard member={myInfo} />
       <AvatarsDrawer showEditButton={false} showConfirmButton={true} />
