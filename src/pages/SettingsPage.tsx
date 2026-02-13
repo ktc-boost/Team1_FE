@@ -19,11 +19,10 @@ export default function SettingsPage() {
       <nav className="flex justify-between items-center w-full bg-gray-100 border-b border-gray-300 h-14 px-4">
         <div className="subtitle2-bold sm:title1-bold flex items-center gap-3">
           <BackButton />
-
           <p>설정</p>
         </div>
       </nav>
-      <div className="flex flex-col px-2 sm:px-10 space-y-4 overflow-y-auto">
+      <div className="flex flex-col px-2 sm:px-10 space-y-4">
         {/* 내 정보 */}
         <UserInfoCard member={myInfo} />
         <AvatarsDrawer showEditButton={false} showConfirmButton={true} />
