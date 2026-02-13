@@ -61,6 +61,7 @@ const AlarmSettingCard = () => {
       <div className="px-1 mb-4 sm:mb-7">
         <Button
           variant={'defaultBoost'}
+          className="!label2-regular sm:!label1-regular"
           onClick={() => navigate(ROUTE_PATH.ALARM_SETUP, { state: { from: ROUTE_PATH.SETTINGS } })}
         >
           새로운 기기 등록하기
@@ -72,7 +73,7 @@ const AlarmSettingCard = () => {
         <Card className="p-4 bg-gray-50 border-gray-200">
           <div className="flex items-center justify-between">
             <div className="flex flex-col gap-1">
-              <span className="body2-regular">서비스 알림</span>
+              <span className="body2-regular sm:body1-regular ">서비스 알림</span>
               <span className="label2-regular text-gray-500">
                 모든 프로젝트 알림을 한번에 제어합니다
               </span>
@@ -88,7 +89,7 @@ const AlarmSettingCard = () => {
             !isServiceAlarmOn && 'opacity-60 pointer-events-none',
           )}
         >
-          <p className="body2-regular px-1">프로젝트별 알림</p>
+          <p className="body2-regular sm:body1-regular px-1">프로젝트별 알림</p>
 
           {projectsData && projectsData.length === 0 && (
             <div className="flex items-center justify-center py-8 text-gray-500 body2-regular">
@@ -105,7 +106,7 @@ const AlarmSettingCard = () => {
               >
                 <span
                   className={cn(
-                    'label1-regular transition-colors',
+                    'label2-regular sm:label1-regular transition-colors',
                     !enabled ? 'text-gray-400' : 'text-gray-900',
                   )}
                 >
