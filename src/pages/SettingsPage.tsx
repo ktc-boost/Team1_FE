@@ -15,7 +15,7 @@ export default function SettingsPage() {
   if (isLoading || !myInfo) return <FullPageLoader text="정보 불러오는 중.." />;
 
   return (
-    <div>
+    <div className="overflow-y-auto">
       <nav className="flex justify-between items-center w-full bg-gray-100 border-b border-gray-300 h-14 px-4">
         <div className="subtitle2-bold sm:title1-bold flex items-center gap-3">
           <BackButton />
