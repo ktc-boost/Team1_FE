@@ -1,4 +1,4 @@
-import { Label } from '@/shared/components/shadcn/label';
+import ContentItem from '@/shared/components/ui/ContentItem';
 import InfoCard from '@/shared/components/ui/InfoCard';
 import { FileText } from 'lucide-react';
 
@@ -9,10 +9,7 @@ interface DescriptionAreaProps {
 const DescriptionArea = ({ description }: DescriptionAreaProps) => {
   return (
     <InfoCard className="flex-1 flex flex-col overflow-hidden">
-      <Label className="flex items-center text-gray-800 subtitle1-bold mb-2 mt-1">
-        <FileText className="w-4 h-4 text-gray-700" />
-        작업 내용
-      </Label>
+      <ContentItem icon={FileText} title="작업내용" />
       <div className="flex-1 overflow-auto rounded-lg p-3 label1-regular text-gray-700 leading-relaxed">
         <p className="whitespace-pre-wrap">{description}</p>
       </div>

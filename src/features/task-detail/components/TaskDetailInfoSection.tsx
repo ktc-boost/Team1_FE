@@ -5,11 +5,11 @@ import TaskDetailContent from '@/features/task-detail/components/TaskDetailConte
 import { useShallow } from 'zustand/react/shallow';
 import { lazy } from 'react';
 const PDFViewer = lazy(() => import('@/features/task-detail/components/PdfViewer/PdfViewer'));
-interface TaskDetailLeftPaneProps {
+interface TaskDetailInfoSectionProps {
   task: TaskDetail;
   taskId: string;
 }
-const TaskDetailLeftPane = ({ task, taskId }: TaskDetailLeftPaneProps) => {
+const TaskDetailInfoSection = ({ task, taskId }: TaskDetailInfoSectionProps) => {
   const { isPdfOpen, setSelectedFile, togglePdf } = useTaskDetailStore(
     useShallow((s) => ({
       isPdfOpen: s.isPdfOpen,
@@ -18,7 +18,7 @@ const TaskDetailLeftPane = ({ task, taskId }: TaskDetailLeftPaneProps) => {
     })),
   );
   return (
-    <div id="left" className="flex flex-col w-6/10 overflow-hidden">
+    <div className="w-full flex flex-col sm:w-6/10 overflow-hidden">
       {isPdfOpen ? (
         <PDFViewer />
       ) : (
@@ -43,4 +43,4 @@ const TaskDetailLeftPane = ({ task, taskId }: TaskDetailLeftPaneProps) => {
   );
 };
 
-export default TaskDetailLeftPane;
+export default TaskDetailInfoSection;
