@@ -19,7 +19,7 @@ const CommentDrawerMobile = ({
   return (
     <Drawer open={isCommentOpen} onOpenChange={setIsCommentOpen}>
       <DrawerContent className="h-[90vh]">
-        <div className="flex-1 overflow-y-auto px-4 pb-4">
+        <div className="flex-1 overflow-y-auto px-1 pb-4">
           <CommentSection projectId={projectId!} taskId={taskId!} comments={comments} />
         </div>
       </DrawerContent>
