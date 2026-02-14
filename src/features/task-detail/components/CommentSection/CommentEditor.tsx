@@ -90,8 +90,8 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
 
   return (
     <div
-      className="fixed left-0 right-0 bottom-0 px-4 pt-4 pb-2 border-t border-gray-300 space-y-2 bg-gray-100"
-      style={{ bottom: keyboardOffset }}
+      className="fixed sm:absolute left-0 right-0 bottom-0 px-4 pt-4 pb-2 border-t border-gray-300 space-y-2 bg-gray-100"
+      style={keyboardOffset ? { bottom: keyboardOffset } : undefined}
     >
       {/* Boo 버튼 & 익명 스위치 */}
       <div className="flex items-center gap-2 pb-1 sm:pb-2">
@@ -104,14 +104,16 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
           <p className="label2-bold">Boo가 대신 말하기</p>
         </Button>
         <div className="flex flex-row items-center gap-1.5 ml-1.5">
-          <span className="text-sm text-gray-600">익명</span>
+          <span className="label2-regular sm:label1-regular text-gray-600">익명</span>
           <Switch
             checked={isAnonymous}
             onCheckedChange={setIsAnonymous}
             className="data-[state=checked]:bg-boost-blue"
           />
           {editingComment && (
-            <span className="text-sm font-semibold text-boost-blue ml-1">수정중</span>
+            <span className="label2-bold sm:label1-bold font-semibold text-boost-blue ml-1">
+              수정중
+            </span>
           )}
         </div>
       </div>
@@ -119,7 +121,7 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
       {/* 입력창 + 버튼 */}
       <div className="flex items-center gap-2 mb-4 sm:mb-2">
         <Textarea
-          className="rounded-md text-sm focus:ring-transparent flex-1 h-10 resize-none"
+          className="rounded-xl !label2-regular sm:!label1-regular focus:ring-transparent flex-1 h-10 resize-none"
           placeholder={editingComment ? '댓글 수정중..' : '댓글을 입력해주세요'}
           value={input}
           onChange={(e) => setInput(e.target.value)}
