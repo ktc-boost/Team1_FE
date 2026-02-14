@@ -87,9 +87,9 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
   };
 
   return (
-    <div className="absolute left-0 right-0 bottom-0 px-4 pt-4 pb-2 border-t border-gray-300 space-y-2 bg-gray-100">
+    <div className="fixed left-0 right-0 bottom-0 px-4 pt-4 pb-2 border-t border-gray-300 space-y-2 bg-gray-100">
       {/* Boo 버튼 & 익명 스위치 */}
-      <div className="flex items-center gap-2 pb-2">
+      <div className="flex items-center gap-2 pb-1 sm:pb-2">
         <Button
           size="sm"
           className="rounded-full px-3 py-1 text-xs bg-boost-orange hover:bg-boost-orange-hover"
@@ -112,7 +112,7 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
       </div>
 
       {/* 입력창 + 버튼 */}
-      <div className="flex items-center gap-2 mb-2">
+      <div className="flex items-center gap-2 mb-4 sm:mb-2">
         <Textarea
           className="rounded-md text-sm focus:ring-transparent flex-1 h-10 resize-none"
           placeholder={editingComment ? '댓글 수정중..' : '댓글을 입력해주세요'}
