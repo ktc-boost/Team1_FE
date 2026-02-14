@@ -9,6 +9,7 @@ import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType'
 import { CommentEditorActions } from '@/features/task-detail/components/CommentSection/CommentEditorActions';
 import { useAiTransformModals } from '@/features/ai-transform/hooks/useAiTransformModals';
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
+import { useKeyboardOffset } from '@/features/settings/hooks/usekeyboardOffset';
 
 interface CommentEditorProps {
   onCreate: (data: { content: string; isAnonymous: boolean }) => void;
@@ -18,6 +19,7 @@ interface CommentEditorProps {
 const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
   const [input, setInput] = useState('');
   const [isComposing, setIsComposing] = useState(false);
+  const keyboardOffset = useKeyboardOffset();
   const {
     isAnonymous,
     setIsAnonymous,
@@ -87,7 +89,10 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
   };
 
   return (
-    <div className="fixed left-0 right-0 bottom-0 px-4 pt-4 pb-2 border-t border-gray-300 space-y-2 bg-gray-100">
+    <div
+      className="fixed left-0 right-0 bottom-0 px-4 pt-4 pb-2 border-t border-gray-300 space-y-2 bg-gray-100"
+      style={{ bottom: keyboardOffset }}
+    >
       {/* Boo 버튼 & 익명 스위치 */}
       <div className="flex items-center gap-2 pb-1 sm:pb-2">
         <Button
