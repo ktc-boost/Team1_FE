@@ -3,11 +3,9 @@ import { DeleteAccountCard } from '@/features/settings/components/DeleteAccountC
 import { LicenseCard } from '@/features/settings/components/LicenseCard';
 import { useMyInfoQuery } from '@/features/settings/hooks/useMyInfoQuery';
 import { Separator } from '@/shared/components/shadcn/separator';
-
 import AlarmSettingCard from '@/features/settings/components/AlarmSettingCard';
 import { UserInfoCard } from '@/features/settings/components/UserInfoCard';
 import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
-import BackButton from '@/shared/components/ui/BackButton';
 
 export default function SettingsPage() {
   const { data: myInfo, isLoading } = useMyInfoQuery();
@@ -16,13 +14,7 @@ export default function SettingsPage() {
 
   return (
     <div className="overflow-y-auto">
-      <nav className="flex justify-between items-center w-full bg-gray-100 border-b border-gray-300 h-14 px-4">
-        <div className="subtitle2-bold sm:title1-bold flex items-center gap-3">
-          <BackButton />
-          <p>설정</p>
-        </div>
-      </nav>
-      <div className="flex flex-col px-2 sm:px-10 space-y-4">
+      <div className="flex flex-col px-2 sm:px-10 space-y-4 pt-4 pb-6">
         <UserInfoCard member={myInfo} />
         <AvatarsDrawer showEditButton={false} showConfirmButton={true} />
         <Separator />
