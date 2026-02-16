@@ -9,7 +9,7 @@ interface SettingsSectionCardProps {
 
 export const SettingsSectionCard = ({ title, desc, children }: SettingsSectionCardProps) => {
   return (
-    <Card className={'shadow-none border-none mb-0 py-5 sm:py-6'}>
+    <Card className="shadow-none border-none mb-0 py-5 sm:py-6">
       <CardHeader>
         <CardTitle className="title2-bold">{title}</CardTitle>
         {desc && (
