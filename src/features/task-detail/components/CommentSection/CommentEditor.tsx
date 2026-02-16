@@ -9,7 +9,7 @@ import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType'
 import { CommentEditorActions } from '@/features/task-detail/components/CommentSection/CommentEditorActions';
 import { useAiTransformModals } from '@/features/ai-transform/hooks/useAiTransformModals';
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
-import { useKeyboardOffset } from '@/features/settings/hooks/usekeyboardOffset';
+import { useKeyboardOffset } from '@/features/task-detail/hooks/usekeyboardOffset';
 
 interface CommentEditorProps {
   onCreate: (data: { content: string; isAnonymous: boolean }) => void;
