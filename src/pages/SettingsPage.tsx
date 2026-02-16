@@ -23,17 +23,13 @@ export default function SettingsPage() {
         </div>
       </nav>
       <div className="flex flex-col px-2 sm:px-10 space-y-4">
-        {/* 내 정보 */}
         <UserInfoCard member={myInfo} />
         <AvatarsDrawer showEditButton={false} showConfirmButton={true} />
         <Separator />
-        {/* 알림변경 */}
         <AlarmSettingCard />
         <Separator />
-        {/* 회원탈퇴 */}
         <DeleteAccountCard />
         <Separator />
-        {/* 라이선스 명시 */}
         <LicenseCard />
       </div>
     </div>
