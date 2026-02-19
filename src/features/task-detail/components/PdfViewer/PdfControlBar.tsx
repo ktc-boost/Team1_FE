@@ -25,7 +25,7 @@ const PdfControlBar = () => {
   const isZoomInDisabled = zoom >= MAX_ZOOM;
 
   return (
-    <div className="sticky bottom-0 z-20 w-full border-t border-gray-200 bg-white/85 backdrop-blur supports-[backdrop-filter]:bg-white/70">
+    <div className="sticky bottom-0 z-20 w-full border-t border-gray-300 bg-white  ">
       <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-2 px-3 py-2 sm:flex-nowrap sm:gap-3 sm:px-4">
         <div className="flex items-center gap-2">
           <Button
