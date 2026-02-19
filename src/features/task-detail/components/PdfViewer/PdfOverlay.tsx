@@ -1,16 +1,20 @@
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
-import type { PageSize } from '@/features/task-detail/types/pdfTypes';
 import { useShallow } from 'zustand/react/shallow';
 import { PinAvatar } from '@/features/task-detail/components/PdfViewer/PinAvatar';
+import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
 interface OverlayProps {
-  pageNumber: number;
-  zoom: number;
-  pageSize: PageSize;
   onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
-const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
+const Overlay = ({ onClick }: OverlayProps) => {
+  const { pageNumber, zoom, pageSize } = usePdfStore(
+    useShallow((s) => ({
+      pageNumber: s.pageNumber,
+      zoom: s.zoom,
+      pageSize: s.pageSize,
+    })),
+  );
   const {
     pins,
     selectedFile,
@@ -38,7 +42,7 @@ const Overlay = ({ pageNumber, zoom, pageSize, onClick }: OverlayProps) => {
   const pinList = pins as PinWithAuthor[];
 
   return (
-    <div className="absolute top-0 left-0 w-full h-full z-10" onClick={onClick}>
+    <div className="absolute inset-0 top-0 left-0 w-full h-full z-10" onClick={onClick}>
       {pinList
         .filter((pin) => pin.fileId === selectedFile?.fileId && pin.filePage === pageNumber)
         .map((pin) => {
