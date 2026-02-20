@@ -1,18 +1,14 @@
 import { CardDescription, CardContent, CardTitle, Card } from '@/shared/components/shadcn/card';
-import AvatarLJH from '@/shared/assets/images/member-avatar/webp/ljh-avatar.webp';
-import AvatarKWH from '@/shared/assets/images/member-avatar/webp/kwh-avatar.webp';
-import AvatarKHM from '@/shared/assets/images/member-avatar/webp/khm-avatar.webp';
-import AvatarSYJ from '@/shared/assets/images/member-avatar/webp/syj-avatar.webp';
-import AvatarYDY from '@/shared/assets/images/member-avatar/webp/ydy-avatar.webp';
+import { Image } from '@/shared/components/ui/image/Image';
 import { cn } from '@/shared/lib/utils';
 
 const TeamSection = () => {
   const teamMembers = [
-    { name: '이진호', role: 'Backend', img: AvatarLJH },
-    { name: '김원호', role: 'Backend', img: AvatarKWH },
-    { name: '김혜민', role: 'Frontend', img: AvatarKHM },
-    { name: '서영진', role: 'Backend', img: AvatarSYJ },
-    { name: '유다연', role: 'Frontend', img: AvatarYDY },
+    { name: '이진호', role: 'Backend', img: 'ljh-avatar' },
+    { name: '김원호', role: 'Backend', img: 'kwh-avatar' },
+    { name: '김혜민', role: 'Frontend', img: 'khm-avatar' },
+    { name: '서영진', role: 'Backend', img: 'syj-avatar' },
+    { name: '유다연', role: 'Frontend', img: 'ydy-avatar' },
   ];
 
   return (
@@ -30,13 +26,16 @@ const TeamSection = () => {
             key={idx}
             className="border-gray-300 shadow-md rounded-xl flex flex-col items-center justify-center w-full h-full min-w-[180px] min-h-[220px] xl:min-w-[250px] xl:min-h-[300px] p-4 sm:p-6 transform transition hover:-translate-y-2 hover:shadow-xl"
           >
-            <img
-              src={member.img}
+            <Image
+              domain="member-avatar"
+              name={member.img}
+              variant="standard"
+              width={128}
+              alt={member.name}
               className={cn('w-24 xl:w-30 rounded-full p-2.5', {
                 'bg-boost-blue': member.role === 'Backend',
                 'bg-boost-orange': member.role === 'Frontend',
               })}
-              alt={member.name}
             />
 
             <CardContent className="text-center space-y-3 mt-4 flex-1">
