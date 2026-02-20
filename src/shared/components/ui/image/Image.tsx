@@ -1,4 +1,4 @@
-import { forwardRef, useMemo } from 'react';
+import { forwardRef } from 'react';
 import { IMAGE_VARIANTS, type ImageVariant } from '@/shared/constants/imageVariants';
 
 interface ImageProps {
@@ -34,22 +34,21 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(
     const allowedWidths: readonly number[] = variantConfig.widths;
 
     if (!allowedWidths.includes(width)) {
-      const message = `[Image] invalid width ${width}px for variant "${variant}"\nAllowed: ${allowedWidths.join(', ')}`;
+      const message =
+        `[Image] invalid width ${width}px for variant "${variant}"\n` +
+        `Allowed: ${allowedWidths.join(', ')}`;
+
       if (process.env.NODE_ENV !== 'production') throw new Error(message);
       else console.warn(message);
     }
 
     const basePath = `/images/${domain}/${name}`;
+    const src = `${basePath}/${name}_${variant}_${width}w.webp`;
 
-    const { src, srcSet } = useMemo(() => {
-      const currentSrc = `${basePath}/${name}_${variant}_${width}w.webp`;
-
-      const currentSrcSet = allowedWidths
-        .map((w) => `${basePath}/${name}_${variant}_${w}w.webp ${w}w`)
-        .join(', ');
-
-      return { src: currentSrc, srcSet: currentSrcSet };
-    }, [basePath, name, variant, width, allowedWidths]);
+    const srcSet = variantConfig.widths
+      .filter((w) => w <= width)
+      .map((w) => `${basePath}/${name}_${variant}_${w}w.webp ${w}w`)
+      .join(', ');
 
     return (
       <img
