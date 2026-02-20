@@ -32,10 +32,12 @@ const PDFViewer = () => {
 
   const { onMouseDown, onMouseMove, onMouseUp, mouseMoved } = usePdfDrag();
   const { onDocumentLoadSuccess, setPdfDocument } = usePdfDocument(pdfDocument, pageNumber);
+  const { setActivePinCommentId } = useTaskDetailStore();
   const { handleOverlayClick } = usePdfPinInteraction(pageNumber, pageSize);
   const handleOverlayClickWithDragCheck = (e: React.MouseEvent) => {
     if (mouseMoved.current) return;
     handleOverlayClick(e);
+    setActivePinCommentId(null);
   };
   useLayoutEffect(() => {
     const el = viewportRef.current;
