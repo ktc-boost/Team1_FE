@@ -1,5 +1,5 @@
 import { IMAGE_CONVERT_MESSAGES } from './convert-message';
-import { IMAGE_VARIANTS, ImageVariant } from './image-variants';
+import { IMAGE_VARIANTS, ImageVariant } from '../src/shared/constants/imageVariants';
 
 export const formatKB = (bytes: number) => `${(bytes / 1024).toFixed(1)}KB`;
 

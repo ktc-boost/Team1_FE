@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { IMAGE_CONVERT_MESSAGES } from './convert-message';
-import { IMAGE_VARIANTS, ImageVariant } from './image-variants';
+import { IMAGE_VARIANTS, ImageVariant } from '../src/shared/constants/imageVariants';
 import { ORIGINAL_DIR } from './convert-constants';
 
 export function parseCliArgs(rawArgs: string[]) {

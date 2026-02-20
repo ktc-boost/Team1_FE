@@ -4,7 +4,7 @@ import sharp from 'sharp';
 import { parseCliArgs } from './cli-args';
 import { convertOne, VARIANT_DIR } from './converter';
 import { validateWidth } from './convert-utils';
-import { IMAGE_VARIANTS, ImageVariant } from './image-variants';
+import { IMAGE_VARIANTS, ImageVariant } from '../src/shared/constants/imageVariants';
 import { IMAGE_CONVERT_MESSAGES } from './convert-message';
 import { ORIGINAL_DIR } from './convert-constants';
 

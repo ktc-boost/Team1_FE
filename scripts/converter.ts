@@ -2,7 +2,7 @@ import fs from 'fs';
 import sharp from 'sharp';
 import { formatKB } from './convert-utils';
 import { IMAGE_CONVERT_MESSAGES } from './convert-message';
-import { ImageVariant } from './image-variants';
+import { ImageVariant } from '../src/shared/constants/imageVariants';
 import { QUALITY, VARIANT_DIR } from './convert-constants';
 
 interface ConvertOneProps {
