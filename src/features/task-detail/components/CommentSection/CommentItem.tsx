@@ -22,10 +22,11 @@ interface CommentItemProps {
 
 const CommentItem = forwardRef<HTMLDivElement, CommentItemProps>(
   ({ comment, onEdit, onDelete, onSelectPin, isEditing, isSelected, isPinHighlighted }, ref) => {
-    const { setActivePinCommentId, clearCurrentPin } = useTaskDetailStore(
+    const { setActivePinCommentId, clearCurrentPin, closeCommentDrawer } = useTaskDetailStore(
       useShallow((s) => ({
         setActivePinCommentId: s.setActivePinCommentId,
         clearCurrentPin: s.clearCurrentPin,
+        closeCommentDrawer: s.closeCommentDrawer,
       })),
     );
     const user = useAuthStore((s) => s.user);
@@ -41,6 +42,7 @@ const CommentItem = forwardRef<HTMLDivElement, CommentItemProps>(
               onSelectPin?.(comment.fileInfo ?? null);
               setActivePinCommentId(comment.commentId);
               clearCurrentPin();
+              closeCommentDrawer();
             }}
             className={cn(
               'rounded-xl px-3 py-2 sm:px-4 sm:py-3 shadow-sm relative transition-all duration-200 border bg-gray-200 border-gray-200',
