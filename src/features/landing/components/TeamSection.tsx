@@ -1,5 +1,5 @@
 import { CardDescription, CardContent, CardTitle, Card } from '@/shared/components/shadcn/card';
-import { Image } from '@/shared/components/ui/image/Image';
+import Image from '@/shared/components/ui/image/Image';
 import { cn } from '@/shared/lib/utils';
 
 const TeamSection = () => {
