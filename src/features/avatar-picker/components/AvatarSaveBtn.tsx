@@ -7,7 +7,7 @@ const AvatarSaveBtn = ({ handleSave }: AvatarSaveBtnProps) => {
     <div className="pt-12">
       <Button
         onClick={handleSave}
-        variant={'defaultBoost'}
+        variant="defaultBoost"
         className="w-50 sm:w-80 h-14 body1-bold rounded-2xl hover:shadow-lg hover:-translate-y-1 transition"
         size="lg"
       >

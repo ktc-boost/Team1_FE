@@ -36,11 +36,11 @@ const TaskDetailTopTab = ({
         {task.title}
       </div>
       <div className="sm:hidden flex gap-6">
-        <Button onClick={onOpenComments} variant={'ghost'}>
+        <Button onClick={onOpenComments} variant="ghost">
           <MessageSquare className="size-5" />
         </Button>
 
-        <Button onClick={onToggleReviewAction} variant={'ghost'}>
+        <Button onClick={onToggleReviewAction} variant="ghost">
           <CheckCircle2 className="size-5" />
         </Button>
       </div>

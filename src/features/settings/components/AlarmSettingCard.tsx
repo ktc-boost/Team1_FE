@@ -60,7 +60,7 @@ const AlarmSettingCard = () => {
       {/* 기기 등록 버튼 */}
       <div className="px-1 mb-4 sm:mb-7">
         <Button
-          variant={'defaultBoost'}
+          variant="defaultBoost"
           className="!label2-regular sm:!label1-regular"
           onClick={() => navigate(ROUTE_PATH.ALARM_SETUP, { state: { from: ROUTE_PATH.SETTINGS } })}
         >
