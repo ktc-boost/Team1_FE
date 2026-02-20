@@ -91,7 +91,6 @@ const Overlay = ({ onClick }: OverlayProps) => {
             if (editingComment) return;
             if (isMobile) {
               openCommentDrawer();
-              console.log('dksfjksdjflkdsjflksdjf');
             }
           }}
         />
