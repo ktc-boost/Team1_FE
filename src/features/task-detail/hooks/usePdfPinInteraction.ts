@@ -8,17 +8,16 @@ import { useShallow } from 'zustand/react/shallow';
 export const usePdfPinInteraction = (pageNumber: number, pageSize: PageSize) => {
   const mouseMoved = useRef(false);
   const user = useAuthStore((s) => s.user);
-  const { clearCurrentPin, persona, currentPin, setCurrentPin, selectedFile, isAnonymous } =
-    useTaskDetailStore(
-      useShallow((s) => ({
-        clearCurrentPin: s.clearCurrentPin,
-        persona: s.persona,
-        currentPin: s.currentPin,
-        setCurrentPin: s.setCurrentPin,
-        selectedFile: s.selectedFile,
-        isAnonymous: s.isAnonymous,
-      })),
-    );
+  const { persona, setCurrentPin, selectedFile, isAnonymous } = useTaskDetailStore(
+    useShallow((s) => ({
+      persona: s.persona,
+      currentPin: s.currentPin,
+      setCurrentPin: s.setCurrentPin,
+      selectedFile: s.selectedFile,
+      isAnonymous: s.isAnonymous,
+      openCommentDrawer: s.openCommentDrawer,
+    })),
+  );
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (mouseMoved.current) return;
@@ -29,16 +28,6 @@ export const usePdfPinInteraction = (pageNumber: number, pageSize: PageSize) => 
 
     const pdfX = (x / rect.width) * pageSize.width;
     const pdfY = (1 - y / rect.height) * pageSize.height;
-
-    if (
-      currentPin &&
-      Math.abs(currentPin.fileX! - pdfX) < 20 &&
-      Math.abs(currentPin.fileY! - pdfY) < 20 &&
-      currentPin.filePage === pageNumber
-    ) {
-      clearCurrentPin();
-      return;
-    }
 
     const newPin: PinWithAuthor = {
       fileId: selectedFile?.fileId ?? '',

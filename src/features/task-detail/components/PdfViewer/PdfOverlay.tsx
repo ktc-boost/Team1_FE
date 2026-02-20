@@ -25,6 +25,7 @@ const Overlay = ({ onClick }: OverlayProps) => {
     editingComment,
     persona,
     isAnonymous,
+    openCommentDrawer,
   } = useTaskDetailStore(
     useShallow((s) => ({
       pins: s.pins,
@@ -36,10 +37,12 @@ const Overlay = ({ onClick }: OverlayProps) => {
       editingComment: s.editingComment,
       persona: s.persona,
       isAnonymous: s.isAnonymous,
+      openCommentDrawer: s.openCommentDrawer,
     })),
   );
   const user = useAuthStore((state) => state.user);
   const pinList = pins as PinWithAuthor[];
+  const isMobile = window.matchMedia('(max-width: 640px)').matches;
 
   return (
     <div className="absolute inset-0 top-0 left-0 w-full h-full z-10" onClick={onClick}>
@@ -60,38 +63,39 @@ const Overlay = ({ onClick }: OverlayProps) => {
               left={left}
               isHighlighted={pin.commentId === activePinCommentId}
               top={top}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
+                if (editingComment) return;
                 if (pin.commentId) {
-                  if (editingComment) return;
                   setActivePinCommentId(pin.commentId);
                   clearCurrentPin();
+                  if (isMobile) openCommentDrawer();
                 }
               }}
             />
           );
         })}
 
-      {/* currentPin */}
-      {currentPin?.filePage === pageNumber &&
-        (() => {
-          if (!currentPin) return null;
-
-          const left = ((currentPin.fileX ?? 0) / pageSize.width) * 100;
-          const top = 100 - ((currentPin.fileY ?? 0) / pageSize.height) * 100;
-
-          return (
-            <PinAvatar
-              persona={persona}
-              isAnonymous={isAnonymous ?? false}
-              avatar={user?.avatar}
-              backgroundColor={user?.backgroundColor}
-              name={user?.name}
-              zoom={zoom}
-              left={left}
-              top={top}
-            />
-          );
-        })()}
+      {currentPin?.filePage === pageNumber && (
+        <PinAvatar
+          persona={persona}
+          isAnonymous={isAnonymous ?? false}
+          avatar={user?.avatar}
+          backgroundColor={user?.backgroundColor}
+          name={user?.name}
+          zoom={zoom}
+          left={((currentPin.fileX ?? 0) / pageSize.width) * 100}
+          top={100 - ((currentPin.fileY ?? 0) / pageSize.height) * 100}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (editingComment) return;
+            if (isMobile) {
+              openCommentDrawer();
+              console.log('dksfjksdjflkdsjflksdjf');
+            }
+          }}
+        />
+      )}
     </div>
   );
 };
