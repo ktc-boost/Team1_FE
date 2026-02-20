@@ -34,13 +34,13 @@ const FileItem = ({
   return (
     <div
       onClick={handleOpenPdf}
-      className="w-full justify-between border-2 rounded-xl border-gray-300 pl-4 pr-3 pt-1.5 pb-1.5 flex items-center gap-2 hover:border-gray-400 cursor-pointer"
+      className="w-full justify-between border-2 rounded-xl border-gray-300 pl-4 pr-3 py-1.5 flex items-center gap-2 hover:border-gray-400 cursor-pointer"
     >
       <div className="flex items-center gap-2">
-        <img src={fileIcon} alt="파일 아이콘" className="w-5 h-5" />
+        <img src={fileIcon} alt="파일 아이콘" className="w-4 h-4 sm:w-5 sm:h-5" />
         <div className="flex-1">
-          <p className="text-sm">{fileName}</p>
-          <p className="text-xs pt-1 text-gray-500">
+          <p className="label2-regular sm:label1-regular">{fileName}</p>
+          <p className="hidden sm:au label2-regular pt-1 text-gray-500">
             {fileSize} | {timeLeft} |
             <img src={FileStatusImages[status]} alt={status} className="inline-block w-4 h-4" />
             {status}
@@ -50,10 +50,10 @@ const FileItem = ({
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <EllipsisVertical className="w-5 h-5 text-gray-700 " />
+            <EllipsisVertical className="w-3 h-3 sm:w-5 sm:h-5 text-gray-700 " />
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-1 z-50 border border-gray-200 dark:border-gray-700"
+            className="w-30 sm:w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-1 z-50 border border-gray-200"
             align="end"
           >
             <DropdownMenuGroup>
@@ -62,7 +62,7 @@ const FileItem = ({
                   e.stopPropagation();
                   downloadFile({ fileId, fileName });
                 }}
-                className="px-4 py-2 text-gray-800 dark:text-gray-200 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded-md"
+                className="px-4 py-2 !label2-regular sm:!label1-regular text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded-md"
               >
                 다운로드
               </DropdownMenuItem>
@@ -71,7 +71,7 @@ const FileItem = ({
                   e.stopPropagation();
                   if (onDelete) onDelete();
                 }}
-                className="px-4 py-2 text-red-800 dark:text-gray-200 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded-md"
+                className="px-4 py-2 !label2-regular sm:!label1-regular text-red-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded-md"
               >
                 삭제
               </DropdownMenuItem>
