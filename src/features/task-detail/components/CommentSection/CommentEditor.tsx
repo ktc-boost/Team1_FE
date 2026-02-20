@@ -37,7 +37,6 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
       }
     } else {
       setInput('');
-      setCurrentPin(null);
     }
   }, [editingComment, setIsAnonymous, setCurrentPin]);
 
@@ -84,6 +83,7 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
   const handleCancelEdit = () => {
     setEditingComment(null);
     setInput('');
+    setCurrentPin(null);
   };
 
   return (
