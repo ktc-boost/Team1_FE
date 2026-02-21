@@ -8,7 +8,7 @@ const FileTableInfo = () => {
   const { data: fileSummaryData } = useProjectFileSummaryQuery(projectId!);
 
   return (
-    <div className="flex items-center justify-between label1-regular text-gray-500 px-2 pb-2">
+    <div className="flex items-center justify-between label2-regular sm:label1-regular  text-gray-500 px-2 py-3">
       <p>총 {fileSummaryData?.totalCount}개 파일</p>
       <p> 전체 용량 : {getTotalFileSize([{ sizeBytes: fileSummaryData?.totalSizeBytes ?? 0 }])}</p>
     </div>
