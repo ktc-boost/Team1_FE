@@ -42,7 +42,7 @@ const CommentList = ({ comments, onDelete, onSelectPin }: CommentListProps) => {
   }, [comments, activePinCommentId]);
 
   return (
-    <div ref={scrollRef} className="px-4 bg-red-300 flex-1 overflow-y-auto pb-40">
+    <div ref={scrollRef} className="px-4 flex-1 overflow-y-auto pb-40">
       {comments.map((comment) => (
         <CommentItem
           key={comment.commentId}
