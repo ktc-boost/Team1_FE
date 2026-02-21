@@ -1,6 +1,6 @@
 import { TableRow, TableCell } from '@/shared/components/shadcn/table';
 import { Button } from '@/shared/components/shadcn/button';
-import { Download, ChevronRight, MoreVertical } from 'lucide-react'; // ExternalLink 추가 가능
+import { Download, ChevronRight } from 'lucide-react'; // ExternalLink 추가 가능
 import { formatBytes, getFileIcon } from '@/features/file/utils/fileUtils';
 import { useFileDownloadMutation } from '@/features/file/hooks/useFileDownloadMutation';
 import { formatDateTime } from '@/shared/utils/dateUtils';
@@ -9,12 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/app/routes/Router';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
 import { cn } from '@/shared/lib/utils';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-  DropdownMenuItem,
-} from '@/shared/components/shadcn/dropdown-menu';
+import FileMobileActionMenu from '@/features/file/components/FileMobileActionMenu';
 
 interface FileTableRowProps {
   file: ProjectFile;
@@ -27,7 +22,8 @@ const FileTableRow = ({ file, index }: FileTableRowProps) => {
   const navigate = useNavigate();
   const mobileHiddenClass = 'hidden md:table-cell';
   const commonCellClass = '!label2-regular sm:!body2-regular text-gray-600';
-
+  const handleNavigate = () => navigate(ROUTES.TASK_DETAIL(projectData.id, file.taskId));
+  const handleDownload = () => downloadFile({ fileId: file.fileId, fileName: file.filename });
   return (
     <TableRow className="bg-white border-b border-gray-100 hover:bg-blue-50/30 transition-colors duration-150 h-[60px]">
       <TableCell className={cn('w-[50px] pl-6 body2-regular', commonCellClass)}>
@@ -41,7 +37,7 @@ const FileTableRow = ({ file, index }: FileTableRowProps) => {
             alt="file-icon"
             className="hidden sm:block w-5 h-5 flex-shrink-0"
           />
-          <span className="truncate body2-medium text-gray-900">{file.filename}</span>
+          <span className="truncate body2-regular text-gray-900">{file.filename}</span>
         </div>
       </TableCell>
 
@@ -76,33 +72,7 @@ const FileTableRow = ({ file, index }: FileTableRowProps) => {
       </TableCell>
 
       <TableCell className="w-[50px] sm:hidden">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-              <MoreVertical className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="w-40 bg-white rounded-lg shadow-md border border-gray-300 p-1"
-          >
-            <DropdownMenuItem
-              className="flex items-center justify-between px-3 py-2 cursor-pointer focus:bg-gray-100 rounded-md"
-              onClick={() => navigate(ROUTES.TASK_DETAIL(projectData.id, file.taskId))}
-            >
-              <span className="label1-regular">할 일로 이동</span>
-              <ChevronRight className="w-4 h-4" />
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              className="flex items-center justify-between px-3 py-2 cursor-pointer focus:bg-gray-100 rounded-md"
-              onClick={() => downloadFile({ fileId: file.fileId, fileName: file.filename })}
-            >
-              <span className="label1-regular">다운로드</span>
-              <Download className="w-4 h-4" />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <FileMobileActionMenu onNavigate={handleNavigate} onDownload={handleDownload} />
       </TableCell>
     </TableRow>
   );
