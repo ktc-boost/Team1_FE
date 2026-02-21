@@ -36,13 +36,13 @@ const CommentList = ({ comments, onDelete, onSelectPin }: CommentListProps) => {
   }, [activePinCommentId]);
 
   useEffect(() => {
-    if (scrollRef.current) {
+    if (scrollRef.current && !activePinCommentId) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [comments]);
+  }, [comments, activePinCommentId]);
 
   return (
-    <div ref={scrollRef} className="px-4 flex-1 overflow-y-auto pb-35">
+    <div ref={scrollRef} className="px-4 bg-red-300 flex-1 overflow-y-auto pb-40">
       {comments.map((comment) => (
         <CommentItem
           key={comment.commentId}
