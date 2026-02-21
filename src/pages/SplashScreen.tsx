@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
-import Boo from '@/shared/assets/images/boost/boo.webp';
-import Boost from '@/shared/assets/images/boost/boost-logo-3d-low.webp';
+import Image from '@/shared/components/ui/image/Image';
 
 const SplashScreen = () => {
   return (
@@ -12,7 +11,14 @@ const SplashScreen = () => {
         animate={{ scale: 1 }}
         transition={{ type: 'spring', stiffness: 240, damping: 30 }}
       >
-        <img src={Boost} alt="boost-logo" className="w-30 h-30" />
+        <Image
+          domain="boost"
+          name="boost-logo-3d"
+          variant="standard"
+          width={128}
+          alt="Boost logo 3d"
+          className="w-30 h-30"
+        />
       </motion.div>
 
       <motion.div
@@ -20,7 +26,14 @@ const SplashScreen = () => {
         transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         className="mb-6"
       >
-        <img src={Boo} alt="boo" className="w-32 h-32" />
+        <Image
+          domain="boost"
+          name="boo-front"
+          variant="standard"
+          width={128}
+          alt="Boo front"
+          className="w-32 h-32"
+        />
       </motion.div>
       <p className="my-4 text-gray-500">초기화 중입니다.. </p>
 

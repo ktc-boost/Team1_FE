@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
-import Boo from '@/shared/assets/images/boost/boo.png';
 import { cn } from '@/shared/lib/utils';
+import Boo from '@/shared/assets/images/boost/boo-front.png';
 
 interface MovingBooProps {
   size?: number;
