@@ -1,25 +1,22 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/shared/components/shadcn/card';
-import { cn } from '@/shared/lib/utils';
 import type { ReactNode } from 'react';
 
 interface SettingsSectionCardProps {
   title: string;
   children: ReactNode;
-  className?: string;
   desc?: string;
 }
 
-export const SettingsSectionCard = ({
-  title,
-  desc,
-  children,
-  className,
-}: SettingsSectionCardProps) => {
+export const SettingsSectionCard = ({ title, desc, children }: SettingsSectionCardProps) => {
   return (
-    <Card className={cn('shadow-none border-b border-gray-200', className)}>
+    <Card className="shadow-none border-none mb-0 py-5 sm:py-6">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-gray-800">{title}</CardTitle>
-        {desc && <p className="text-sm text-gray-500 mt-1 leading-relaxed">{desc}</p>}
+        <CardTitle className="title2-bold">{title}</CardTitle>
+        {desc && (
+          <p className="label2-regular sm:body2-regular text-gray-500 mt-2 sm:mt-3 leading-relaxed">
+            {desc}
+          </p>
+        )}
       </CardHeader>
       <CardContent className="space-y-6">{children}</CardContent>
     </Card>

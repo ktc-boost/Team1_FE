@@ -45,8 +45,15 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
   return (
     <SettingsSectionCard title="내 정보">
       <div className="flex items-center gap-4">
-        <Avatar style={{ backgroundColor: member.backgroundColor }} className="w-20 h-20">
-          <AvatarImage className="p-2" src={getAvatarSrc(member)} alt="user avatar" />
+        <Avatar
+          style={{ backgroundColor: member.backgroundColor }}
+          className="w-15 h-15 sm:w-18 sm:h-18 flex items-center justify-center"
+        >
+          <AvatarImage
+            className="w-12 h-12 sm:w-15 sm:h-15"
+            src={getAvatarSrc(member)}
+            alt="user avatar"
+          />
           <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
         </Avatar>
 
@@ -61,25 +68,18 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
             </Button>
           </div>
         ) : (
-          <p className="text-base font-medium text-gray-800">{member.name}</p>
+          <p className="body2-regular sm:body1-regular">{member.name}</p>
         )}
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">내 정보 수정</label>
-        <div className="flex gap-3">
-          <Button
-            variant="secondary"
-            onClick={() => setIsNameEditing(true)}
-            disabled={isNameEditing}
-          >
-            이름 변경
-          </Button>
+      <div className="flex gap-3">
+        <Button variant="secondary" onClick={() => setIsNameEditing(true)} disabled={isNameEditing}>
+          이름 변경
+        </Button>
 
-          <Button onClick={openDrawer} variant="secondary">
-            아바타 변경
-          </Button>
-        </div>
+        <Button onClick={openDrawer} variant="secondary">
+          아바타 변경
+        </Button>
       </div>
     </SettingsSectionCard>
   );

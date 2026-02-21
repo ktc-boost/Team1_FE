@@ -3,7 +3,6 @@ import { DeleteAccountCard } from '@/features/settings/components/DeleteAccountC
 import { LicenseCard } from '@/features/settings/components/LicenseCard';
 import { useMyInfoQuery } from '@/features/settings/hooks/useMyInfoQuery';
 import { Separator } from '@/shared/components/shadcn/separator';
-
 import AlarmSettingCard from '@/features/settings/components/AlarmSettingCard';
 import { UserInfoCard } from '@/features/settings/components/UserInfoCard';
 import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
@@ -14,19 +13,17 @@ export default function SettingsPage() {
   if (isLoading || !myInfo) return <FullPageLoader text="정보 불러오는 중.." />;
 
   return (
-    <div className="flex flex-col pr-10 pl-10 space-y-8">
-      {/* 내 정보 */}
-      <UserInfoCard member={myInfo} />
-      <AvatarsDrawer showEditButton={false} showConfirmButton={true} />
-      <Separator />
-      {/* 알림변경 */}
-      <AlarmSettingCard />
-      <Separator />
-      {/* 회원탈퇴 */}
-      <DeleteAccountCard />
-      <Separator />
-      {/* 라이선스 명시 */}
-      <LicenseCard />
+    <div className="overflow-y-auto">
+      <div className="flex flex-col px-2 sm:px-10 space-y-4 pt-4 pb-6">
+        <UserInfoCard member={myInfo} />
+        <AvatarsDrawer showEditButton={false} showConfirmButton={true} />
+        <Separator />
+        <AlarmSettingCard />
+        <Separator />
+        <DeleteAccountCard />
+        <Separator />
+        <LicenseCard />
+      </div>
     </div>
   );
 }
