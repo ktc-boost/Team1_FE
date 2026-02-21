@@ -1,16 +1,14 @@
 import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useProjectFilesQuery } from '@/features/file/hooks/useProjectFilesQuery';
-import { Table } from '@/shared/components/shadcn/table';
+import { Table, TableBody } from '@/shared/components/shadcn/table';
 import FileTableInfo from '@/features/file/components/FileTableInfo';
 import FileTableHeader from '@/features/file/components/FileTableHeader';
 import FileTableEmpty from '@/features/file/components/FileTableEmpty';
 import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 import { usePagination } from '@/features/memo/hooks/ui/usePagination';
 import FileTableRow from '@/features/file/components/FileTableRow';
-
-const FILE_HEADER_HEIGHT = 48;
-const FILE_ROW_HEIGHT = 60;
+import { FILE_HEADER_HEIGHT, FILE_ROW_HEIGHT } from '@/features/file/constants/file.ui.constants';
 
 const FileSection = () => {
   const { projectId } = useParams<{ projectId: string }>();
@@ -37,17 +35,23 @@ const FileSection = () => {
 
       <div
         ref={tableContainerRef}
-        className="flex-1 min-h-0 flex flex-col border border-gray-200 rounded-xl shadow-[0_0_6px_rgba(0,0,0,0.08)] overflow-hidden bg-white"
+        className="flex-1 min-h-0 flex flex-col rounded-xl border border-gray-200  shadow-[0_0_6px_rgba(0,0,0,0.08)] overflow-hidden bg-white"
       >
         <Table className="min-w-full table-fixed border-collapse">
           <FileTableHeader />
-          {currentData.length > 0 ? (
-            currentData.map((file, index) => (
-              <FileTableRow key={file.fileId} file={file} index={currentPage * pageSize + index} />
-            ))
-          ) : (
-            <FileTableEmpty />
-          )}
+          <TableBody>
+            {currentData.length > 0 ? (
+              currentData.map((file, index) => (
+                <FileTableRow
+                  key={file.fileId}
+                  file={file}
+                  index={currentPage * pageSize + index}
+                />
+              ))
+            ) : (
+              <FileTableEmpty />
+            )}
+          </TableBody>
         </Table>
       </div>
     </div>
