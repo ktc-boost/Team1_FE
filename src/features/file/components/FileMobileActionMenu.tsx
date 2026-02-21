@@ -17,7 +17,7 @@ const FileMobileActionMenu = ({ onNavigate, onDownload }: FileMobileActionMenuPr
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-gray-100 rounded-full">
-          <MoreVertical className="h-4 w-4 text-gray-500" />
+          <MoreVertical className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
 
