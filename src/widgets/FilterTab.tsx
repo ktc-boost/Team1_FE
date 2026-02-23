@@ -2,13 +2,13 @@ import FilterToggle from '@/shared/components/ui/FilterToggle';
 import SortDropDown from '@/shared/components/ui/SortDropDown';
 import SearchInput from '@/features/search/components/TaskSearchInput';
 import TagSearchInput from '@/features/search/components/TagSearchInput';
-import type { BoardKey, BoardType } from '@/features/board/types/boardTypes';
+import type { BoardKey, Board } from '@/features/board/types/board.domain.types';
 import SearchButtons from '@/features/search/components/SearchButtons';
 
 interface FilterTabProps {
   boardKey: BoardKey;
-  value?: BoardType;
-  onChange?: (value: BoardType) => void;
+  value?: Board;
+  onChange?: (value: Board) => void;
   showFilterToggle?: boolean;
   showTagSearchInput?: boolean;
   showSearchInput?: boolean;

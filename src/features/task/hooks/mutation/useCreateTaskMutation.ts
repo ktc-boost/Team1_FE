@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
 import { v4 as uuidv4 } from 'uuid';
 import { taskApi } from '@/features/task/api/taskApi';
-import type { TaskListItem, TaskListResponse } from '@/features/task/types/taskTypes';
-import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
+import type { TaskListItem } from '@/features/task/types/task.domain.types';
+import type { TaskListResponse } from '@/features/task/types/task.query.types';
+import { TASK_QUERY_KEYS } from '@/features/task/constants/task.query.constants';
 import type { CreateTaskInput } from '@/features/task/schemas/taskSchema';
 import { useSortStore } from '@/features/board/store/useSortStore';
 import { createTagObjects } from '@/features/tag/utils/tagUtils';

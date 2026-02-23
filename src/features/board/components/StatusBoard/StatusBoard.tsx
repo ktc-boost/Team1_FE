@@ -17,8 +17,8 @@ import {
   optimisticallyMoveTask,
   type MoveTaskParams,
 } from '@/features/task/hooks/mutation/useMoveTaskMutation';
-import { columnStatus } from '@/features/board/types/boardTypes';
-import type { TaskListItem } from '@/features/task/types/taskTypes';
+import { TASK_STATUS_META } from '@/features/task/constants/task.domain.constants';
+import type { TaskListItem, TaskStatus } from '@/features/task/types/task.domain.types';
 import { useStatusBoardQueries } from '@/features/board/hooks/useStatusBoardQueries';
 import { useSortStore } from '@/features/board/store/useSortStore';
 import { ColumnFallback } from '@/features/board/components/StatusBoard/ColumnFallback';
@@ -41,7 +41,7 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
     sortStateRef.current = { sortBy, direction };
   }, [sortBy, direction]);
 
-  const dropTargetRef = useRef<{ activeId: string; toStatus: string; overId?: string } | null>(
+  const dropTargetRef = useRef<{ activeId: string; toStatus: TaskStatus; overId?: string } | null>(
     null,
   );
 
@@ -148,7 +148,7 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
             if (query.isError || !query.data)
               return <ColumnFallback key={status} status={status} state="error" />;
 
-            const column = columnStatus.find((c) => c.status === status)!;
+            const column = TASK_STATUS_META.find((c) => c.status === status)!;
             return (
               <StatusColumn key={status} column={column} query={query} projectId={projectId} />
             );

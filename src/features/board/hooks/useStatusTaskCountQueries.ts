@@ -1,7 +1,7 @@
 import { useMyTaskCountByStatusQuery } from '@/features/task/hooks/query/useMyTaskCountByStatusQuery';
 import { useProjectTaskCountByStatusQuery } from '@/features/task/hooks/query/useProjectTaskCountByStatusQuery';
 import { useBoardSearchStore } from '@/features/board/store/useBoardSearchStore';
-import { BOARD_KEYS } from '@/features/board/constants/boardConstants';
+import { BOARD_KEYS } from '@/features/board/constants/board.domain.constants';
 
 export const useStatusTaskCountQueries = (projectId?: string) => {
   const isProjectBoard = !!projectId;

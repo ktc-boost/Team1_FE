@@ -2,15 +2,15 @@ import { SortableContext } from '@dnd-kit/sortable';
 import { useDroppable } from '@dnd-kit/core';
 import { useRef } from 'react';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
-import { type Column } from '@/features/task/types/taskTypes';
-import { type TaskQuery } from '@/features/task/types/taskTypes';
+import type { TaskStatusMeta } from '@/features/task/types/task.domain.types';
+import type { TaskQuery } from '@/features/task/types/task.query.types';
 import { getTaskCountByStatus } from '@/features/task/utils/taskUtils';
 import { useStatusTaskCountQueries } from '@/features/board/hooks/useStatusTaskCountQueries';
 import { useTagFilterStore } from '@/features/tag/store/useTagFilterStore';
 import InlineLoader from '@/shared/components/ui/loading/InlineLoader';
 
 interface StatusColumnProps {
-  column: Column;
+  column: TaskStatusMeta;
   query: TaskQuery;
   projectId?: string;
 }

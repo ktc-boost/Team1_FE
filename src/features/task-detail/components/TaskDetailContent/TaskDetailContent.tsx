@@ -1,6 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '@/app/routes/Router';
-import type { TaskDetail } from '@/features/task/types/taskTypes';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { useDeleteTaskMutation } from '@/features/task/hooks/mutation/useDeleteTaskMutation';
 import { useModal } from '@/shared/hooks/useModal';
@@ -11,6 +10,7 @@ import DueDateSection from '@/features/task-detail/components/TaskDetailContent/
 import TagSection from '@/features/task-detail/components/TaskDetailContent/TagList';
 import TaskControlDropdown from '@/features/task-detail/components/TaskDetailContent/TaskControlDropdown';
 import TaskUpdateModalContent from '@/features/task/components/TaskModal/TaskUpdateModalContent';
+import type { TaskDetail } from '@/features/task/types/task.domain.types';
 
 interface TaskDetailContentProps {
   task: TaskDetail;
