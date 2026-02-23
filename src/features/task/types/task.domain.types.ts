@@ -4,7 +4,7 @@ import type {
 } from '@/features/task/constants/task.domain.constants';
 import type { TagList } from '@/features/tag/types/tagTypes';
 import type { Member } from '@/features/user/types/userTypes';
-import type { File } from '@/features/file/types/fileTypes';
+import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
 
 // 'TODO' | 'PROGRESS' | 'REVIEW' | 'DONE'
 export type TaskStatus = (typeof TASK_STATUS_LIST)[number];
@@ -45,7 +45,7 @@ export type TaskDetail = {
   tags: TagList;
   assignees: Member[];
   comments: Comment[];
-  files: File[];
+  files: ServerFileType[];
   createdAt: string;
   updatedAt: string;
 };
