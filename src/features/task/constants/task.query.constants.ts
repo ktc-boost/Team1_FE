@@ -1,11 +1,12 @@
-import type { Direction, SortBy } from '@/features/board/types/sortTypes';
+import type { Direction, SortBy } from '@/features/board/types/board.sort.types';
+import type { TaskStatus } from '@/features/task/types/task.domain.types';
 
 export const TASK_QUERY_KEYS = {
   root: ['tasks'] as const,
 
   project: (
     projectId: string,
-    status: string,
+    status: TaskStatus,
     sortBy: SortBy,
     direction: Direction,
     search?: string,
@@ -20,7 +21,7 @@ export const TASK_QUERY_KEYS = {
       search ?? '',
     ] as const,
 
-  meStatus: (status: string, sortBy: SortBy, direction: Direction, search?: string) =>
+  meStatus: (status: TaskStatus, sortBy: SortBy, direction: Direction, search?: string) =>
     [...TASK_QUERY_KEYS.root, 'me', status, sortBy, direction, search ?? ''] as const,
 
   member: (projectId: string, memberId: string, search?: string) =>
