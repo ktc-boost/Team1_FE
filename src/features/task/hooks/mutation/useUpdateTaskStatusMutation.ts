@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
-import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
+import { TASK_QUERY_KEYS } from '@/features/task/constants/task.query.constants';
 import toast from 'react-hot-toast';
 import { useSortStore } from '@/features/board/store/useSortStore';
-import type { TaskDetail } from '@/features/task/types/taskTypes';
+import type { TaskDetail, TaskStatus } from '@/features/task/types/task.domain.types';
 
 // 할 일 상태 업데이트
 export const useUpdateTaskStatusMutation = () => {
@@ -18,7 +18,7 @@ export const useUpdateTaskStatusMutation = () => {
     }: {
       projectId: string;
       taskId: string;
-      status: string;
+      status: TaskStatus;
     }) => taskApi.updateTaskStatus(projectId, taskId, status),
 
     onMutate: async ({ projectId, taskId, status }) => {

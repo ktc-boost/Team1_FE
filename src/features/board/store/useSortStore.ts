@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import type { SortState } from '@/features/board/types/sortTypes';
-import { DIRECTION, SORT_BY } from '@/features/board/constants/sortConstants';
+import type { SortState } from '@/features/board/types/board.sort.types';
+import { DIRECTION, SORT_BY } from '@/features/board/constants/board.sort.constants';
 
 export const useSortStore = create<SortState>((set) => ({
   sortBy: SORT_BY.CREATED_AT,

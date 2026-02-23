@@ -1,6 +1,8 @@
 import tinycolor from 'tinycolor2';
-import type { TaskDetail, TaskListItem } from '@/features/task/types/taskTypes';
+import type { TaskDetail, TaskListItem } from '@/features/task/types/task.domain.types';
 import type { Tag, TagList } from '@/features/tag/types/tagTypes';
+import { BOARD } from '@/features/board/constants/board.domain.constants';
+import { TASK_STATUS } from '@/features/task/constants/task.domain.constants';
 
 export const getTagIds = (tags: TagList): string[] => tags.map((tag) => tag.tagId);
 
@@ -53,8 +55,8 @@ export function generateTags(task: TaskDetail | TaskListItem): TagList {
   const tags: TagList = [];
   const hasReviewers = task.requiredReviewerCount && task.requiredReviewerCount > 0;
 
-  if ('status' in task && hasReviewers) {
-    if (task.status === 'DONE') {
+  if (BOARD.STATUS in task && hasReviewers) {
+    if (task.status === TASK_STATUS.DONE) {
       tags.push({ tagId: 'system-review-done', name: '검토완료' });
     } else {
       tags.push({ tagId: 'system-review', name: '검토필요' });

@@ -1,13 +1,15 @@
+import { BOARD } from '@/features/board/constants/board.domain.constants';
+import type { Board } from '@/features/board/types/board.domain.types';
 import { Tabs, TabsList, TabsTrigger } from '@/shared/components/shadcn/tabs';
 
 interface FilterToggleProps {
-  value: 'status' | 'member';
-  onChange: (value: 'status' | 'member') => void;
+  value: Board;
+  onChange: (value: Board) => void;
 }
 
 const FilterToggle = ({ value, onChange }: FilterToggleProps) => {
   const handleToggle = () => {
-    onChange(value === 'status' ? 'member' : 'status');
+    onChange(value === BOARD.STATUS ? BOARD.MEMBER : BOARD.STATUS);
   };
 
   return (
