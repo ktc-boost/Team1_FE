@@ -1,4 +1,21 @@
 @theme {
+  /* 디스플레이 (Display) */
+  --display1-bold-font-size: 1.75rem;
+  --display1-bold-line-height: 36px;
+  --display1-bold-font-weight: 700;
+
+  --display1-regular-font-size: 1.75rem;
+  --display1-regular-line-height: 36px;
+  --display1-regular-font-weight: 400;
+
+  --display2-bold-font-size: 1.5rem;
+  --display2-bold-line-height: 32px;
+  --display2-bold-font-weight: 700;
+
+  --display2-regular-font-size: 1.5rem;
+  --display2-regular-line-height: 32px;
+  --display2-regular-font-weight: 400;
+
   /* 제목 (Title) */
   --title1-bold-font-size: 1.25rem;
   --title1-bold-line-height: 27px;
@@ -66,6 +83,37 @@
   --label2-regular-font-size: 0.75rem;
   --label2-regular-line-height: 16px;
   --label2-regular-font-weight: 400;
+
+  /* 보조 텍스트 (Caption) */
+  --caption1-bold-font-size: 0.6875rem;
+  --caption1-bold-line-height: 16px;
+  --caption1-bold-font-weight: 700;
+
+  --caption1-regular-font-size: 0.6875rem;
+  --caption1-regular-line-height: 16px;
+  --caption1-regular-font-weight: 400;
+}
+
+/* 디스플레이 (Display) */
+@utility display1-bold {
+  font-size: var(--display1-bold-font-size);
+  line-height: var(--display1-bold-line-height);
+  font-weight: var(--display1-bold-font-weight);
+}
+@utility display1-regular {
+  font-size: var(--display1-regular-font-size);
+  line-height: var(--display1-regular-line-height);
+  font-weight: var(--display1-regular-font-weight);
+}
+@utility display2-bold {
+  font-size: var(--display2-bold-font-size);
+  line-height: var(--display2-bold-line-height);
+  font-weight: var(--display2-bold-font-weight);
+}
+@utility display2-regular {
+  font-size: var(--display2-regular-font-size);
+  line-height: var(--display2-regular-line-height);
+  font-weight: var(--display2-regular-font-weight);
 }
 
 /* 제목 (Title) */
@@ -154,4 +202,16 @@
   font-size: var(--label2-regular-font-size);
   line-height: var(--label2-regular-line-height);
   font-weight: var(--label2-regular-font-weight);
+}
+
+/* 보조 텍스트 (Caption) */
+@utility caption1-bold {
+  font-size: var(--caption1-bold-font-size);
+  line-height: var(--caption1-bold-line-height);
+  font-weight: var(--caption1-bold-font-weight);
+}
+@utility caption1-regular {
+  font-size: var(--caption1-regular-font-size);
+  line-height: var(--caption1-regular-line-height);
+  font-weight: var(--caption1-regular-font-weight);
 }
