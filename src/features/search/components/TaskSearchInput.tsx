@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
+import { cn } from '@/shared/lib/utils';
 import { Input } from '@/shared/components/shadcn/input';
 import { useDebounce } from '@/shared/hooks/useDebounce';
 import type { BoardKey } from '@/features/board/types/boardTypes';
@@ -22,7 +23,7 @@ const TaskSearchInput = ({ boardKey }: SearchInputProps) => {
   }, [debouncedValue, boardKey, setSearch, clearOtherBoardSearch]);
 
   return (
-    <div className="relative w-[300px]">
+    <div className={cn('relative w-[300px]', boardKey === 'myTasks' ? 'mr-3' : 'mr-0')}>
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
       <Input
         value={localValue}
