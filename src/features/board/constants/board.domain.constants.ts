@@ -6,6 +6,12 @@ export const BOARD = {
   MEMBER: 'member',
 } as const;
 
+// 페이지 종류
+export const PAGE = {
+  PROJECT: 'project',
+  MYTASK: 'myTask',
+};
+
 // 보드 키
 export const BOARD_KEYS = {
   MY_TASKS: 'myTasks',

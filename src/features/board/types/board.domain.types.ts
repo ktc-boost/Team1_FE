@@ -1,4 +1,4 @@
-import type { BOARD_KEYS, BOARD } from '@/features/board/constants/board.domain.constants';
+import type { BOARD_KEYS, BOARD, PAGE } from '@/features/board/constants/board.domain.constants';
 import type { TaskStatus } from '@/features/task/types/task.domain.types';
 import type { TaskQuery } from '@/features/task/types/task.query.types';
 
@@ -13,3 +13,6 @@ export type BoardKey = (typeof BOARD_KEYS)[keyof typeof BOARD_KEYS];
 
 // 보드 타입
 export type Board = (typeof BOARD)[keyof typeof BOARD];
+
+// 페이지 타입
+export type Page = (typeof PAGE)[keyof typeof PAGE];
