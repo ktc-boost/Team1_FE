@@ -1,29 +1,36 @@
 import { forwardRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, MessageCircle, Paperclip } from 'lucide-react';
+import { Calendar, MessageCircle, Paperclip, MoreVertical } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { ROUTES } from '@/app/routes/Router';
 import { cn } from '@/shared/lib/utils';
 import Siren from '@/shared/assets/images/boost/siren.png';
-import type { TaskListItem } from '@/features/task/types/taskTypes';
 import { calculateDDay } from '@/shared/utils/dateUtils';
+import type { TaskListItem } from '@/features/task/types/task.domain.types';
 import TaskTags from '@/features/task/components/TaskCard/TaskTags';
 import AssigneesList from '@/features/task/components/TaskCard/AssigneesList';
 import { useProjectsStore } from '@/features/project/store/useProjectsStore';
-import { ROUTES } from '@/app/routes/Router';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
+import { Button } from '@/shared/components/shadcn/button';
+import { AvatarGroup } from '@/shared/components/shadcn/avatar';
 
 interface TaskCardProps {
   task: TaskListItem;
   draggable?: boolean;
   showProjectNameTag?: boolean;
+  onOpenStatusDrawer?: () => void;
 }
 
 const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
-  ({ task, draggable = false, showProjectNameTag = false }, ref) => {
+  ({ task, draggable = false, showProjectNameTag = false, onOpenStatusDrawer }, ref) => {
     const navigate = useNavigate();
 
     const rawProjectName = useProjectsStore((state) => state.getProjectName(task.projectId));
     const projectName = showProjectNameTag ? rawProjectName : undefined;
+
+    const currentUser = useAuthStore((state) => state.user);
+    const isAssignee = task.assignees.some((a) => a.id === currentUser?.id);
 
     const sortable = useSortable({
       id: task.taskId,
@@ -56,6 +63,11 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
       );
     }
 
+    const handleOpenStatusDrawer = (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      onOpenStatusDrawer?.();
+    };
+
     return (
       <div
         onClick={() => navigate(ROUTES.TASK_DETAIL(task.projectId, task.taskId))}
@@ -74,7 +86,19 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
           <div className="flex items-center gap-2">
             <TaskTags task={task} projectName={projectName} />
           </div>
-          {task.urgent && <img src={Siren} alt="urgent-siren" className="w-6 h-6" />}
+          <div className="flex flex-row gap-2">
+            {task.urgent && <img src={Siren} alt="urgent-siren" className="w-6 h-6" />}
+            {onOpenStatusDrawer && isAssignee && (
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={handleOpenStatusDrawer}
+                className="!pt-0 text-gray-600"
+              >
+                <MoreVertical className="w-4 h-4" />
+              </Button>
+            )}
+          </div>
         </div>
 
         {/* 할 일 제목 */}
@@ -93,11 +117,11 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
 
         {/* 담당자 목록 */}
         <div className="flex justify-between text-xs m-1 mt-3">
-          <div className="flex -space-x-2">
+          <AvatarGroup>
             {task.assignees?.map((assignee) => (
               <AssigneesList key={assignee.id} assignee={assignee} />
             ))}
-          </div>
+          </AvatarGroup>
 
           {/* 댓글 수, 파일 수 */}
           <div className="flex justify-center gap-3 text-gray-600">
