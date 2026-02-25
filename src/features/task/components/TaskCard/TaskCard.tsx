@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, MessageCircle, Paperclip, MoreVertical } from 'lucide-react';
+import { Calendar, MessageCircle, Paperclip, ArrowRightLeft } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { ROUTES } from '@/app/routes/Router';
@@ -93,9 +93,9 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
                 variant="ghost"
                 size="icon-sm"
                 onClick={handleOpenStatusDrawer}
-                className="!pt-0 text-gray-600"
+                className="!pt-0 text-gray-500 translate-y-[-3px]"
               >
-                <MoreVertical className="w-4 h-4" />
+                <ArrowRightLeft className="w-4 h-4" />
               </Button>
             )}
           </div>

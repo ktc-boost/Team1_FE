@@ -56,7 +56,12 @@ const MobileStatusColumnHeader = ({
               <Icon className="w-4 h-4" />
             </span>
             <span className="label1-bold tracking-tight truncate">{column.title}</span>
-            <span className={cn('shrink-0 label2-bold px-1.5 py-0.5 rounded-full', theme.pill)}>
+            <span
+              className={cn(
+                'shrink-0 label2-bold w-4.5 h-4.5 rounded-full flex items-center justify-center',
+                theme.pill,
+              )}
+            >
               {selectedTags.length > 0 ? filteredTasks.length : statusTaskCount}
             </span>
 
