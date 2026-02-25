@@ -18,7 +18,7 @@ const MobileStatusBoard = ({ projectId }: MobileStatusBoardProps) => {
   const isAllClosed = openValue === '';
 
   return (
-    <div className="p-3 h-full flex flex-col overflow-y-auto">
+    <div className="p-3 h-full flex flex-col overflow-y-auto scrollbar-stable">
       <Accordion
         type="single"
         collapsible
