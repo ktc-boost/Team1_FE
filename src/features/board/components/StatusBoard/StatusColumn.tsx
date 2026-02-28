@@ -53,7 +53,7 @@ const StatusColumn = ({ column, query, projectId }: StatusColumnProps) => {
   return (
     <div
       ref={setNodeRef}
-      className="bg-gray-200 m-1 shadow-md rounded-xl flex flex-col flex-shrink-0 min-w-[250px] max-w-[350px] flex-1"
+      className="bg-gray-200 m-0.5 md:m-1 shadow-md rounded-xl flex flex-col flex-none w-[calc(100vw-32px)] snap-center md:w-full min-w-[250px] md:snap-align-none md:flex-1"
     >
       <div className="bg-gray-200 shadow-xs text-md h-[45px] rounded-md p-3 label1-regular flex items-center">
         <div className="flex gap-2 text-gray-600 items-center">

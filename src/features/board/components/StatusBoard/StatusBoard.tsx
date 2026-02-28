@@ -4,12 +4,15 @@ import {
   useSensor,
   useSensors,
   PointerSensor,
+  TouchSensor,
   type DragStartEvent,
   type DragOverEvent,
+  defaultDropAnimationSideEffects,
 } from '@dnd-kit/core';
 import { useRef, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useQueryClient } from '@tanstack/react-query';
+import { useIsMobile } from '@/shared/hooks/use-mobile';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
 import StatusColumn from '@/features/board/components/StatusBoard/StatusColumn';
 import {
@@ -30,7 +33,15 @@ interface StatusBoardProps {
 const StatusBoard = ({ projectId }: StatusBoardProps) => {
   const queryClient = useQueryClient();
   const [activeTask, setActiveTask] = useState<TaskListItem | null>(null);
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 10 } }));
+
+  const isMobile = useIsMobile();
+
+  const sensors = useSensors(
+    useSensor(isMobile ? TouchSensor : PointerSensor, {
+      activationConstraint: isMobile ? { delay: 250, tolerance: 5 } : { distance: 10 },
+    }),
+  );
+
   const moveTaskMutation = useMoveTaskMutation();
   const columnsData = useStatusBoardQueries(projectId);
 
@@ -44,6 +55,15 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
   const dropTargetRef = useRef<{ activeId: string; toStatus: TaskStatus; overId?: string } | null>(
     null,
   );
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const onScroll = () => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    setCurrentIndex(Math.round(el.scrollLeft / el.clientWidth));
+  };
 
   const onDragStart = (event: DragStartEvent) => {
     const activeData = event.active.data.current;
@@ -141,7 +161,24 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
         onDragEnd={onDragEnd}
         onDragOver={onDragOver}
       >
-        <div className="flex gap-3 flex-grow overflow-x-auto overflow-y-hidden items-stretch">
+        <div className="flex justify-center gap-2 pb-2 pt-0.5 shrink-0 md:hidden">
+          {TASK_STATUS_META.map((_, idx) => (
+            <div
+              key={idx}
+              className="h-2 rounded-full bg-gray-400 transition-[width, background-color] duration-300 ease-out"
+              style={{
+                width: idx === currentIndex ? 24 : 8,
+                opacity: idx === currentIndex ? 1 : 0.5,
+              }}
+            />
+          ))}
+        </div>
+
+        <div
+          ref={scrollContainerRef}
+          onScroll={onScroll}
+          className="flex flex-nowrap flex-grow gap-3 overflow-x-auto overflow-y-hidden items-stretch scroll-smooth snap-x snap-mandatory md:snap-none"
+        >
           {columnsData.map(({ status, query }) => {
             if (query.isLoading)
               return <ColumnFallback key={status} status={status} state="loading" />;
@@ -156,7 +193,13 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
         </div>
 
         {createPortal(
-          <DragOverlay>
+          <DragOverlay
+            dropAnimation={{
+              sideEffects: defaultDropAnimationSideEffects({
+                styles: { active: { opacity: '0.5' } },
+              }),
+            }}
+          >
             {activeTask && <TaskCard task={activeTask} showProjectNameTag={!projectId} />}
           </DragOverlay>,
           document.body,
