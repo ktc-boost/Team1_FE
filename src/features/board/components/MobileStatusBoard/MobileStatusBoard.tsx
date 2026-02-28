@@ -9,6 +9,14 @@ interface MobileStatusBoardProps {
   projectId?: string;
 }
 
+/*
+ * [📦 보관] 모바일 버전 칸반보드 구현 코드
+ *
+ * PR 리뷰 과정에서 다른 방식이 채택되어
+ * 현재는 미적용 상태
+ *
+ * 참고용 보관 (불필요 시 삭제 예정)
+ */
 const MobileStatusBoard = ({ projectId }: MobileStatusBoardProps) => {
   const [openValue, setOpenValue] = useState<string>('');
 

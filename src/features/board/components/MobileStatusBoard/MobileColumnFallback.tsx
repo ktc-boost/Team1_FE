@@ -11,7 +11,14 @@ interface MobileColumnFallbackProps {
   isAllClosed?: boolean;
 }
 
-/* 📍TODO: 모바일 상태 버전 칸반보드용 스켈레톤 Fallback. UI 확정 후 수정 필요. */
+/*
+ * [📦 보관] 모바일 버전 칸반보드 구현 코드
+ *
+ * PR 리뷰 과정에서 다른 방식이 채택되어
+ * 현재는 미적용 상태
+ *
+ * 참고용 보관 (불필요 시 삭제 예정)
+ */
 const MobileColumnFallback = ({
   status,
   state = 'loading',
