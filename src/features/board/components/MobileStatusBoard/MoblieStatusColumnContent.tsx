@@ -49,7 +49,7 @@ const MobileStatusColumnContent = ({
 
     observer.observe(loadMoreRef.current);
     return () => observer.disconnect();
-  }, [query.hasNextPage, query.fetchNextPage]);
+  }, [query]);
 
   return (
     <div className="flex flex-col gap-3 p-3 bg-gray-50/80 border-t border-gray-100">
