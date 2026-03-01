@@ -30,7 +30,7 @@ const PdfControlBar = () => {
         <div className="flex items-center gap-2">
           <Button
             type="button"
-            variant={'outlineBoost'}
+            variant="outlineBoost"
             size="icon"
             onClick={goPrevPage}
             disabled={isPrevDisabled}
@@ -49,7 +49,7 @@ const PdfControlBar = () => {
 
           <Button
             type="button"
-            variant={'outlineBoost'}
+            variant="outlineBoost"
             size="icon"
             onClick={goNextPage}
             disabled={isNextDisabled}
