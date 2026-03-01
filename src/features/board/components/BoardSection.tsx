@@ -5,6 +5,7 @@ import { useEffect, useState, lazy, Suspense } from 'react';
 import { Separator } from '@/shared/components/shadcn/separator';
 import { useSortStore } from '@/features/board/store/useSortStore';
 import { useTagFilterStore } from '@/features/tag/store/useTagFilterStore';
+import { useBoardSearchStore } from '@/features/board/store/useBoardSearchStore';
 
 const StatusBoard = lazy(() => import('@/features/board/components/StatusBoard/StatusBoard'));
 const MemberBoard = lazy(() => import('@/features/board/components/MemberBoard/MemberBoard'));
@@ -23,18 +24,23 @@ const BoardSection = ({ type, boardTab: initialTab }: BoardSectionProps) => {
   const projectId = context?.projectId;
   const resetSort = useSortStore((state) => state.resetSort);
   const clearTags = useTagFilterStore((state) => state.clearTags);
+  const resetSearch = useBoardSearchStore((state) => state.resetSearch);
 
   useEffect(() => {
     resetSort();
-  }, [resetSort]);
-
-  useEffect(() => {
-    clearTags();
-  }, [projectId, clearTags]);
+  }, [resetSort, projectId]);
 
   const [boardTab, setBoardTab] = useState<'status' | 'member'>(
     initialTab === 'status' || initialTab === 'member' ? initialTab : 'status',
   );
+
+  useEffect(() => {
+    clearTags();
+  }, [projectId, clearTags, boardTab]);
+
+  useEffect(() => {
+    resetSearch();
+  }, [projectId, resetSearch, boardTab]);
 
   const renderFilterTab = () => {
     if (type === 'project') return <ProjectFilterTab value={boardTab} onChange={setBoardTab} />;

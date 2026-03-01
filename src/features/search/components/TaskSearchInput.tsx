@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import { Input } from '@/shared/components/shadcn/input';
@@ -11,23 +11,21 @@ interface SearchInputProps {
 }
 
 const TaskSearchInput = ({ boardKey }: SearchInputProps) => {
+  const search = useBoardSearchStore((state) => state.searchMap[boardKey]);
   const setSearch = useBoardSearchStore((state) => state.setSearch);
-  const clearOtherBoardSearch = useBoardSearchStore((state) => state.clearOtherBoardSearch);
 
-  const [localValue, setLocalValue] = useState('');
-  const debouncedValue = useDebounce(localValue, 300);
+  const debouncedValue = useDebounce(search, 300);
 
   useEffect(() => {
-    clearOtherBoardSearch(boardKey);
     setSearch(boardKey, debouncedValue);
-  }, [debouncedValue, boardKey, setSearch, clearOtherBoardSearch]);
+  }, [debouncedValue, boardKey, setSearch]);
 
   return (
     <div className={cn('relative w-[300px]', boardKey === 'myTasks' ? 'mr-3' : 'mr-0')}>
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
       <Input
-        value={localValue}
-        onChange={(e) => setLocalValue(e.target.value)}
+        value={search}
+        onChange={(e) => setSearch(boardKey, e.target.value)}
         placeholder="검색어를 입력하세요"
         className="w-full h-9 sm:h-10 px-3 pl-10 rounded-lg border-gray-300 transition-colors focus:border-gray-500 focus:ring-transparent placeholder:text-gray-400 placeholder:label1-regular hover:border-gray-400"
       />
