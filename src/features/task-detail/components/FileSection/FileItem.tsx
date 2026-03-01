@@ -34,7 +34,7 @@ const FileItem = ({
   return (
     <div
       onClick={handleOpenPdf}
-      className="w-full justify-between border-2 rounded-xl border-gray-300 pl-4 pr-3 py-1.5 flex items-start sm:items-center gap-2"
+      className="w-full justify-between border-2 rounded-xl border-gray-300 pl-4 pr-3 py-1.5 flex items-start sm:items-center gap-2 hover:border-gray-400 cursor-pointer"
     >
       <div className="flex items-center gap-2">
         <img src={fileIcon} alt="파일 아이콘" className="w-4 h-4 sm:w-5 sm:h-5" />
