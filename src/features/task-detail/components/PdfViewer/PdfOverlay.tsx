@@ -4,6 +4,9 @@ import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType'
 import { useShallow } from 'zustand/react/shallow';
 import { PinAvatar } from '@/features/task-detail/components/PdfViewer/PinAvatar';
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
+import type React from 'react';
+import { useIsMobile } from '@/shared/hooks/use-mobile';
+import { useEffect } from 'react';
 interface OverlayProps {
   onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
@@ -26,6 +29,7 @@ const Overlay = ({ onClick }: OverlayProps) => {
     persona,
     isAnonymous,
     openCommentDrawer,
+    closeCommentDrawer,
   } = useTaskDetailStore(
     useShallow((s) => ({
       pins: s.pins,
@@ -38,12 +42,31 @@ const Overlay = ({ onClick }: OverlayProps) => {
       persona: s.persona,
       isAnonymous: s.isAnonymous,
       openCommentDrawer: s.openCommentDrawer,
+      closeCommentDrawer: s.closeCommentDrawer,
     })),
   );
   const user = useAuthStore((state) => state.user);
   const pinList = pins as PinWithAuthor[];
-  const isMobile = window.matchMedia('(max-width: 640px)').matches;
+  const isMobile = useIsMobile();
 
+  useEffect(() => {
+    if (!isMobile) closeCommentDrawer();
+  }, [isMobile, closeCommentDrawer]);
+
+  const handleCurrentPinClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (editingComment) return;
+    if (isMobile) openCommentDrawer();
+  };
+  const handlePinClick = (e: React.MouseEvent, pin: PinWithAuthor) => {
+    e.stopPropagation();
+    if (editingComment) return;
+    if (pin.commentId) {
+      setActivePinCommentId(pin.commentId);
+      clearCurrentPin();
+      if (isMobile) openCommentDrawer();
+    }
+  };
   return (
     <div className="absolute inset-0 top-0 left-0 w-full h-full z-10" onClick={onClick}>
       {pinList
@@ -63,15 +86,7 @@ const Overlay = ({ onClick }: OverlayProps) => {
               left={left}
               isHighlighted={pin.commentId === activePinCommentId}
               top={top}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (editingComment) return;
-                if (pin.commentId) {
-                  setActivePinCommentId(pin.commentId);
-                  clearCurrentPin();
-                  if (isMobile) openCommentDrawer();
-                }
-              }}
+              onClick={(e) => handlePinClick(e, pin)}
             />
           );
         })}
@@ -86,13 +101,7 @@ const Overlay = ({ onClick }: OverlayProps) => {
           zoom={zoom}
           left={((currentPin.fileX ?? 0) / pageSize.width) * 100}
           top={100 - ((currentPin.fileY ?? 0) / pageSize.height) * 100}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (editingComment) return;
-            if (isMobile) {
-              openCommentDrawer();
-            }
-          }}
+          onClick={handleCurrentPinClick}
         />
       )}
     </div>
