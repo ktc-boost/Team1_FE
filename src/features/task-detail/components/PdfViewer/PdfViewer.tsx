@@ -12,9 +12,9 @@ import { usePdfDocument } from '@/features/task-detail/hooks/usePdfDocument';
 import PdfHeaderBar from '@/features/task-detail/components/PdfViewer/PdfHeaderBar';
 import { useShallow } from 'zustand/react/shallow';
 import { useLayoutEffect, useRef, useState } from 'react';
+import { PAGE_HORIZONTAL_PADDING } from '@/features/task-detail/constants/task-detali.ui.constants';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
-const PAGE_HORIZONTAL_PADDING = 16;
 const PDFViewer = () => {
   const viewportRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
