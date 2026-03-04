@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/shared/components/shadcn/input';
 import { useDebounce } from '@/shared/hooks/useDebounce';
-import type { BoardKey } from '@/features/board/types/boardTypes';
+import type { BoardKey } from '@/features/board/types/board.domain.types';
 import { useBoardSearchStore } from '@/features/board/store/useBoardSearchStore';
 
 interface SearchInputProps {

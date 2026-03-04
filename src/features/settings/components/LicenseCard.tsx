@@ -1,7 +1,7 @@
 import { SettingsSectionCard } from '@/features/settings/components/SettingsSectionCard';
 
 export const LicenseCard = () => (
-  <SettingsSectionCard title="라이선스" desc="  본 서비스는 다음 오픈소스 라이선스를 포함합니다">
+  <SettingsSectionCard title="라이선스" desc="본 서비스는 다음 오픈소스 라이선스를 포함합니다.">
     <small>
       Avatars by Stefanie – Licensed under
       <a

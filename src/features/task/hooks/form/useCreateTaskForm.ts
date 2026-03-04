@@ -9,6 +9,7 @@ import {
 import { useModal } from '@/shared/hooks/useModal';
 import { useProjectMembersQuery } from '@/features/project/hooks/query/useProjectMembersQuery';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
+import { TASK_STATUS } from '@/features/task/constants/task.domain.constants';
 
 export const useCreateTaskForm = (
   initialProjectId: string,
@@ -27,7 +28,7 @@ export const useCreateTaskForm = (
       requiredReviewerCount: projectData.defaultReviewerCount ?? 0,
       assignees: [],
       dueDate: '',
-      status: 'TODO',
+      status: TASK_STATUS.TODO,
       tags: [],
       urgent: false,
     },

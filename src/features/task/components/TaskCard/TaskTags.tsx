@@ -4,7 +4,7 @@ import {
   generatePastelColor,
 } from '@/features/tag/utils/tagUtils';
 import { Badge } from '@/shared/components/shadcn/badge';
-import type { TaskDetail, TaskListItem } from '@/features/task/types/taskTypes';
+import type { TaskDetail, TaskListItem } from '@/features/task/types/task.domain.types';
 
 interface TaskTagsProps {
   task: TaskDetail | TaskListItem;

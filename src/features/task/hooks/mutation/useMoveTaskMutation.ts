@@ -1,19 +1,20 @@
 import { useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
 import { arrayMove } from '@dnd-kit/sortable';
-import type { TaskListResponse, TaskListItem, TaskDetail } from '@/features/task/types/taskTypes';
+import type { TaskListResponse } from '@/features/task/types/task.query.types';
+import type { TaskListItem, TaskDetail, TaskStatus } from '@/features/task/types/task.domain.types';
 import { isAxiosError } from 'axios';
 import toast from 'react-hot-toast';
-import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
-import type { Direction, SortBy } from '@/features/board/types/sortTypes';
+import { TASK_QUERY_KEYS } from '@/features/task/constants/task.query.constants';
+import type { Direction, SortBy } from '@/features/board/types/board.sort.types';
 import { useBoardSearchStore } from '@/features/board/store/useBoardSearchStore';
-import { BOARD_KEYS } from '@/features/board/constants/boardConstants';
+import { BOARD_KEYS } from '@/features/board/constants/board.domain.constants';
 
 export type MoveTaskParams = {
   projectId: string;
   activeTaskId: string;
-  fromStatus: string;
-  toStatus: string;
+  fromStatus: TaskStatus;
+  toStatus: TaskStatus;
   overId?: string;
   queryIdentifier: string;
   sortBy: SortBy;
@@ -21,12 +22,12 @@ export type MoveTaskParams = {
   activeTask: TaskListItem;
 };
 
-const updateTaskStatus = (task: TaskListItem, toStatus: string): TaskListItem => ({
+const updateTaskStatus = (task: TaskListItem, toStatus: TaskStatus): TaskListItem => ({
   ...task,
   status: toStatus,
 });
 
-const getQueryKey = (status: string, variables: MoveTaskParams) => {
+const getQueryKey = (status: TaskStatus, variables: MoveTaskParams) => {
   const searchMap = useBoardSearchStore.getState().searchMap;
   const search =
     variables.queryIdentifier === 'me'
@@ -67,7 +68,7 @@ export const optimisticallyMoveTask = (
       ? searchMap[BOARD_KEYS.MY_TASKS]
       : searchMap[BOARD_KEYS.PROJECT_STATUS];
 
-  const getQueryKeyLocal = (status: string) =>
+  const getQueryKeyLocal = (status: TaskStatus) =>
     queryIdentifier === 'me'
       ? TASK_QUERY_KEYS.meStatus(status, sortBy, direction, search)
       : TASK_QUERY_KEYS.project(projectId, status, sortBy, direction, search);
@@ -154,7 +155,7 @@ export const useMoveTaskMutation = () => {
     onError: (error, variables, context) => {
       const { fromStatus, toStatus, projectId, activeTaskId } = variables;
 
-      const getQueryKeyLocal = (status: string) => getQueryKey(status, variables);
+      const getQueryKeyLocal = (status: TaskStatus) => getQueryKey(status, variables);
 
       if (context?.previousFrom)
         queryClient.setQueryData(getQueryKeyLocal(fromStatus), context.previousFrom);
@@ -181,7 +182,7 @@ export const useMoveTaskMutation = () => {
     },
 
     onSettled: (_data, _error, variables) => {
-      const getQueryKeyLocal = (status: string) => getQueryKey(status, variables);
+      const getQueryKeyLocal = (status: TaskStatus) => getQueryKey(status, variables);
 
       queryClient.invalidateQueries({ queryKey: getQueryKeyLocal(variables.fromStatus) });
       queryClient.invalidateQueries({ queryKey: getQueryKeyLocal(variables.toStatus) });

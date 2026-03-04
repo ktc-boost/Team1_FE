@@ -6,7 +6,7 @@ export const useProjectFilesQuery = (projectId: string) => {
   return useInfiniteQuery<ProjectFilesResponse, Error>({
     queryKey: ['projectFiles', projectId],
     queryFn: ({ pageParam }) =>
-      fileApi.fetchFiles(projectId, typeof pageParam === 'string' ? pageParam : undefined, 6),
+      fileApi.fetchFiles(projectId, typeof pageParam === 'string' ? pageParam : undefined, 50),
     getNextPageParam: (lastPage) => (lastPage.hasNext ? lastPage.nextCursor : undefined),
     enabled: !!projectId,
     initialPageParam: undefined,

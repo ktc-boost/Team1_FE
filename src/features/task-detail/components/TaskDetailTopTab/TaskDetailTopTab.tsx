@@ -1,5 +1,4 @@
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
-import type { TaskDetail } from '@/features/task/types/taskTypes';
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
 import BackButton from '@/shared/components/ui/BackButton';
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
@@ -15,6 +14,7 @@ import {
 } from '@/shared/components/shadcn/tooltip';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { useEffect, useState } from 'react';
+import type { TaskDetail } from '@/features/task/types/task.domain.types';
 
 interface TaskDetailTopTabProps {
   task: TaskDetail;

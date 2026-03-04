@@ -1,19 +1,19 @@
 import { cn } from '@/shared/lib/utils';
-import { columnStatus } from '@/features/board/types/boardTypes';
-import type { Status } from '@/features/board/types/boardTypes';
+import { TASK_STATUS_META } from '@/features/task/constants/task.domain.constants';
+import type { TaskStatus } from '@/features/task/types/task.domain.types';
 import { Button } from '@/shared/components/shadcn/button';
 
 interface StatusButtonsProps {
-  statusList: Status[];
-  selectedStatus: string;
-  setStatus: (status: Status) => void;
+  statusList: TaskStatus[];
+  selectedStatus: TaskStatus;
+  setStatus: (status: TaskStatus) => void;
   disabled?: boolean;
 }
 
 const StatusButtons = ({ statusList, selectedStatus, setStatus, disabled }: StatusButtonsProps) => (
   <div className="flex gap-2 flex-wrap">
     {statusList.map((s) => {
-      const matched = columnStatus.find((c) => c.status === s);
+      const matched = TASK_STATUS_META.find((c) => c.status === s);
       return (
         <Button
           key={s}

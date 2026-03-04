@@ -1,12 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
-import type {
-  ProjectTaskCountByMemberMap,
-  ProjectTaskCountByMemberResponse,
-} from '@/features/task/types/taskTypes';
-import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
+import type { ProjectTaskCountByMemberResponse } from '@/features/task/types/task.query.types';
+import type { ProjectTaskCountByMemberMap } from '@/features/task/types/task.ui.types';
+import { TASK_QUERY_KEYS } from '@/features/task/constants/task.query.constants';
 import { useBoardSearchStore } from '@/features/board/store/useBoardSearchStore';
-import { BOARD_KEYS } from '@/features/board/constants/boardConstants';
+import { BOARD_KEYS } from '@/features/board/constants/board.domain.constants';
 
 export const useProjectTaskCountByMemberQuery = (projectId?: string) => {
   const search = useBoardSearchStore((state) => state.searchMap[BOARD_KEYS.PROJECT_MEMBER]);

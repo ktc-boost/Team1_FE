@@ -4,7 +4,8 @@ import MemberColumn from '@/features/board/components/MemberBoard/MemberColumn';
 import DoneColumn from '@/features/board/components/MemberBoard/DoneColumn';
 import { useInfiniteProjectTasksByStatusQuery } from '@/features/task/hooks/query/useInfiniteProjectTasksByStatusQuery';
 import { useHorizontalScroll } from '@/features/board/hooks/useHorizontalScroll';
-import type { TaskListItem } from '@/features/task/types/taskTypes';
+import type { TaskListItem } from '@/features/task/types/task.domain.types';
+import { TASK_STATUS } from '@/features/task/constants/task.domain.constants';
 import { useProjectMembersQuery } from '@/features/project/hooks/query/useProjectMembersQuery';
 import { useProjectBoostingScoresQuery } from '@/features/project/hooks/query/useProjectBoostingScoresQuery';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
@@ -45,7 +46,10 @@ const MemberBoard = ({ projectId }: MemberBoardProps) => {
 
   const isAllScoreZero = projectMembersWithBoosting?.every((m) => m.totalScore === 0) ?? true;
 
-  const { data: doneData } = useInfiniteProjectTasksByStatusQuery(projectId ?? '', 'DONE');
+  const { data: doneData } = useInfiniteProjectTasksByStatusQuery(
+    projectId ?? '',
+    TASK_STATUS.DONE,
+  );
   const doneTasks: TaskListItem[] = doneData?.pages.flatMap((page) => page.tasks) ?? [];
 
   const handleMouseEnter = () => setIsBoardHover(true);

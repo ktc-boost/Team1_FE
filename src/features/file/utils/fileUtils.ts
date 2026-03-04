@@ -1,6 +1,6 @@
-import pptUrl from '@/shared/assets/images/file-icon/PPT.png';
-import pdfUrl from '@/shared/assets/images/file-icon/pdf.png';
-import csvUrl from '@/shared/assets/images/file-icon/CSV.png';
+import pptUrl from '@/shared/assets/images/file-icon/ppt-icon.png';
+import pdfUrl from '@/shared/assets/images/file-icon/pdf-icon.png';
+import csvUrl from '@/shared/assets/images/file-icon/csv-icon.png';
 type FileIcon = {
   name: string;
   url: string;

@@ -8,7 +8,7 @@ import { useUpdateTaskMutation } from '@/features/task/hooks/mutation/useUpdateT
 import { useProjectMembersQuery } from '@/features/project/hooks/query/useProjectMembersQuery';
 import { useUpdateTaskForm } from '@/features/task/hooks/form/useUpdateTaskForm';
 import TaskFormField from '@/features/task/components/TaskModal/TaskFormField';
-import type { TaskDetail } from '@/features/task/types/taskTypes';
+import type { TaskDetail } from '@/features/task/types/task.domain.types';
 import { getTagIds } from '@/features/tag/utils/tagUtils';
 import type { Tag } from '@/features/tag/types/tagTypes';
 

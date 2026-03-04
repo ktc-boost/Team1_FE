@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
-import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
+import { TASK_QUERY_KEYS } from '@/features/task/constants/task.query.constants';
 
 // 할 일 상세 조회
 export const useTaskDetailQuery = (projectId: string, taskId: string) => {

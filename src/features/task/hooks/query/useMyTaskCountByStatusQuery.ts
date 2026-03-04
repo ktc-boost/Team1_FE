@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
-import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
-import type { TaskCountByStatusMap } from '@/features/task/types/taskTypes';
+import { TASK_QUERY_KEYS } from '@/features/task/constants/task.query.constants';
+import type { TaskCountByStatusMap } from '@/features/task/types/task.ui.types';
 
 export const useMyTaskCountByStatusQuery = (enabled = true, search?: string) => {
   const baseKey = TASK_QUERY_KEYS.meCountStatus();

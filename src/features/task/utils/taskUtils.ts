@@ -1,25 +1,25 @@
+import type { TaskStatusMeta } from '@/features/task/types/task.domain.types';
+import type { TaskListItem, TaskDetail } from '@/features/task/types/task.domain.types';
 import type {
-  Column,
-  ProjectTaskCountByMemberMap,
   TaskCountByStatusMap,
-  TaskDetail,
-  TaskListItem,
-} from '@/features/task/types/taskTypes';
+  ProjectTaskCountByMemberMap,
+} from '@/features/task/types/task.ui.types';
+import { TASK_STATUS } from '@/features/task/constants/task.domain.constants';
 
 export const getTaskCountByStatus = (
-  columnStatus: Column['status'],
+  columnStatus: TaskStatusMeta['status'],
   taskCountList?: TaskCountByStatusMap,
 ) => {
   if (!taskCountList) return 0;
 
   switch (columnStatus) {
-    case 'TODO':
+    case TASK_STATUS.TODO:
       return taskCountList.todo;
-    case 'PROGRESS':
+    case TASK_STATUS.PROGRESS:
       return taskCountList.progress;
-    case 'REVIEW':
+    case TASK_STATUS.REVIEW:
       return taskCountList.review;
-    case 'DONE':
+    case TASK_STATUS.DONE:
       return taskCountList.done;
     default:
       return 0;
@@ -27,17 +27,17 @@ export const getTaskCountByStatus = (
 };
 
 export const getTaskCountByMember = (
-  columnStatus: Column['status'],
+  columnStatus: TaskStatusMeta['status'],
   taskCountList?: ProjectTaskCountByMemberMap,
 ): number => {
   if (!taskCountList) return 0;
 
   switch (columnStatus) {
-    case 'TODO':
+    case TASK_STATUS.TODO:
       return taskCountList.todo;
-    case 'PROGRESS':
+    case TASK_STATUS.PROGRESS:
       return taskCountList.progress;
-    case 'REVIEW':
+    case TASK_STATUS.REVIEW:
       return taskCountList.review;
     default:
       return 0;
