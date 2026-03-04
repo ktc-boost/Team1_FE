@@ -45,7 +45,7 @@ const AvatarSettingsPage = () => {
           <AvatarSelector />
           <AvatarInfo />
         </div>
-        <div className="pb-30  mx-auto">
+        <div className="flex-1 mx-auto">
           <AvatarSaveBtn handleSave={handleSave} />
         </div>
       </div>

@@ -1,19 +1,14 @@
 import { Button } from '@/shared/components/shadcn/button';
+import { ArrowRight } from 'lucide-react';
 interface AvatarSaveBtnProps {
   handleSave: () => void;
 }
 const AvatarSaveBtn = ({ handleSave }: AvatarSaveBtnProps) => {
   return (
-    <div className="pt-12">
-      <Button
-        onClick={handleSave}
-        variant="defaultBoost"
-        className="w-50 sm:w-80 h-14 body1-bold rounded-2xl hover:shadow-lg hover:-translate-y-1 transition"
-        size="lg"
-      >
-        완료
-      </Button>
-    </div>
+    <Button onClick={handleSave} variant="defaultBoost" size="lg">
+      <ArrowRight className="w-5 h-5" />
+      저장하고 다음
+    </Button>
   );
 };
 
