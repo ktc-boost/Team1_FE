@@ -3,7 +3,7 @@ import { Search } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import { Input } from '@/shared/components/shadcn/input';
 import { useDebounce } from '@/shared/hooks/useDebounce';
-import type { BoardKey } from '@/features/board/types/boardTypes';
+import type { BoardKey } from '@/features/board/types/board.domain.types';
 import { useBoardSearchStore } from '@/features/board/store/useBoardSearchStore';
 
 interface SearchInputProps {

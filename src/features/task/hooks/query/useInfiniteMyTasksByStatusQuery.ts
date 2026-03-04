@@ -1,13 +1,17 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
-import type { TaskListResponse, UseInfiniteTasksOptions } from '@/features/task/types/taskTypes';
-import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
-import type { Direction, SortBy } from '@/features/board/types/sortTypes';
-import { DIRECTION, SORT_BY } from '@/features/board/constants/sortConstants';
+import { TASK_QUERY_KEYS } from '@/features/task/constants/task.query.constants';
+import type { Direction, SortBy } from '@/features/board/types/board.sort.types';
+import { DIRECTION, SORT_BY } from '@/features/board/constants/board.sort.constants';
+import type {
+  UseInfiniteTasksOptions,
+  TaskListResponse,
+} from '@/features/task/types/task.query.types';
+import type { TaskStatus } from '@/features/task/types/task.domain.types';
 
 // 나의 할 일 목록 조회 (상태)
 export const useInfiniteMyTasksByStatusQuery = (
-  status: string,
+  status: TaskStatus,
   sortBy: SortBy = SORT_BY.CREATED_AT,
   direction: Direction = DIRECTION.ASC,
   search: string,

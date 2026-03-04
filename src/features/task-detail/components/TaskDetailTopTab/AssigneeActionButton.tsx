@@ -3,6 +3,7 @@ import { Button } from '@/shared/components/shadcn/button';
 import { cn } from '@/shared/lib/utils';
 import { CheckCircle, CircleArrowRight, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { TASK_STATUS } from '@/features/task/constants/task.domain.constants';
 
 interface AssigneeButtonProps {
   uiStatus: string;
@@ -21,12 +22,12 @@ export const AssigneeActionButton = ({
   const [isCompleted, setIsCompleted] = useState(false);
 
   const isDoneReady = approvedCount >= requiredReviewerCount;
-  const isReview = uiStatus === 'REVIEW';
+  const isReview = uiStatus === TASK_STATUS.REVIEW;
   const defaultIconClass = 'w-5 h-5 text-white';
   const disabled = isDoneReady ? isCompleted || isCompleting : isCompleting;
 
   useEffect(() => {
-    if (uiStatus === 'DONE') setIsCompleted(true);
+    if (uiStatus === TASK_STATUS.DONE) setIsCompleted(true);
   }, [uiStatus]);
 
   const handleAction = async () => {

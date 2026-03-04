@@ -1,4 +1,5 @@
 import { useOutletContext } from 'react-router-dom';
+import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 import ProjectFilterTab from '@/features/project/components/ProjectPageComponents/ProjectFilterTab';
 import MyTaskFilterTab from '@/features/my-task/components/MyTaskPageComponents/MyTaskFilterTab';
 import { useEffect, useState, lazy, Suspense } from 'react';
@@ -6,13 +7,15 @@ import { Separator } from '@/shared/components/shadcn/separator';
 import { useSortStore } from '@/features/board/store/useSortStore';
 import { useTagFilterStore } from '@/features/tag/store/useTagFilterStore';
 import { useBoardSearchStore } from '@/features/board/store/useBoardSearchStore';
+import type { Board, Page } from '@/features/board/types/board.domain.types';
+import { BOARD, PAGE } from '@/features/board/constants/board.domain.constants';
 
 const StatusBoard = lazy(() => import('@/features/board/components/StatusBoard/StatusBoard'));
 const MemberBoard = lazy(() => import('@/features/board/components/MemberBoard/MemberBoard'));
 
 interface BoardSectionProps {
-  type: 'project' | 'myTask';
-  boardTab?: 'status' | 'member';
+  type: Page;
+  boardTab?: Board;
 }
 
 interface ProjectOutletContext {
@@ -30,8 +33,8 @@ const BoardSection = ({ type, boardTab: initialTab }: BoardSectionProps) => {
     resetSort();
   }, [resetSort, projectId]);
 
-  const [boardTab, setBoardTab] = useState<'status' | 'member'>(
-    initialTab === 'status' || initialTab === 'member' ? initialTab : 'status',
+  const [boardTab, setBoardTab] = useState<Board>(
+    initialTab === BOARD.MEMBER ? BOARD.MEMBER : BOARD.STATUS,
   );
 
   useEffect(() => {
@@ -43,13 +46,13 @@ const BoardSection = ({ type, boardTab: initialTab }: BoardSectionProps) => {
   }, [projectId, resetSearch, boardTab]);
 
   const renderFilterTab = () => {
-    if (type === 'project') return <ProjectFilterTab value={boardTab} onChange={setBoardTab} />;
+    if (type === PAGE.PROJECT) return <ProjectFilterTab value={boardTab} onChange={setBoardTab} />;
     return <MyTaskFilterTab />;
   };
 
   const renderBoard = () => {
-    if (boardTab === 'member') return <MemberBoard projectId={projectId} />;
-    if (type === 'project' && projectId) return <StatusBoard projectId={projectId} />;
+    if (boardTab === BOARD.MEMBER) return <MemberBoard projectId={projectId} />;
+    if (type === PAGE.PROJECT && projectId) return <StatusBoard projectId={projectId} />;
     return <StatusBoard />;
   };
 
@@ -62,8 +65,7 @@ const BoardSection = ({ type, boardTab: initialTab }: BoardSectionProps) => {
       <Separator className="bg-gray-300" />
 
       <div className="flex-1 min-h-0 overflow-x-auto">
-        {/* 📍 suspense에 스켈레톤 ui 필요*/}
-        <Suspense fallback={<div className="p-3">보드 불러오는 중…</div>}>{renderBoard()}</Suspense>
+        <Suspense fallback={<FullPageLoader text="보드 불러오는 중.." />}>{renderBoard()}</Suspense>
       </div>
     </div>
   );

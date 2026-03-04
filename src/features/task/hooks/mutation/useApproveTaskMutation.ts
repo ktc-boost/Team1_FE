@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
 import toast from 'react-hot-toast';
-import type { TaskApproveResponse, TaskDetail } from '@/features/task/types/taskTypes';
-import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
+import { TASK_QUERY_KEYS } from '@/features/task/constants/task.query.constants';
+import type { TaskDetail } from '@/features/task/types/task.domain.types';
+import type { TaskApproveResponse } from '@/features/task/types/task.query.types';
 
 // 할 일 승인
 export const useApproveTaskMutation = (projectId: string, taskId: string) => {

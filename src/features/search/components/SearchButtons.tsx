@@ -8,7 +8,7 @@ import {
 } from '@/shared/components/shadcn/dropdown-menu';
 import TitleSearchInput from '@/features/search/components/TaskSearchInput';
 import TagSearchInput from '@/features/search/components/TagSearchInput';
-import type { BoardKey } from '@/features/board/types/boardTypes';
+import type { BoardKey } from '@/features/board/types/board.domain.types';
 
 interface SearchButtonsProps {
   boardKey: BoardKey;

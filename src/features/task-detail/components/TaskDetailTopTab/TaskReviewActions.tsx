@@ -5,7 +5,8 @@ import { AssigneeActionButton } from '@/features/task-detail/components/TaskDeta
 import { ReviewerActionButton } from '@/features/task-detail/components/TaskDetailTopTab/ReviewerActionButton';
 import { useAssigneeTask } from '@/features/task-detail/hooks/useAssigneeTask';
 import { useReviewerTask } from '@/features/task-detail/hooks/useReviewerTask';
-import type { TaskDetail } from '@/features/task/types/taskTypes';
+import type { TaskDetail } from '@/features/task/types/task.domain.types';
+import { TASK_STATUS } from '@/features/task/constants/task.domain.constants';
 
 interface TaskReviewActionsProps {
   task: TaskDetail;
@@ -58,7 +59,7 @@ const TaskReviewActions = ({ task }: TaskReviewActionsProps) => {
           />
         </div>
       ) : (
-        assigneeTask.uiStatus === 'REVIEW' && (
+        assigneeTask.uiStatus === TASK_STATUS.REVIEW && (
           <div className="flex items-center gap-2 sm:gap-3">
             <div
               className={cn(

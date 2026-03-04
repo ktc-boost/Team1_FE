@@ -1,23 +1,22 @@
 import type {
+  TaskListResponse,
   MemberTaskListResponse,
   MyTaskCountByStatusResponse,
   ProjectTaskCountByMemberResponse,
   ProjectTaskCountByStatusResponse,
   TaskApproveResponse,
-  TaskDetail,
-  TaskListItem,
-  TaskListResponse,
-} from '@/features/task/types/taskTypes';
+} from '@/features/task/types/task.query.types';
+import type { TaskDetail, TaskListItem, TaskStatus } from '@/features/task/types/task.domain.types';
 import type { CreateTaskInput, UpdateTaskInput } from '@/features/task/schemas/taskSchema';
 import api from '@/shared/api/axiosInstance';
-import { SORT_BY, DIRECTION } from '@/features/board/constants/sortConstants';
-import type { Direction, SortBy } from '@/features/board/types/sortTypes';
+import { SORT_BY, DIRECTION } from '@/features/board/constants/board.sort.constants';
+import type { Direction, SortBy } from '@/features/board/types/board.sort.types';
 
 export const taskApi = {
   // 나의 할 일 목록 조회 (상태 기준)
   fetchMyTasksByStatus: async (
     cursor?: string,
-    status?: string,
+    status?: TaskStatus,
     limit = 6,
     sortBy: SortBy = SORT_BY.CREATED_AT,
     direction: Direction = DIRECTION.ASC,
@@ -33,7 +32,7 @@ export const taskApi = {
   fetchProjectTasksByStatus: async (
     projectId: string,
     cursor?: string,
-    status?: string,
+    status?: TaskStatus,
     limit = 6,
     sortBy: SortBy = SORT_BY.CREATED_AT,
     direction: Direction = DIRECTION.ASC,
@@ -124,9 +123,9 @@ export const taskApi = {
   updateTaskStatus: async (
     projectId: string,
     taskId: string,
-    status: string,
-  ): Promise<{ id: string; status: string }> => {
-    const res = await api.patch<{ id: string; status: string }>(
+    status: TaskStatus,
+  ): Promise<{ id: string; status: TaskStatus }> => {
+    const res = await api.patch<{ id: string; status: TaskStatus }>(
       `/projects/${projectId}/tasks/${taskId}`,
       { status },
     );

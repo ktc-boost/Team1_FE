@@ -21,7 +21,8 @@ import AssigneeDropdown from '@/shared/components/ui/form/AssigneeDropdown';
 import ProjectSelect from '@/shared/components/ui/form/ProjectSelect';
 import TagManager from '@/features/tag/components/TagInput/TagManager';
 import DueDatePicker from '@/shared/components/ui/form/DueDatePicker';
-import { statusList, type Status } from '@/features/board/types/boardTypes';
+import { COLUMN_STATUS_LIST } from '@/features/board/constants/board.ui.constants';
+import type { TaskStatus } from '@/features/task/types/task.domain.types';
 import type { TaskFormValues } from '@/features/task/schemas/taskSchema';
 import type { Tag } from '@/features/tag/types/tagTypes';
 import type { Project } from '@/features/project/types/projectTypes';
@@ -82,9 +83,9 @@ const TaskFormField = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField icon={Loader} required label="진행 상태" error={errors.status?.message}>
           <StatusButtons
-            statusList={statusList}
+            statusList={COLUMN_STATUS_LIST}
             selectedStatus={status}
-            setStatus={(s: Status) => setValue('status', s)}
+            setStatus={(s: TaskStatus) => setValue('status', s)}
           />
         </FormField>
 

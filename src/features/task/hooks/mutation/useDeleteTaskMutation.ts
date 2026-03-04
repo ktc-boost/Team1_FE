@@ -1,12 +1,13 @@
 import { useMutation, useQueryClient, type InfiniteData } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
-import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
-import type { TaskListResponse } from '@/features/task/types/taskTypes';
+import { TASK_QUERY_KEYS } from '@/features/task/constants/task.query.constants';
+import type { TaskListResponse } from '@/features/task/types/task.query.types';
+import type { TaskStatus } from '@/features/task/types/task.domain.types';
 import { useSortStore } from '@/features/board/store/useSortStore';
 
 interface DeleteTaskMutationVars {
   taskId: string;
-  status: string;
+  status: TaskStatus;
 }
 
 export const useDeleteTaskMutation = (projectId: string) => {

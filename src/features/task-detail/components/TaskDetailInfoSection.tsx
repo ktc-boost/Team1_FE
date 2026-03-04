@@ -1,14 +1,16 @@
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
-import type { TaskDetail } from '@/features/task/types/taskTypes';
 import FileSection from '@/features/task-detail/components/FileSection/FileSection';
 import TaskDetailContent from '@/features/task-detail/components/TaskDetailContent/TaskDetailContent';
 import { useShallow } from 'zustand/react/shallow';
 import { lazy } from 'react';
+import type { TaskDetail } from '@/features/task/types/task.domain.types';
 const PDFViewer = lazy(() => import('@/features/task-detail/components/PdfViewer/PdfViewer'));
+
 interface TaskDetailInfoSectionProps {
   task: TaskDetail;
   taskId: string;
 }
+
 const TaskDetailInfoSection = ({ task, taskId }: TaskDetailInfoSectionProps) => {
   const { isPdfOpen, setSelectedFile, togglePdf } = useTaskDetailStore(
     useShallow((s) => ({
