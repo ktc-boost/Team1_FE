@@ -115,7 +115,7 @@ const MemberBoard = ({ projectId }: MemberBoardProps) => {
       <div
         ref={scrollRef}
         onScroll={onScroll}
-        className="flex flex-nowrap flex-grow overflow-x-auto overflow-y-hidden items-stretch scroll-smooth snap-x snap-mandatory md:snap-none h-full pb-4 px-2"
+        className="flex flex-nowrap flex-grow overflow-x-auto overflow-y-hidden items-stretch scroll-smooth snap-x snap-mandatory md:snap-none h-full md:pt-2 pb-4 px-2"
       >
         <div className="flex gap-3 min-w-max h-full items-stretch">
           {(sortedMembersWithBoosting ?? []).map((member: MemberWithBoosting) => (
