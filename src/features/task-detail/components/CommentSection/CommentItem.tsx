@@ -1,5 +1,4 @@
 import { forwardRef } from 'react';
-import { Pin } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
@@ -65,7 +64,12 @@ const CommentItem = forwardRef<HTMLDivElement, CommentItemProps>(
                 <span className="label2-bold sm:label1-bold text-gray-800">
                   {isAnonymous ? '익명' : comment.authorInfo.name}
                 </span>
-                {comment.isPinned && <Pin className="h-3.5 w-3.5 text-boost-blue" />}
+                {comment.isPinned && (
+                  <span
+                    className="inline-block size-2 rounded-full bg-boost-orange"
+                    aria-label="핀 댓글"
+                  />
+                )}
               </div>
 
               <div className="flex items-center gap-1">
