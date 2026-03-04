@@ -1,4 +1,4 @@
-import { BOARD_KEYS } from '@/features/board/constants/boardConstants';
+import { BOARD_KEYS } from '@/features/board/constants/board.domain.constants';
 import FilterTab from '@/widgets/FilterTab';
 
 const MyTaskFilterTab = () => {

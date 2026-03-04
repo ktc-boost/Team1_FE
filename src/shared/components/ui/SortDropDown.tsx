@@ -8,7 +8,7 @@ import {
 import { SortAscIcon, SortDescIcon } from 'lucide-react';
 import { useSortStore } from '@/features/board/store/useSortStore';
 import { useState } from 'react';
-import { DIRECTION, SORT_OPTIONS } from '@/features/board/constants/sortConstants';
+import { DIRECTION, SORT_OPTIONS } from '@/features/board/constants/board.sort.constants';
 
 const SortDropDown = () => {
   const { sortBy, direction, setSortBy, toggleDirection } = useSortStore();

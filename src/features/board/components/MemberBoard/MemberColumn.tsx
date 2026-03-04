@@ -7,8 +7,8 @@ import TaskCard from '@/features/task/components/TaskCard/TaskCard';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
 import { Separator } from '@/shared/components/shadcn/separator';
 import rocket from '@/shared/assets/images/boost/rocket-2d.png';
-import { columnOrder, columnStatus } from '@/features/board/types/boardTypes';
-import { COLLAPSIBLE_SCROLL_THRESHOLD } from '@/features/board/constants/scroll';
+import { COLUMN_ORDER } from '@/features/board/constants/board.domain.constants';
+import { COLLAPSIBLE_SCROLL_THRESHOLD } from '@/features/board/constants/board.ui.constants';
 import { useProjectTaskCountByMemberQuery } from '@/features/task/hooks/query/useProjectTaskCountByMemberQuery';
 import { getTaskCountByMember } from '@/features/task/utils/taskUtils';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
@@ -18,6 +18,8 @@ import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import BoostingScoreInfoCard from '@/features/board/components/MemberBoard/BoostingScoreInfoCard';
 import { useTagFilterStore } from '@/features/tag/store/useTagFilterStore';
 import InlineLoader from '@/shared/components/ui/loading/InlineLoader';
+import { TASK_STATUS, TASK_STATUS_META } from '@/features/task/constants/task.domain.constants';
+import type { TaskListItem } from '@/features/task/types/task.domain.types';
 
 interface MemberColumnProps {
   projectId: string;
@@ -42,18 +44,18 @@ const MemberColumn = ({ projectId, member, isAllScoreZero }: MemberColumnProps) 
     useInfiniteProjectTasksByMemberQuery(projectId, member.id);
 
   const tasks = data?.pages.flatMap((page) => page.tasks) ?? [];
-  const activeTasks = tasks.filter((t) => t.status !== 'DONE');
+  const activeTasks = tasks.filter((t) => t.status !== TASK_STATUS.DONE);
 
   const filteredActiveTasks =
     selectedTags.length > 0
-      ? activeTasks.filter((task) =>
+      ? activeTasks.filter((task: TaskListItem) =>
           selectedTags.every((tag) => task.tags?.some((t) => t.tagId === tag.tagId)),
         )
       : activeTasks;
 
-  const sortedColumnStatus = columnStatus
-    .filter((c) => c.status !== 'DONE')
-    .sort((a, b) => columnOrder.indexOf(a.status) - columnOrder.indexOf(b.status));
+  const sortedColumnStatus = TASK_STATUS_META.filter((c) => c.status !== TASK_STATUS.DONE).sort(
+    (a, b) => COLUMN_ORDER.member.indexOf(a.status) - COLUMN_ORDER.member.indexOf(b.status),
+  );
 
   const columnData = sortedColumnStatus.map(({ status, title }) => ({
     status,

@@ -1,11 +1,11 @@
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
-import type { TaskDetail } from '@/features/task/types/taskTypes';
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
 import BackButton from '@/shared/components/ui/BackButton';
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
 import { CheckCircle2, MessageSquare } from 'lucide-react';
 import TaskReviewActions from '@/features/task-detail/components/TaskDetailTopTab/TaskReviewActions';
 import { Button } from '@/shared/components/shadcn/button';
+import type { TaskDetail } from '@/features/task/types/task.domain.types';
 
 interface TaskDetailTopTabProps {
   task: TaskDetail;

@@ -8,8 +8,8 @@ import {
 } from '@/features/task/schemas/taskSchema';
 import { useModal } from '@/shared/hooks/useModal';
 import { useProjectMembersQuery } from '@/features/project/hooks/query/useProjectMembersQuery';
-import type { TaskDetail } from '@/features/task/types/taskTypes';
-import type { Status } from '@/features/board/types/boardTypes';
+import type { TaskDetail, TaskStatus } from '@/features/task/types/task.domain.types';
+import { TASK_STATUS } from '@/features/task/constants/task.domain.constants';
 
 export const useUpdateTaskForm = (
   projectId: string,
@@ -36,7 +36,7 @@ export const useUpdateTaskForm = (
       requiredReviewerCount: task.requiredReviewerCount ?? 0,
       assignees: task.assignees.map((a) => a.name),
       dueDate: task.dueDate,
-      status: (task.status ?? 'TODO') as Status,
+      status: (task.status ?? TASK_STATUS.TODO) as TaskStatus,
       tags: task.tags?.map((t) => t.tagId) || [],
       urgent: task.urgent ?? false,
     },

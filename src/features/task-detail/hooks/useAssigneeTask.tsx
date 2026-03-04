@@ -6,6 +6,7 @@ import MovingBoo from '@/shared/components/ui/MovingBoo';
 import { useUpdateTaskStatusMutation } from '@/features/task/hooks/mutation/useUpdateTaskStatusMutation';
 import { useRequestReviewMutation } from '@/features/task/hooks/mutation/useRequestReviewMutation';
 import { ERROR } from '@/shared/constants/errorTypes';
+import { TASK_STATUS } from '@/features/task/constants/task.domain.constants';
 
 interface UseAssigneeTaskProps {
   projectId: string;
@@ -31,7 +32,7 @@ export const useAssigneeTask = ({
   const { mutateAsync: requestReviewMutate } = useRequestReviewMutation(projectId, taskId);
 
   const handleAction = async () => {
-    if (uiStatus === 'REVIEW') {
+    if (uiStatus === TASK_STATUS.REVIEW) {
       try {
         await requestReviewMutate();
       } catch (err) {
@@ -58,21 +59,22 @@ export const useAssigneeTask = ({
         toast.error('검토 요청 중 오류가 발생했습니다.');
       }
     } else {
-      setUiStatus('REVIEW');
-      await updateTaskStatusMutate({ projectId, taskId, status: 'REVIEW' });
+      setUiStatus(TASK_STATUS.REVIEW);
+      await updateTaskStatusMutate({ projectId, taskId, status: TASK_STATUS.REVIEW });
       toast.success('검토 요청이 완료되었습니다!', { position: 'top-center' });
     }
   };
 
   const handleCompleteTask = async () => {
-    await updateTaskStatusMutate({ projectId, taskId, status: 'DONE' });
-    setUiStatus('DONE');
+    await updateTaskStatusMutate({ projectId, taskId, status: TASK_STATUS.DONE });
+    setUiStatus(TASK_STATUS.DONE);
   };
 
   const getBadgeClass = () => {
     if (approvedCount >= requiredReviewerCount)
       return 'border-green-700 bg-green-100 text-green-700';
-    if (uiStatus === 'REVIEW') return 'border-boost-orange bg-boost-orange/20 text-boost-orange';
+    if (uiStatus === TASK_STATUS.REVIEW)
+      return 'border-boost-orange bg-boost-orange/20 text-boost-orange';
     return 'border-boost-blue bg-boost-blue/20 text-boost-blue';
   };
 

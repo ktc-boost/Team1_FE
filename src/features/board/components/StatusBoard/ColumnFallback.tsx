@@ -1,12 +1,13 @@
-import { columnStatus } from '@/features/board/types/boardTypes';
+import { TASK_STATUS_META } from '@/features/task/constants/task.domain.constants';
+import type { TaskStatus } from '@/features/task/types/task.domain.types';
 
 interface ColumnFallbackProps {
-  status: string;
+  status: TaskStatus;
   state?: 'loading' | 'error';
 }
 
 export const ColumnFallback = ({ status, state = 'loading' }: ColumnFallbackProps) => {
-  const columnTitle = columnStatus.find((c) => c.status === status)?.title || status;
+  const columnTitle = TASK_STATUS_META.find((c) => c.status === status)?.title || status;
   const message = state === 'loading' ? '' : state === 'error' ? '불러오기 실패' : '';
 
   return (

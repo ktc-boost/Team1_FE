@@ -1,7 +1,7 @@
 import { Tag } from 'lucide-react';
 import TaskTags from '@/features/task/components/TaskCard/TaskTags';
 import ContentItem from '@/shared/components/ui/ContentItem';
-import type { TaskDetail } from '@/features/task/types/taskTypes';
+import type { TaskDetail } from '@/features/task/types/task.domain.types';
 import InfoCard from '@/shared/components/ui/InfoCard';
 
 interface TagListProps {

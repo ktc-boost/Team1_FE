@@ -1,10 +1,10 @@
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
-import type { TaskListItem, TaskDetail } from '@/features/task/types/taskTypes';
-import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
+import { TASK_QUERY_KEYS } from '@/features/task/constants/task.query.constants';
 import type { UpdateTaskInput } from '@/features/task/schemas/taskSchema';
 import { mapTaskListItemToDetail } from '@/features/task/utils/taskUtils';
+import type { TaskListItem, TaskDetail } from '@/features/task/types/task.domain.types';
 
 export const useUpdateTaskMutation = (projectId: string) => {
   const queryClient = useQueryClient();

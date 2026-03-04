@@ -85,3 +85,14 @@ export const getRemainingSeconds = (expiresAt: string | Date) => {
   const now = Date.now();
   return Math.max(Math.floor((expires - now) / 1000), 0);
 };
+
+// 오늘인지 구하는 함수
+export const isToday = (dateStr: string) => {
+  const d = new Date(dateStr);
+  const now = new Date();
+  return (
+    d.getFullYear() === now.getFullYear() &&
+    d.getMonth() === now.getMonth() &&
+    d.getDate() === now.getDate()
+  );
+};
