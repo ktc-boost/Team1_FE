@@ -52,6 +52,7 @@
     "lucide-react": "^0.542.0",
     "pdfjs-dist": "5.4.149",
     "qrcode.react": "^4.2.0",
+    "radix-ui": "^1.4.3",
     "react": "^19.1.1",
     "react-day-picker": "^9.11.1",
     "react-dom": "^19.1.1",
