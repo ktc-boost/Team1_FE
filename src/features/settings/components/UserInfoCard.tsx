@@ -82,14 +82,21 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
 
         <div className="flex gap-3">
           <Button
-            variant="secondary"
+            variant="defaultBoost"
+            onClick={openDrawer}
+            className="w-40 justify-center whitespace-nowrap"
+          >
+            <Pencil className="w-4 h-4" />
+            아바타 변경
+          </Button>
+          <Button
+            variant="defaultBoost"
             onClick={() => setIsNameEditing(true)}
             disabled={isNameEditing}
+            className="w-40 justify-center whitespace-nowrap"
           >
+            <Pencil className="w-4 h-4" />
             이름 변경
-          </Button>
-          <Button onClick={openDrawer} variant="secondary">
-            아바타 변경
           </Button>
         </div>
       </div>
