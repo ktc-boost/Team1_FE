@@ -53,12 +53,11 @@ const Overlay = ({ onClick }: OverlayProps) => {
     if (!isMobile) closeCommentDrawer();
   }, [isMobile, closeCommentDrawer]);
 
-  const handleCurrentPinClick = (e: React.MouseEvent) => {
+  const DeleteCurrentPin = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (editingComment) return;
-    if (isMobile) openCommentDrawer();
+    clearCurrentPin();
   };
-  const handlePinClick = (e: React.MouseEvent, pin: PinWithAuthor) => {
+  const handleOtherPinClick = (e: React.MouseEvent, pin: PinWithAuthor) => {
     e.stopPropagation();
     if (editingComment) return;
     if (pin.commentId) {
@@ -86,7 +85,7 @@ const Overlay = ({ onClick }: OverlayProps) => {
               left={left}
               isHighlighted={pin.commentId === activePinCommentId}
               top={top}
-              onClick={(e) => handlePinClick(e, pin)}
+              onClick={(e) => handleOtherPinClick(e, pin)}
             />
           );
         })}
@@ -101,7 +100,7 @@ const Overlay = ({ onClick }: OverlayProps) => {
           zoom={zoom}
           left={((currentPin.fileX ?? 0) / pageSize.width) * 100}
           top={100 - ((currentPin.fileY ?? 0) / pageSize.height) * 100}
-          onClick={handleCurrentPinClick}
+          onClick={DeleteCurrentPin}
         />
       )}
     </div>
