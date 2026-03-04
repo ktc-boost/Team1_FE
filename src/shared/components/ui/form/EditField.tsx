@@ -36,7 +36,7 @@ const EditField = <T extends string | number>({
   };
 
   return (
-    <div className="flex flex-col gap-1 pb-2 border-b border-gray-300">
+    <div className="flex flex-col gap-1 py-2 md:pb-2 md:pt-0 border-b border-gray-300">
       <span className="body2-bold md:subtitle1-bold">{label}</span>
       {editing ? (
         <div className="flex items-center gap-1">

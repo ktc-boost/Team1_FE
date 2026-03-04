@@ -9,7 +9,7 @@ interface MemoEditorTitleProps {
 
 const MemoEditorTitle = ({ title, setTitle }: MemoEditorTitleProps) => {
   return (
-    <div className="flex-shrink-0 p-4 pb-1">
+    <div className="flex-shrink-0 p-4 pt-2 pb-1">
       <Label className="flex mb-3 items-center !label1-bold text-gray-700">
         <Type className="w-4 h-4 text-gray-500" />
         제목
