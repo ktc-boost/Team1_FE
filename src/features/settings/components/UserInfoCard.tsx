@@ -50,10 +50,10 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
         onChange={(e) => setNewName(e.target.value)}
         className="w-40 !body2-regular sm:!body1-regular"
       />
-      <Button size="sm" onClick={handleNameSave} disabled={isPending}>
+      <Button size="sm" variant="defaultBoost" onClick={handleNameSave} disabled={isPending}>
         {isPending ? '저장 중...' : '저장'}
       </Button>
-      <Button size="sm" variant="defaultBoost" onClick={handleNameCancel}>
+      <Button size="sm" variant="ghost" onClick={handleNameCancel}>
         취소
       </Button>
     </div>
