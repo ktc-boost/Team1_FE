@@ -4,6 +4,7 @@ import {
   useSensor,
   useSensors,
   PointerSensor,
+  TouchSensor,
   type DragStartEvent,
   type DragOverEvent,
   defaultDropAnimationSideEffects,
@@ -11,6 +12,7 @@ import {
 import { useRef, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useQueryClient } from '@tanstack/react-query';
+import { useIsMobile } from '@/shared/hooks/use-mobile';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
 import StatusColumn from '@/features/board/components/StatusBoard/StatusColumn';
 import {
@@ -32,11 +34,11 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
   const queryClient = useQueryClient();
   const [activeTask, setActiveTask] = useState<TaskListItem | null>(null);
 
+  const isMobile = useIsMobile();
+
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
+    useSensor(isMobile ? TouchSensor : PointerSensor, {
+      activationConstraint: isMobile ? { delay: 250, tolerance: 5 } : { distance: 10 },
     }),
   );
 
