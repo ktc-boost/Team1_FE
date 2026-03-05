@@ -48,7 +48,7 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
       <Input
         value={newName}
         onChange={(e) => setNewName(e.target.value)}
-        className="w-40 !body2-regular sm:body1-regular"
+        className="w-40 !body2-regular sm:!body1-regular"
       />
       <Button size="sm" onClick={handleNameSave} disabled={isPending}>
         {isPending ? '저장 중...' : '저장'}
