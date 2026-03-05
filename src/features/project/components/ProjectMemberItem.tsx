@@ -28,13 +28,17 @@ const ProjectMemberItem = ({ member }: ProjectMemberItemProps) => {
   };
 
   return (
-    <div className="flex items-center justify-between border border-gray-200 rounded-lg px-3 py-3">
+    <div className="flex items-center justify-between border border-gray-200 rounded-lg px-3 py-1.5 md:py-3">
       <div className="flex items-center gap-3 flex-1">
         <Avatar
-          className="w-11 h-11 flex items-center justify-center shadow-sm"
+          className="w-8 h-8 md:w-11 md:h-11 flex items-center justify-center shadow-sm"
           style={{ backgroundColor: member.backgroundColor, borderColor: member.backgroundColor }}
         >
-          <AvatarImage src={getAvatarSrc(member)} alt={member.name} className="w-9 h-9" />
+          <AvatarImage
+            src={getAvatarSrc(member)}
+            alt={member.name}
+            className="w-7 h-7 md:w-9 md:h-9"
+          />
           <AvatarFallback>{member.name[0]}</AvatarFallback>
         </Avatar>
 

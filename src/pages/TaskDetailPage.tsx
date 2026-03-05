@@ -12,14 +12,20 @@ import TaskReviewActions from '@/features/task-detail/components/TaskDetailTopTa
 import { cn } from '@/shared/lib/utils';
 import { Collapsible, CollapsibleContent } from '@/shared/components/shadcn/collapsible';
 import CommentDrawerMobile from '@/features/task-detail/components/CommentSection/CommentDrawerMobile';
+import { useShallow } from 'zustand/react/shallow';
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
   const { data: comments = [] } = useCommentQuery(projectId!, taskId!);
   const { data: task, isLoading } = useTaskDetailQuery(projectId!, taskId!);
-  const setPins = useTaskDetailStore((state) => state.setPins);
+  const { isCommentDrawerOpen, setCommentDrawerOpen, setPins } = useTaskDetailStore(
+    useShallow((s) => ({
+      isCommentDrawerOpen: s.isCommentDrawerOpen,
+      setCommentDrawerOpen: s.setCommentDrawerOpen,
+      setPins: s.setPins,
+    })),
+  );
 
   const extractedPins = useMemo(() => extractPinsFromComments(comments), [comments]);
-  const [isCommentOpen, setIsCommentOpen] = useState(false);
   const [isReviewActionOpen, setIsReviewActionOpen] = useState(false);
   useEffect(() => {
     setPins(extractedPins);
@@ -35,7 +41,7 @@ const TaskDetailPage = () => {
     <div className="flex flex-col h-screen">
       <TaskDetailTopTab
         task={task}
-        onOpenComments={() => setIsCommentOpen(true)}
+        onOpenComments={() => setCommentDrawerOpen(true)}
         onToggleReviewAction={() => setIsReviewActionOpen((v) => !v)}
       />
       <Collapsible open={isReviewActionOpen}>
@@ -62,8 +68,8 @@ const TaskDetailPage = () => {
 
       <div className="sm:hidden">
         <CommentDrawerMobile
-          isCommentOpen={isCommentOpen}
-          setIsCommentOpen={setIsCommentOpen}
+          isCommentOpen={isCommentDrawerOpen}
+          setIsCommentOpen={setCommentDrawerOpen}
           projectId={projectId}
           taskId={taskId}
           comments={comments}

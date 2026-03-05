@@ -9,6 +9,7 @@ import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType'
 import { CommentEditorActions } from '@/features/task-detail/components/CommentSection/CommentEditorActions';
 import { useAiTransformModals } from '@/features/ai-transform/hooks/useAiTransformModals';
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
+import { useShallow } from 'zustand/react/shallow';
 import { useKeyboardOffset } from '@/features/task-detail/hooks/usekeyboardOffset';
 
 interface CommentEditorProps {
@@ -27,8 +28,16 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
     setEditingComment,
     setCurrentPin,
     setPersona,
-  } = useTaskDetailStore();
-
+  } = useTaskDetailStore(
+    useShallow((s) => ({
+      isAnonymous: s.isAnonymous,
+      setIsAnonymous: s.setIsAnonymous,
+      editingComment: s.editingComment,
+      setEditingComment: s.setEditingComment,
+      setCurrentPin: s.setCurrentPin,
+      setPersona: s.setPersona,
+    })),
+  );
   useEffect(() => {
     if (editingComment) {
       setInput(editingComment.content);
@@ -39,7 +48,6 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
       }
     } else {
       setInput('');
-      setCurrentPin(null);
     }
   }, [editingComment, setIsAnonymous, setCurrentPin]);
 
@@ -86,6 +94,7 @@ const CommentEditor = ({ onCreate, onUpdate }: CommentEditorProps) => {
   const handleCancelEdit = () => {
     setEditingComment(null);
     setInput('');
+    setCurrentPin(null);
   };
 
   return (
