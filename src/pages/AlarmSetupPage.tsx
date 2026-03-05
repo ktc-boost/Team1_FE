@@ -15,7 +15,7 @@ const AlarmSetupPage = () => {
       {/* 중앙 QR 영역 */}
       <section
         aria-label="QR code setup instructions"
-        className="h-full flex flex-1 flex-col items-center gap-6 pt-6 sm:pt-20 box-border"
+        className="h-full flex w-1/2 flex-col items-center gap-6 pt-6 sm:pt-20 box-border"
       >
         <div className="flex flex-col items-center gap-4 w-full">
           <QRCodeSection isPending={isPending} qrData={qrData} timeLeft={timeLeft} />
@@ -33,7 +33,7 @@ const AlarmSetupPage = () => {
             <motion.img
               src={AlarmBell}
               alt="alarm-bell"
-              className="absolute w-30 sm:w-36 h-auto right-4 top-0"
+              className="absolute w-26 sm:w-36 h-auto right-4 top-0"
               variants={shakeVariant}
               animate="animate"
             />
