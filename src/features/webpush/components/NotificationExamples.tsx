@@ -63,7 +63,9 @@ const NotificationExamples = ({ position }: NotificationExamplesProps) => {
       aria-label={`${position} notification examples`}
       className={cn(
         'flex flex-col items-center w-[25%] h-full py-24 box-border',
-        position === 'left' ? 'justify-between pl-20 mr-5' : 'justify-center px-10',
+        position === 'left'
+          ? 'justify-between sm:pl-20 sm:mr-5'
+          : 'justify-center sm:pr-20 sm:ml-5',
       )}
     >
       {items.map((item, index) => (
