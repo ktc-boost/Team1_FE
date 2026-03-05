@@ -53,7 +53,7 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
       <Button size="sm" onClick={handleNameSave} disabled={isPending}>
         {isPending ? '저장 중...' : '저장'}
       </Button>
-      <Button size="sm" variant="ghost" onClick={handleNameCancel}>
+      <Button size="sm" variant="defaultBoost" onClick={handleNameCancel}>
         취소
       </Button>
     </div>
@@ -81,11 +81,7 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
         </div>
 
         <div className="flex gap-3">
-          <Button
-            variant="defaultBoost"
-            onClick={openDrawer}
-            className="w-40 justify-center whitespace-nowrap"
-          >
+          <Button variant="defaultBoost" onClick={openDrawer} className="w-40">
             <Pencil className="w-4 h-4" />
             아바타 변경
           </Button>
@@ -93,7 +89,7 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
             variant="defaultBoost"
             onClick={() => setIsNameEditing(true)}
             disabled={isNameEditing}
-            className="w-40 justify-center whitespace-nowrap"
+            className="w-40"
           >
             <Pencil className="w-4 h-4" />
             이름 변경
@@ -118,11 +114,7 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
           <div className="w-full flex justify-center min-h-[40px]">{NameArea}</div>
 
           <div className="flex w-full gap-3">
-            <Button
-              variant="defaultBoost"
-              onClick={openDrawer}
-              className="flex-1 justify-center whitespace-nowrap"
-            >
+            <Button variant="defaultBoost" onClick={openDrawer} className="flex-1">
               <Pencil className="w-4 h-4" />
               아바타 변경
             </Button>
@@ -130,7 +122,7 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
               variant="defaultBoost"
               onClick={() => setIsNameEditing(true)}
               disabled={isNameEditing}
-              className="flex-1 justify-center whitespace-nowrap"
+              className="flex-1"
             >
               <Pencil className="w-4 h-4" />
               이름 변경
