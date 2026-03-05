@@ -8,6 +8,8 @@ import type { ProjectFile } from '@/features/file/types/fileApiTypes';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/app/routes/Router';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
+import { cn } from '@/shared/lib/utils';
+import FileMobileActionMenu from '@/features/file/components/FileMobileActionMenu';
 
 interface FileTableRowProps {
   file: ProjectFile;
@@ -18,40 +20,57 @@ const FileTableRow = ({ file, index }: FileTableRowProps) => {
   const projectData = useProjectStore((state) => state.projectData);
   const { mutate: downloadFile } = useFileDownloadMutation();
   const navigate = useNavigate();
-
+  const mobileHiddenClass = 'hidden md:table-cell';
+  const commonCellClass = '!label2-regular sm:!body2-regular text-gray-600';
+  const handleNavigate = () => navigate(ROUTES.TASK_DETAIL(projectData.id, file.taskId));
+  const handleDownload = () => downloadFile({ fileId: file.fileId, fileName: file.filename });
   return (
-    <TableRow className="bg-white border-b border-gray-100 hover:bg-blue-50/30 transition-colors duration-150 h-[60px]">
-      <TableCell className="w-[6%] pl-7">{index + 1}</TableCell>
+    <TableRow className="bg-white border-b border-gray-100 hover:bg-boost-blue/5 transition-colors duration-150 h-[54px]">
+      <TableCell className={cn('pl-6 text-center', commonCellClass)}>{index + 1}</TableCell>
 
-      <TableCell className="w-[30%]">
+      <TableCell className="max-w-0">
         <div className="flex items-center gap-3 h-full">
-          <img src={getFileIcon(file.contentType)} alt="file-icon" className="w-6 h-6" />
-          <span className="truncate">{file.filename}</span>
+          <img
+            src={getFileIcon(file.contentType)}
+            alt="file-icon"
+            className="hidden sm:block w-5 h-5 flex-shrink-0"
+          />
+          <span className="truncate body2-regular text-gray-900">{file.filename}</span>
         </div>
       </TableCell>
 
-      <TableCell className="w-[10%]">{formatBytes(file.sizeBytes)}</TableCell>
-      <TableCell className="w-[20%]">{formatDateTime(file.completedAt)}</TableCell>
+      <TableCell className={cn(commonCellClass, mobileHiddenClass)}>
+        {formatBytes(file.sizeBytes)}
+      </TableCell>
 
-      <TableCell className="w-[20%]">
+      <TableCell className={cn(commonCellClass, mobileHiddenClass)}>
+        {formatDateTime(file.completedAt)}
+      </TableCell>
+
+      <TableCell className={mobileHiddenClass}>
         <Button
-          onClick={() => navigate(ROUTES.TASK_DETAIL(projectData.id, file.taskId))}
+          onClick={handleNavigate}
           variant="link"
-          className="p-0 text-gray-700 flex items-center gap-1"
+          className="p-0 text-gray-700 hover:text-boost-blue flex items-center gap-1 body2-regular h-auto max-w-[180px]"
         >
-          {file.taskName || '할 일로 이동'} <ChevronRight className="w-3.5 h-3.5" />
+          <span className="truncate">{file.taskName || '할 일로 이동'}</span>
+          <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
         </Button>
       </TableCell>
 
-      <TableCell className="w-[14%] text-center">
+      <TableCell className={cn('text-center', mobileHiddenClass)}>
         <Button
-          onClick={() => downloadFile({ fileId: file.fileId, fileName: file.filename })}
+          onClick={handleDownload}
           variant="ghost"
           size="sm"
-          className="w-9 h-9 p-0 text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+          className="w-9 h-9 p-0 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-full"
         >
           <Download className="w-4 h-4" />
         </Button>
+      </TableCell>
+
+      <TableCell className="sm:hidden text-center">
+        <FileMobileActionMenu onNavigate={handleNavigate} onDownload={handleDownload} />
       </TableCell>
     </TableRow>
   );

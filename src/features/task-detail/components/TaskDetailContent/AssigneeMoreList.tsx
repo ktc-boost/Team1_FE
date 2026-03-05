@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/
 import { User, ChevronLeft, ChevronRight } from 'lucide-react';
 import ContentItem from '@/shared/components/ui/ContentItem';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
-import { MAX_DISPLAY_ASSIGNEES } from '@/features/task-detail/constants/taskDetailConstants';
+import { MAX_DISPLAY_ASSIGNEES } from '@/features/task-detail/constants/task-detail.ui.constants';
 
 interface AssigneeMoreListProps {
   assignees: { id: string; name: string; avatar?: string; backgroundColor?: string }[];
@@ -24,9 +24,13 @@ const AssigneeMoreList = ({ assignees }: AssigneeMoreListProps) => {
           >
             <Avatar
               style={{ backgroundColor: assignee.backgroundColor }}
-              className="w-9 h-9 border border-gray-200  flex items-center justify-center shadow-sm"
+              className="w-8 h-8 sm:w-9 sm:h-9 border border-gray-200  flex items-center justify-center shadow-sm"
             >
-              <AvatarImage src={getAvatarSrc(assignee)} alt={assignee.name} className="w-8 h-8" />
+              <AvatarImage
+                src={getAvatarSrc(assignee)}
+                alt={assignee.name}
+                className="w-6 h-6 sm:w-8 sm:h-8"
+              />
               <AvatarFallback
                 style={{ backgroundColor: assignee.backgroundColor }}
                 className=" body2-regular"
@@ -34,7 +38,7 @@ const AssigneeMoreList = ({ assignees }: AssigneeMoreListProps) => {
                 {assignee.name.charAt(0)}
               </AvatarFallback>
             </Avatar>
-            <span className="body2-regular text-gray-700">{assignee.name}</span>
+            <span className="label2-regular sm:body2-regular text-gray-700">{assignee.name}</span>
           </div>
         ))}
 

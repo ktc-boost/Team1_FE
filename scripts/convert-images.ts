@@ -1,105 +1,150 @@
 import fs from 'fs';
 import path from 'path';
 import sharp from 'sharp';
-
-/**
- * 실행 예:
- * pnpm img:webp
- * pnpm img:webp member-avatar
- * pnpm img:webp boost hero.png
- */
-
-const BASE_DIR = path.resolve('src/shared/assets/images');
-
-type ImageConfig = { type: 'square'; size: number } | { type: 'responsive'; maxWidth: number };
-
-const IMAGE_CONFIG: Record<string, ImageConfig> = {
-  'member-avatar': { type: 'square', size: 128 },
-  boost: { type: 'responsive', maxWidth: 768 },
-};
-
-const QUALITY = 80;
-
-const TARGET_DIR = process.argv[2];
-const TARGET_FILE = process.argv[3];
-
-const formatKB = (bytes: number) => `${(bytes / 1024).toFixed(1)} KB`;
+import { parseCliArgs } from './cli-args';
+import { convertOne, VARIANT_DIR } from './converter';
+import { validateWidth } from './convert-utils';
+import { IMAGE_VARIANTS, ImageVariant } from '../src/shared/constants/imageVariants';
+import { IMAGE_CONVERT_MESSAGES } from './convert-message';
+import { ORIGINAL_DIR } from './convert-constants';
 
 (async function run() {
-  const dirs = TARGET_DIR ? [TARGET_DIR] : Object.keys(IMAGE_CONFIG);
+  try {
+    const rawArgs = process.argv.slice(2);
+    const { TARGET_DOMAIN, TARGET_FILE, TARGET_VARIANT, TARGET_WIDTH, IS_FORCE_MODE } =
+      parseCliArgs(rawArgs);
 
-  for (const dir of dirs) {
-    const config = IMAGE_CONFIG[dir];
-    if (!config) {
-      console.warn(`⚠️ 설정 없음: ${dir}`);
-      continue;
+    let domains = TARGET_DOMAIN
+      ? [TARGET_DOMAIN]
+      : fs
+          .readdirSync(ORIGINAL_DIR)
+          .filter((d) => fs.statSync(path.join(ORIGINAL_DIR, d)).isDirectory());
+
+    if (TARGET_FILE) {
+      domains = domains.filter((d) => fs.existsSync(path.join(ORIGINAL_DIR, d, TARGET_FILE!)));
+      if (domains.length === 0) {
+        console.error(IMAGE_CONVERT_MESSAGES.FILE_NOT_FOUND(TARGET_FILE));
+        process.exit(1);
+      }
     }
 
-    const srcDir = path.join(BASE_DIR, dir, 'original');
-    const outDir = path.join(BASE_DIR, dir, 'webp');
-
-    if (!fs.existsSync(srcDir)) {
-      console.warn(`⚠️ 폴더 없음: ${srcDir}`);
-      continue;
+    if (TARGET_WIDTH) {
+      const variantKeys = TARGET_VARIANT
+        ? [TARGET_VARIANT]
+        : (Object.keys(IMAGE_VARIANTS) as ImageVariant[]);
+      for (const variantKey of variantKeys) {
+        validateWidth(variantKey, TARGET_WIDTH, !!TARGET_VARIANT, IS_FORCE_MODE);
+      }
     }
 
-    fs.mkdirSync(outDir, { recursive: true });
+    const tasks: Promise<string>[] = [];
 
-    const files = TARGET_FILE ? [TARGET_FILE] : fs.readdirSync(srcDir);
+    for (const domain of domains) {
+      const srcDir = path.join(ORIGINAL_DIR, domain);
+      const outDomainDir = path.join(VARIANT_DIR, domain);
+      fs.mkdirSync(outDomainDir, { recursive: true });
 
-    console.log(TARGET_FILE ? `🎯 Single mode: ${dir}/${TARGET_FILE}` : `📦 Batch mode: ${dir}`);
+      const files = TARGET_FILE ? [TARGET_FILE] : fs.readdirSync(srcDir);
 
-    for (const file of files) {
-      if (!file.endsWith('.png')) continue;
+      for (const file of files) {
+        if (!file.endsWith('.png')) continue;
 
-      const inputPath = path.join(srcDir, file);
-      if (!fs.existsSync(inputPath)) {
-        console.error(`❌ 파일 없음: ${file}`);
-        continue;
+        const inputPath = path.join(srcDir, file);
+        const name = path.basename(file, '.png');
+        const outputBaseDir = path.join(outDomainDir, name);
+        fs.mkdirSync(outputBaseDir, { recursive: true });
+
+        const variantKeys = TARGET_VARIANT
+          ? [TARGET_VARIANT]
+          : (Object.keys(IMAGE_VARIANTS) as ImageVariant[]);
+
+        tasks.push(
+          (async () => {
+            const originalStat = fs.statSync(inputPath);
+            const originalMeta = await sharp(inputPath).metadata();
+            if (!originalMeta.width) return '';
+
+            const innerTasks: Promise<string>[] = [];
+            const seen = new Set<string>();
+
+            for (const variantKey of variantKeys) {
+              const variant = IMAGE_VARIANTS[variantKey];
+              const widths = TARGET_WIDTH ? [TARGET_WIDTH] : variant.widths;
+
+              for (const width of widths) {
+                const outputWidth = Math.min(width, originalMeta.width);
+
+                for (const format of variant.formats) {
+                  const key = `${variantKey}_${outputWidth}w.${format}`;
+                  if (seen.has(key)) continue;
+                  seen.add(key);
+
+                  const outputPath = path.join(outputBaseDir, `${name}_${key}`);
+                  innerTasks.push(
+                    convertOne({
+                      inputPath,
+                      outputPath,
+                      outputWidth,
+                      format,
+                      originalStat,
+                      originalMeta,
+                      domain,
+                      name,
+                      variantKey,
+                    }),
+                  );
+                }
+              }
+            }
+
+            const results = await Promise.allSettled(innerTasks);
+            return results
+              .map((r) =>
+                r.status === 'fulfilled'
+                  ? r.value
+                  : IMAGE_CONVERT_MESSAGES.CONVERT_FAILED(
+                      domain,
+                      name,
+                      (r as PromiseRejectedResult).reason,
+                    ),
+              )
+              .join('\n');
+          })(),
+        );
       }
-
-      const outputPath = path.join(outDir, file.replace('.png', '.webp'));
-
-      const originalStat = fs.statSync(inputPath);
-      const image = sharp(inputPath);
-      const originalMeta = await image.metadata();
-
-      let pipeline = image;
-
-      if (config.type === 'square') {
-        pipeline = pipeline.resize(config.size, config.size, {
-          fit: 'cover',
-          position: 'center',
-        });
-      }
-
-      if (config.type === 'responsive') {
-        pipeline = pipeline.resize({
-          width: config.maxWidth,
-          fit: 'inside',
-          withoutEnlargement: true,
-        });
-      }
-
-      await pipeline.webp({ quality: QUALITY }).toFile(outputPath);
-
-      const resultStat = fs.statSync(outputPath);
-      const resultMeta = await sharp(outputPath).metadata();
-
-      const rate = ((1 - resultStat.size / originalStat.size) * 100).toFixed(1);
-
-      console.log(`
-┌────────────────────────────────────────
-│ 📁 ${dir}
-│ 🖼  ${file}
-│
-│ 원본   : ${originalMeta.width} × ${originalMeta.height}   ${formatKB(originalStat.size)}
-│ 결과   : ${resultMeta.width} × ${resultMeta.height}   ${formatKB(resultStat.size)}
-│ 압축률 : -${rate}%
-└────────────────────────────────────────
-`);
     }
+
+    console.log(IMAGE_CONVERT_MESSAGES.CONVERT_START(tasks.length));
+
+    const results = await Promise.allSettled(tasks);
+
+    let successCount = 0;
+    let failCount = 0;
+
+    for (const result of results) {
+      if (result.status === 'fulfilled' && result.value) {
+        for (const line of result.value.split('\n')) {
+          if (!line.trim()) continue;
+          if (line.includes('❌')) failCount++;
+          else if (line.includes('✅')) successCount++;
+          console.log(line);
+        }
+      } else if (result.status === 'rejected') {
+        failCount++;
+        console.error(IMAGE_CONVERT_MESSAGES.FILE_TASK_FAILED(result.reason));
+      }
+    }
+
+    if (failCount > 0) {
+      console.log(IMAGE_CONVERT_MESSAGES.FINISH_PARTIAL(successCount, failCount));
+      process.exitCode = 1;
+    } else {
+      console.log(IMAGE_CONVERT_MESSAGES.FINISH_ALL(successCount));
+    }
+  } catch (error) {
+    console.error(IMAGE_CONVERT_MESSAGES.UNEXPECTED_ERROR(error));
+    process.exitCode = 1;
+  } finally {
+    if (process.exitCode === 1) console.error(IMAGE_CONVERT_MESSAGES.TERMINATED_WITH_ERROR);
   }
-
-  console.log('🎉 이미지 변환 완료');
 })();

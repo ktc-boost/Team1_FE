@@ -48,7 +48,7 @@ const ProjectManageModalContent = () => {
 
   return (
     <>
-      <div className="flex flex-col-reverse md:flex-row gap-8 py-4 px-1">
+      <div className="flex flex-col-reverse md:flex-row gap-3 md:gap-8 py-4 px-1">
         <ProjectMembers members={projectMembersWithBoosting} />
         <ProjectBasicInfo />
       </div>

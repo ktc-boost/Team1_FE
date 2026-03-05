@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { taskApi } from '@/features/task/api/taskApi';
-import type { TaskDetail } from '@/features/task/types/taskTypes';
-import { TASK_QUERY_KEYS } from '@/features/task/constants/taskQueryKeys';
+import { TASK_QUERY_KEYS } from '@/features/task/constants/task.query.constants';
+import type { TaskDetail } from '@/features/task/types/task.domain.types';
+import { TASK_STATUS } from '@/features/task/constants/task.domain.constants';
 
 // 할 일 리뷰 재요청
 export const useRequestReviewMutation = (projectId: string, taskId: string) => {
@@ -22,7 +23,7 @@ export const useRequestReviewMutation = (projectId: string, taskId: string) => {
         old
           ? {
               ...old,
-              status: 'REVIEW',
+              status: TASK_STATUS.REVIEW,
               reReviewRequestedAt: new Date().toISOString(),
             }
           : old,

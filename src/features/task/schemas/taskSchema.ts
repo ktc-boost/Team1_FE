@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { TASK_STATUS_LIST } from '@/features/task/constants/task.domain.constants';
 
 const baseTaskSchema = z.object({
   title: z.string().min(1, '제목은 필수입니다.'),
@@ -9,7 +10,7 @@ const baseTaskSchema = z.object({
     .optional(),
   assignees: z.array(z.string()).min(1, '담당자를 선택하세요.'),
   dueDate: z.string().min(1, '마감일은 필수입니다.'),
-  status: z.enum(['TODO', 'PROGRESS', 'REVIEW', 'DONE']),
+  status: z.enum(TASK_STATUS_LIST),
   tags: z.array(z.string()).optional(),
   urgent: z.boolean().optional(),
 });

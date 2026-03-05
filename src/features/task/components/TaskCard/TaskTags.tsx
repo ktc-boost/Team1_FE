@@ -4,7 +4,7 @@ import {
   generatePastelColor,
 } from '@/features/tag/utils/tagUtils';
 import { Badge } from '@/shared/components/shadcn/badge';
-import type { TaskDetail, TaskListItem } from '@/features/task/types/taskTypes';
+import type { TaskDetail, TaskListItem } from '@/features/task/types/task.domain.types';
 
 interface TaskTagsProps {
   task: TaskDetail | TaskListItem;
@@ -21,20 +21,20 @@ const TaskTags = ({ task, projectName }: TaskTagsProps) => {
       {projectName && projectTagStyle && (
         <Badge
           key={projectName}
-          className="rounded-full"
+          className="rounded-full max-w-34 pt-1"
           style={{
             ...projectTagStyle,
             border: `1px solid ${projectTagStyle.borderColor}`,
           }}
         >
-          {projectName}
+          <span className="truncate">{projectName}</span>
         </Badge>
       )}
 
       {/* 기존 태그 */}
       {tags.map((tag) => (
-        <Badge key={tag.tagId} style={getColorStyleForTag(tag)}>
-          {tag.name}
+        <Badge key={tag.tagId} style={getColorStyleForTag(tag)} className="max-w-34">
+          <span className="truncate">{tag.name}</span>
         </Badge>
       ))}
     </div>

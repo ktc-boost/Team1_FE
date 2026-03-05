@@ -18,7 +18,7 @@ const AvatarGrid = ({
   selectedBgColor,
 }: AvatarGridProps) => {
   return (
-    <div className="px-10 sm:px-24 sm:py-6 max-h-96 overflow-y-auto">
+    <div className="px-10 py-5 sm:px-24 sm:py-6 max-h-96 overflow-y-auto">
       <div aria-label="아바타 목록" className="grid grid-cols-4 gap-6 sm:gap-8 pt-2 ">
         {avatarList.map((avatarUrl, index) => {
           const isSelected = selectedAvatarId === String(index);

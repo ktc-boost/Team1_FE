@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { SettingsSectionCard } from '@/features/settings/components/SettingsSectionCard';
 import { useAvatarStore } from '@/features/avatar-picker/store/useAvatarStore';
+import { Pencil } from 'lucide-react';
 
 interface UserInfoProps {
   name: string;
@@ -42,43 +43,91 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
     setIsNameEditing(false);
   };
 
+  const NameArea = isNameEditing ? (
+    <div className="flex items-center gap-2">
+      <Input
+        value={newName}
+        onChange={(e) => setNewName(e.target.value)}
+        className="w-40 !body2-regular sm:!body1-regular"
+      />
+      <Button size="sm" variant="defaultBoost" onClick={handleNameSave} disabled={isPending}>
+        {isPending ? '저장 중...' : '저장'}
+      </Button>
+      <Button size="sm" variant="ghost" onClick={handleNameCancel}>
+        취소
+      </Button>
+    </div>
+  ) : (
+    <p className="body2-regular sm:body1-regular">{member.name}</p>
+  );
+
   return (
-    <SettingsSectionCard title="내 정보">
-      <div className="flex items-center gap-4">
-        <Avatar style={{ backgroundColor: member.backgroundColor }} className="w-20 h-20">
-          <AvatarImage className="p-2" src={getAvatarSrc(member)} alt="user avatar" />
-          <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-        </Avatar>
-
-        {isNameEditing ? (
-          <div className="flex items-center gap-2">
-            <Input value={newName} onChange={(e) => setNewName(e.target.value)} className="w-40" />
-            <Button size="sm" onClick={handleNameSave} disabled={isPending}>
-              {isPending ? '저장 중...' : '저장'}
-            </Button>
-            <Button size="sm" variant="ghost" onClick={handleNameCancel}>
-              취소
-            </Button>
-          </div>
-        ) : (
-          <p className="text-base font-medium text-gray-800">{member.name}</p>
-        )}
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">내 정보 수정</label>
-        <div className="flex gap-3">
-          <Button
-            variant="secondary"
-            onClick={() => setIsNameEditing(true)}
-            disabled={isNameEditing}
+    <SettingsSectionCard title="내 정보" desc="아바타와 이름을 변경할 수 있어요.">
+      <div className="hidden sm:flex items-center justify-between gap-6">
+        <div className="flex items-center gap-4">
+          <Avatar
+            style={{ backgroundColor: member.backgroundColor }}
+            className="w-18 h-18 flex items-center justify-center"
           >
-            이름 변경
-          </Button>
+            <AvatarImage
+              className="w-15 h-15 object-contain"
+              src={getAvatarSrc(member)}
+              alt="user avatar"
+            />
+            <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
+          </Avatar>
 
-          <Button onClick={openDrawer} variant="secondary">
+          {NameArea}
+        </div>
+
+        <div className="flex gap-3">
+          <Button variant="defaultBoost" onClick={openDrawer} className="w-40">
+            <Pencil className="w-4 h-4" />
             아바타 변경
           </Button>
+          <Button
+            variant="defaultBoost"
+            onClick={() => setIsNameEditing(true)}
+            disabled={isNameEditing}
+            className="w-40"
+          >
+            <Pencil className="w-4 h-4" />
+            이름 변경
+          </Button>
+        </div>
+      </div>
+
+      <div className="sm:hidden">
+        <div className="flex flex-col items-center gap-4 px-3 py-4 bg-gray-200 rounded-lg shadow-sm">
+          <Avatar
+            style={{ backgroundColor: member.backgroundColor }}
+            className="w-20 h-20 flex items-center justify-center"
+          >
+            <AvatarImage
+              className="w-16 h-16 object-contain"
+              src={getAvatarSrc(member)}
+              alt="user avatar"
+            />
+            <AvatarFallback className="text-xl">{member.name.charAt(0)}</AvatarFallback>
+          </Avatar>
+
+          <div className="w-full flex justify-center min-h-[40px]">{NameArea}</div>
+
+          <div className="flex w-full gap-3">
+            <Button variant="defaultBoost" onClick={openDrawer} className="flex-1">
+              <Pencil className="w-4 h-4" />
+              아바타 변경
+            </Button>
+            <Button
+              variant="defaultBoost"
+              onClick={() => setIsNameEditing(true)}
+              disabled={isNameEditing}
+              className="flex-1"
+            >
+              <Pencil className="w-4 h-4" />
+              이름 변경
+            </Button>
+          </div>
         </div>
       </div>
     </SettingsSectionCard>

@@ -3,6 +3,7 @@ import { Button } from '@/shared/components/shadcn/button';
 import { cn } from '@/shared/lib/utils';
 import { CheckCircle, CircleArrowRight, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { TASK_STATUS } from '@/features/task/constants/task.domain.constants';
 
 interface AssigneeButtonProps {
   uiStatus: string;
@@ -21,11 +22,12 @@ export const AssigneeActionButton = ({
   const [isCompleted, setIsCompleted] = useState(false);
 
   const isDoneReady = approvedCount >= requiredReviewerCount;
-  const isReview = uiStatus === 'REVIEW';
+  const isReview = uiStatus === TASK_STATUS.REVIEW;
   const defaultIconClass = 'w-5 h-5 text-white';
+  const disabled = isDoneReady ? isCompleted || isCompleting : isCompleting;
 
   useEffect(() => {
-    if (uiStatus === 'DONE') setIsCompleted(true);
+    if (uiStatus === TASK_STATUS.DONE) setIsCompleted(true);
   }, [uiStatus]);
 
   const handleAction = async () => {
@@ -46,15 +48,15 @@ export const AssigneeActionButton = ({
     return (
       <Button
         onClick={handleAction}
-        disabled={isCompleted || isCompleting}
+        disabled={disabled}
         className={cn(
-          'flex flex-row gap-2 rounded-md text-white',
+          'w-[50%] sm:w-auto !label1-regular flex flex-row gap-2 rounded-md text-white',
           isCompleted
             ? 'bg-green-600 opacity-70 cursor-not-allowed'
             : 'bg-green-700 hover:bg-green-600',
         )}
       >
-        <CheckCircle className={cn(defaultIconClass)} />
+        <CheckCircle className={defaultIconClass} />
         {isCompleted ? '할 일 완료됨' : isCompleting ? '완료 중...' : '할 일 완료하기'}
       </Button>
     );
@@ -63,9 +65,9 @@ export const AssigneeActionButton = ({
   return (
     <Button
       onClick={onAction}
-      disabled={isCompleting}
+      disabled={disabled}
       className={cn(
-        'rounded-md flex flex-row gap-2 text-white',
+        'w-[50%] sm:w-auto !label1-regular rounded-md flex flex-row gap-2 text-white',
         isReview
           ? 'bg-boost-orange hover:bg-boost-orange-hover'
           : 'bg-boost-blue hover:bg-boost-blue-hover',

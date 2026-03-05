@@ -119,6 +119,12 @@
   }
 }
 
+@layer utilities {
+  .scrollbar-stable {
+    scrollbar-gutter: stable;
+  }
+}
+
 /* Pretendard Font Faces */
 @font-face {
   font-family: 'Pretendard';

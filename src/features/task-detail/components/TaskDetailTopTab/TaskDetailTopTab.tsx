@@ -1,49 +1,54 @@
-import { useParams } from 'react-router-dom';
-import { cn } from '@/shared/lib/utils';
-import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
-import { AssigneeActionButton } from '@/features/task-detail/components/TaskDetailTopTab/AssigneeActionButton';
-import { ReviewerActionButton } from '@/features/task-detail/components/TaskDetailTopTab/ReviewerActionButton';
-import { useAssigneeTask } from '@/features/task-detail/hooks/useAssigneeTask';
-import { useReviewerTask } from '@/features/task-detail/hooks/useReviewerTask';
-import type { TaskDetail } from '@/features/task/types/taskTypes';
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
 import BackButton from '@/shared/components/ui/BackButton';
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
+import { CheckCircle2, MessageSquare } from 'lucide-react';
+import TaskReviewActions from '@/features/task-detail/components/TaskDetailTopTab/TaskReviewActions';
+import { Button } from '@/shared/components/shadcn/button';
+import { useShallow } from 'zustand/react/shallow';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/shared/components/shadcn/tooltip';
+import { useIsMobile } from '@/shared/hooks/use-mobile';
+import { useEffect, useState } from 'react';
+import type { TaskDetail } from '@/features/task/types/task.domain.types';
 
 interface TaskDetailTopTabProps {
   task: TaskDetail;
+  onOpenComments?: () => void;
+  onToggleReviewAction?: () => void;
 }
 
-const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
-  const { projectId } = useParams<{ projectId: string }>();
-
-  const resetAll = useTaskDetailStore((state) => state.resetAll);
-  const currentUser = useAuthStore((state) => state.user);
+const TaskDetailTopTab = ({
+  task,
+  onOpenComments,
+  onToggleReviewAction,
+}: TaskDetailTopTabProps) => {
+  const { resetAll, currentPin } = useTaskDetailStore(
+    useShallow((s) => ({ resetAll: s.resetAll, currentPin: s.currentPin })),
+  );
   const resetAiComment = useAiTransformStore((state) => state.reset);
   const resetPdf = usePdfStore((state) => state.resetPdf);
-  const isAssignee = task.assignees.some((a) => a.id === currentUser?.id);
+  const isMobile = useIsMobile();
+  const [hintOpen, setHintOpen] = useState(false);
 
-  const assigneeTask = useAssigneeTask({
-    projectId: projectId!,
-    taskId: task.id,
-    taskStatus: task.status,
-    approvedCount: task.approvedCount,
-    requiredReviewerCount: task.requiredReviewerCount,
-    reReviewRequestedAt: task.reReviewRequestedAt,
-  });
-
-  const reviewerTask = useReviewerTask({
-    projectId: projectId!,
-    taskId: task.id,
-    initialApprovedCount: task.approvedCount,
-    requiredReviewerCount: task.requiredReviewerCount,
-    initialApprovedByMe: task.approvedByMe,
-  });
+  useEffect(() => {
+    if (!isMobile) return;
+    if (!currentPin) {
+      setHintOpen(false);
+      return;
+    }
+    setHintOpen(true);
+    const t = setTimeout(() => setHintOpen(false), 2000);
+    return () => clearTimeout(t);
+  }, [isMobile, currentPin]);
 
   return (
     <nav className="flex justify-between items-center w-full bg-gray-100 border-b border-gray-300 h-14 px-4">
-      <div className="flex items-center gap-3 font-semibold text-lg">
+      <div className="subtitle2-bold sm:title1-bold flex items-center gap-3">
         <BackButton
           onBack={() => {
             resetAll();
@@ -54,52 +59,34 @@ const TaskDetailTopTab = ({ task }: TaskDetailTopTabProps) => {
 
         {task.title}
       </div>
-
-      {task.requiredReviewerCount > 0 && (
-        <>
-          {isAssignee ? (
-            <div className="flex items-center gap-3 bg-transparent">
-              <div
-                className={cn(
-                  'rounded-full border h-9 px-4 py-2 flex items-center text-sm font-medium',
-                  assigneeTask.getBadgeClass(),
+      <div className="sm:hidden flex gap-2">
+        <TooltipProvider delayDuration={0}>
+          <Tooltip open={hintOpen}>
+            <TooltipTrigger asChild>
+              <Button onClick={onOpenComments} variant="ghost" className="relative">
+                <MessageSquare className="size-5 transition-colors text-black" />
+                {currentPin && (
+                  <span className="absolute top-2 right-2 flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gray-900 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-gray-900"></span>
+                  </span>
                 )}
-              >
-                받은 검토 수 {assigneeTask.approvedCount}/{task.requiredReviewerCount}
-              </div>
-              <AssigneeActionButton
-                uiStatus={assigneeTask.uiStatus}
-                approvedCount={assigneeTask.approvedCount}
-                requiredReviewerCount={task.requiredReviewerCount}
-                onAction={
-                  assigneeTask.approvedCount >= task.requiredReviewerCount
-                    ? assigneeTask.handleCompleteTask
-                    : assigneeTask.handleAction
-                }
-              />
-            </div>
-          ) : (
-            assigneeTask.uiStatus === 'REVIEW' && (
-              <div className="flex items-center gap-3">
-                <div
-                  className={cn(
-                    'rounded-full border h-9 px-4 py-2 flex items-center text-sm font-medium',
-                    reviewerTask.getBadgeClass(),
-                  )}
-                >
-                  검토 완료 수 {reviewerTask.approvedCount}/{task.requiredReviewerCount}
-                </div>
-                <ReviewerActionButton
-                  isApprovedByMe={reviewerTask.isApprovedByMe}
-                  approvedCount={reviewerTask.approvedCount}
-                  requiredReviewerCount={task.requiredReviewerCount}
-                  onApprove={reviewerTask.handleApprove}
-                />
-              </div>
-            )
-          )}
-        </>
-      )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent className="sm:hidden" side="bottom">
+              <p> 핀댓글 달기</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        <Button onClick={onToggleReviewAction} variant="ghost">
+          <CheckCircle2 className="size-5" />
+        </Button>
+      </div>
+
+      <div className="hidden sm:flex">
+        {task.requiredReviewerCount > 0 && <TaskReviewActions task={task} />}
+      </div>
     </nav>
   );
 };

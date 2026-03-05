@@ -17,7 +17,7 @@ export function FileUploadAction({ taskId }: { taskId: string }) {
   return (
     <div {...getRootProps()} className="cursor-pointer">
       <input {...getInputProps()} />
-      <Upload className="w-5 h-5 text-gray-900" />
+      <Upload className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-gray-900" />
     </div>
   );
 }

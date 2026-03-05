@@ -12,8 +12,8 @@ interface ContentItemProps {
 const ContentItem = ({ icon: Icon, title, children, action }: ContentItemProps) => (
   <div className="flex flex-col gap-1">
     <div className="flex items-center justify-between">
-      <Label className="flex items-center gap-2 text-gray-800 subtitle1-bold">
-        <Icon className="w-4 h-4 text-gray-700" />
+      <Label className="!label2-bold flex items-center gap-1 sm:gap-2 text-gray-800 sm:!subtitle1-bold">
+        <Icon className="w-3 h-3 sm:w-4 sm:h-4 text-gray-700" />
         {title}
       </Label>
       {action && <div>{action}</div>}

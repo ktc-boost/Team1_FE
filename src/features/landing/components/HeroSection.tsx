@@ -1,9 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { ROUTE_PATH } from '@/app/routes/Router';
 import { Button } from '@/shared/components/shadcn/button';
-import Boost_3D from '@/shared/assets/images/boost/webp/boost-logo-3d.webp';
 import { floatVariant } from '@/shared/utils/animations/motionVariants';
+import MotionImage from '@/shared/components/ui/image/MotionImage';
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -37,12 +36,17 @@ const HeroSection = () => {
           </div>
         </div>
 
-        <motion.img
-          src={Boost_3D}
+        <MotionImage
+          domain="boost"
+          name="boost-logo-3d"
+          variant="standard"
+          width={480}
           alt="Boost 3D"
           className="order-1 lg:order-2 w-[250px] xl:w-[400px] justify-self-center"
           variants={floatVariant}
           animate="animate"
+          loading="eager"
+          fetchPriority="high"
         />
       </div>
     </div>

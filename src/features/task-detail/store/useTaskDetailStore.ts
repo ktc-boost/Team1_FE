@@ -21,6 +21,7 @@ const initialDataState: TaskDetailDataState = {
   activePinCommentId: null,
   editingComment: null,
   persona: null,
+  isCommentDrawerOpen: false,
 };
 
 // 파일 관련 Slice
@@ -67,6 +68,7 @@ const createCommentSlice: StateCreator<TaskDetailState, [], [], CommentSlice> = 
   activePinCommentId: initialDataState.activePinCommentId,
   editingComment: initialDataState.editingComment,
   persona: initialDataState.persona,
+  isCommentDrawerOpen: initialDataState.isCommentDrawerOpen,
 
   setPersona: (persona) => set({ persona }),
   setIsAnonymous: (isAnonymous) => set({ isAnonymous }),
@@ -79,6 +81,9 @@ const createCommentSlice: StateCreator<TaskDetailState, [], [], CommentSlice> = 
       editingComment: comment,
       activePinCommentId: comment ? null : state.activePinCommentId,
     })),
+  openCommentDrawer: () => set({ isCommentDrawerOpen: true }),
+  closeCommentDrawer: () => set({ isCommentDrawerOpen: false }),
+  setCommentDrawerOpen: (open: boolean) => set({ isCommentDrawerOpen: open }),
 });
 
 // 할 일 상세 스토어

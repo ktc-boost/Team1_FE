@@ -1,16 +1,17 @@
-import { BOARD_KEYS } from '@/features/board/constants/boardConstants';
+import { BOARD_KEYS, BOARD } from '@/features/board/constants/board.domain.constants';
+import type { Board } from '@/features/board/types/board.domain.types';
 import FilterTab from '@/widgets/FilterTab';
 
 interface ProjectFilterTabProps {
-  value: 'status' | 'member';
-  onChange: (value: 'status' | 'member') => void;
+  value: Board;
+  onChange: (value: Board) => void;
 }
 
 const ProjectFilterTab = ({ value, onChange }: ProjectFilterTabProps) => {
-  const boardKey = value === 'status' ? BOARD_KEYS.PROJECT_STATUS : BOARD_KEYS.PROJECT_MEMBER;
+  const boardKey = value === BOARD.STATUS ? BOARD_KEYS.PROJECT_STATUS : BOARD_KEYS.PROJECT_MEMBER;
   let isShowSortDropdown = true;
 
-  if (value === 'member') isShowSortDropdown = false;
+  if (value === BOARD.MEMBER) isShowSortDropdown = false;
 
   return (
     <FilterTab

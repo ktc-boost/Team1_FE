@@ -19,6 +19,7 @@ export type TaskDetailDataState = {
   activePinCommentId: string | null;
   editingComment: EditingCommentState | null;
   persona: PersonaType | null;
+  isCommentDrawerOpen: boolean;
 };
 
 type TaskDetailActions = {
@@ -32,6 +33,9 @@ type TaskDetailActions = {
   setSelectedCommentId: (id: string | null) => void;
   setActivePinCommentId: (id: string | null) => void;
   setEditingComment: (comment: EditingCommentState | null) => void;
+  openCommentDrawer: () => void;
+  closeCommentDrawer: () => void;
+  setCommentDrawerOpen: (open: boolean) => void;
   clearCurrentPin: () => void;
   clearFileState: () => void;
   resetAll: () => void;
@@ -62,9 +66,13 @@ export type CommentSlice = Pick<
   | 'activePinCommentId'
   | 'editingComment'
   | 'persona'
+  | 'isCommentDrawerOpen'
   | 'setPersona'
   | 'setIsAnonymous'
   | 'setSelectedCommentId'
   | 'setActivePinCommentId'
   | 'setEditingComment'
+  | 'openCommentDrawer'
+  | 'closeCommentDrawer'
+  | 'setCommentDrawerOpen'
 >;

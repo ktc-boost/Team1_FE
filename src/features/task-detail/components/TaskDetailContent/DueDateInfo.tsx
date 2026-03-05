@@ -15,9 +15,9 @@ const DueDateInfo = ({ dueDate }: DueDateInfoProps) => {
   return (
     <InfoCard>
       <ContentItem icon={Calendar} title="마감일">
-        <div className="flex items-center gap-2 mt-1">
-          <span className="label1-regular text-gray-700">{dueDate}</span>
-          <Badge style={tagStyle} className="label1-regular">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-1">
+          <span className="label2-regular sm:body2-regular text-gray-700">{dueDate}</span>
+          <Badge style={tagStyle} className="!label2-regular sm:!body2-regular w-fit">
             {calculateDDay(dueDate, 'text')}
           </Badge>
         </div>

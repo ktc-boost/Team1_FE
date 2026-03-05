@@ -14,14 +14,14 @@ export const CommentEditorActions = ({ isEditing, onSubmit, onCancel }: Props) =
         <>
           <Button
             size="icon"
-            className="h-13 w-13 rounded-2xl bg-boost-blue hover:bg-boost-blue-hover flex-shrink-0"
+            className="w-10 h-10 sm:w-13 sm:h-13 rounded-2xl bg-boost-blue hover:bg-boost-blue-hover flex-shrink-0"
             onClick={onSubmit}
           >
             <SendIcon />
           </Button>
           <Button
             size="icon"
-            className="h-13 w-13 rounded-2xl bg-gray-400 hover:bg-gray-500 flex-shrink-0"
+            className="w-10 h-10 sm:w-13 sm:h-13 rounded-2xl bg-gray-400 hover:bg-gray-500 flex-shrink-0"
             onClick={onCancel}
           >
             <X />
@@ -30,7 +30,7 @@ export const CommentEditorActions = ({ isEditing, onSubmit, onCancel }: Props) =
       ) : (
         <Button
           size="icon"
-          className="h-13 w-13 rounded-2xl bg-boost-blue hover:bg-boost-blue-hover flex-shrink-0"
+          className="w-10 h-10 sm:w-13 sm:h-13 rounded-2xl bg-boost-blue hover:bg-boost-blue-hover flex-shrink-0"
           onClick={onSubmit}
         >
           <SendIcon />

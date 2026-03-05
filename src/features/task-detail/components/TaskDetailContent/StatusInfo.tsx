@@ -1,22 +1,19 @@
-import { type Status } from '@/features/board/types/boardTypes';
+import type { TaskStatus } from '@/features/task/types/task.domain.types';
 import { getTitleByStatus } from '@/features/board/utils/boardUtils';
 import InfoCard from '@/shared/components/ui/InfoCard';
-import { Label } from '@/shared/components/shadcn/label';
 import { Loader } from 'lucide-react';
+import ContentItem from '@/shared/components/ui/ContentItem';
 
 interface StatusInfoProps {
-  status: string;
+  status: TaskStatus;
 }
 
 const StatusInfo = ({ status }: StatusInfoProps) => {
   return (
     <InfoCard>
-      <Label className="flex items-center text-gray-800 subtitle1-bold mb-1">
-        <Loader className="w-4 h-4 text-gray-700" />
-        진행 상태
-      </Label>
+      <ContentItem icon={Loader} title="진행상태" />
       <div className="label2-regular p-2 py-1 mt-2 rounded-md w-fit shadow-sm bg-boost-orange text-white">
-        {getTitleByStatus(status as Status)}
+        {getTitleByStatus(status)}
       </div>
     </InfoCard>
   );

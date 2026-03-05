@@ -84,8 +84,8 @@ const MemoEditor = () => {
   if (isLoading && isEditMode) return <FullPageLoader text="메모 불러오는 중.." />;
 
   return (
-    <article className="flex flex-col h-full bg-gray-200 border-t border-gray-300">
-      <div className="flex flex-col h-full gap-4 p-1 m-3 overflow-hidden bg-gray-100 rounded-xl shadow-[0_0_6px_rgba(0,0,0,0.08)]">
+    <article className="flex flex-col h-full bg-gray-200 border-t border-gray-300 overflow-y-auto">
+      <div className="flex flex-col h-full gap-4 p-1 m-3 bg-gray-100 rounded-xl shadow-[0_0_6px_rgba(0,0,0,0.08)]">
         <MemoEditorHeader
           isEditMode={isEditMode}
           onCancel={handleCancelEdit}

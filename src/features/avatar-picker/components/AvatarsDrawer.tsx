@@ -81,10 +81,10 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
 
       <DrawerContent className="max-h-[95vh] border-gray-300">
         <DrawerHeader className="pt-8 pb-4 text-center border-b border-gray-100">
-          <DrawerTitle className="title2-bold sm:title1-bold font-bold text-gray-800 mb-2">
+          <DrawerTitle className="!title2-bold sm:!title1-bold font-bold text-gray-800 mb-2">
             아바타 선택
           </DrawerTitle>
-          <DrawerDescription className="body2-regular text-gray-600 sm:body1-regular">
+          <DrawerDescription className="!body2-regular text-gray-600 sm:!body1-regular">
             아바타와 배경색상을 골라보세요!
           </DrawerDescription>
         </DrawerHeader>
