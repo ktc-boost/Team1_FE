@@ -7,6 +7,7 @@ import { CommentActionsMenu } from '@/features/task-detail/components/CommentSec
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import { useShallow } from 'zustand/react/shallow';
 import { AuthorAvatar } from '@/features/task-detail/components/CommentSection/AuthorAvatar';
+import { Pin } from 'lucide-react';
 
 interface CommentItemProps {
   comment: CommentUIType;
@@ -53,7 +54,7 @@ const CommentItem = forwardRef<HTMLDivElement, CommentItemProps>(
             )}
           >
             <div className="flex items-center justify-between pb-2 sm:pb-3">
-              <div className="flex items-center gap-2 sm:gap-3">
+              <div className="flex items-center gap-1 sm:gap-2">
                 <AuthorAvatar
                   persona={comment.persona}
                   isAnonymous={comment.isAnonymous}
@@ -65,10 +66,7 @@ const CommentItem = forwardRef<HTMLDivElement, CommentItemProps>(
                   {isAnonymous ? '익명' : comment.authorInfo.name}
                 </span>
                 {comment.isPinned && (
-                  <span
-                    className="inline-block size-2 rounded-full bg-boost-orange"
-                    aria-label="핀 댓글"
-                  />
+                  <Pin className="size-3 sm:size-4 text-boost-orange" aria-label="핀 댓글" />
                 )}
               </div>
 
