@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/
 import { User, ChevronLeft, ChevronRight } from 'lucide-react';
 import ContentItem from '@/shared/components/ui/ContentItem';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
-import { MAX_DISPLAY_ASSIGNEES } from '@/features/task-detail/constants/taskDetailConstants';
+import { MAX_DISPLAY_ASSIGNEES } from '@/features/task-detail/constants/task-detail.ui.constants';
 
 interface AssigneeMoreListProps {
   assignees: { id: string; name: string; avatar?: string; backgroundColor?: string }[];
