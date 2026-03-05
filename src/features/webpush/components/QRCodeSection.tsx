@@ -12,7 +12,7 @@ const QRCodeSection = ({ isPending, qrData, timeLeft }: QRCodeSectionProps) => {
     <>
       {/* 상단 텍스트 */}
       <div aria-label="text" className="flex flex-col items-center gap-3">
-        <div className="title1-bold text-center leading-tight">
+        <div className="subtitle1-bold sm:title1-bold text-center leading-tight">
           <span className="text-boost-blue-light">알림</span>을 허용해보세요!
         </div>
         <div className="mt-1 subtitle2-regular text-gray-600 text-center">
@@ -28,7 +28,7 @@ const QRCodeSection = ({ isPending, qrData, timeLeft }: QRCodeSectionProps) => {
             <InlineLoader size={6} text="QR 코드 생성 중.." />
           </div>
         ) : qrData ? (
-          <QRCodeSVG value={qrData} className="w-40 h-40" />
+          <QRCodeSVG value={qrData} className="w-30 h-30 sm:w-40 sm:h-40" />
         ) : (
           <div className="text-gray-500 body2-regular text-center w-40 h-40 flex items-center justify-center">
             <InlineLoader size={6} text="QR 데이터 불러오는 중.." />
