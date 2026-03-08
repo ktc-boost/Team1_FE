@@ -1,6 +1,6 @@
 import { avatarList } from '@/features/avatar-picker/utils/avatarUtils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
 import { cn } from '@/shared/lib/utils';
-import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 import { Check, User } from 'lucide-react';
 import tinycolor from 'tinycolor2';
 interface AvatarGridProps {
