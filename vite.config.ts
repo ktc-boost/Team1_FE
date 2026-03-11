@@ -5,7 +5,10 @@ import { defineConfig, loadEnv } from 'vite';
 import { sentryVitePlugin } from '@sentry/vite-plugin';
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '');
+  const env = {
+    ...loadEnv(mode, process.cwd(), ''),
+    ...process.env,
+  };
 
   if (!env.SENTRY_ORG || !env.SENTRY_PROJECT || !env.SENTRY_AUTH_TOKEN) {
     throw new Error('Sentry 환경 변수가 누락되었습니다. .env 파일을 확인하세요.');
