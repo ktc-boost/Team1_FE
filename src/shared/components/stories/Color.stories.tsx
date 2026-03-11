@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Separator } from '@/shared/components/shadcn/separator';
 
@@ -17,24 +16,11 @@ type ColorItem = {
   label: string;
   token: string;
 };
-
-type ColorSpec = {
+type ResolvedColorItem = ColorItem & {
   value: string;
 };
 
-function ColorSwatch({ item }: { item: ColorItem }) {
-  const [spec, setSpec] = useState<ColorSpec>({
-    value: '',
-  });
-
-  useEffect(() => {
-    const root = document.documentElement;
-    const styles = getComputedStyle(root);
-    const value = styles.getPropertyValue(item.token).trim();
-
-    setSpec({ value });
-  }, [item.token]);
-
+function ColorSwatch({ item }: { item: ResolvedColorItem }) {
   return (
     <div className="flex items-center justify-between gap-4 py-4">
       <div className="flex min-w-0 items-center gap-4">
@@ -48,12 +34,22 @@ function ColorSwatch({ item }: { item: ColorItem }) {
         </div>
       </div>
 
-      <div className="label2-regular shrink-0 text-text-sub">{spec.value}</div>
+      <div className="label2-regular shrink-0 text-text-sub">{item.value}</div>
     </div>
   );
 }
+const resolveColorItems = (items: ColorItem[]): ResolvedColorItem[] => {
+  const styles = getComputedStyle(document.documentElement);
+
+  return items.map((item) => ({
+    ...item,
+    value: styles.getPropertyValue(item.token).trim(),
+  }));
+};
 
 function ColorSection({ title, items }: { title: string; items: ColorItem[] }) {
+  const resolvedItems = resolveColorItems(items);
+
   return (
     <section className="rounded-2xl border-gray-300 p-6 shadow-sm">
       <div className="mb-6">
@@ -61,7 +57,7 @@ function ColorSection({ title, items }: { title: string; items: ColorItem[] }) {
       </div>
 
       <div>
-        {items.map((item, index) => (
+        {resolvedItems.map((item, index) => (
           <div key={item.token}>
             <ColorSwatch item={item} />
             {index !== items.length - 1 ? <Separator /> : null}
