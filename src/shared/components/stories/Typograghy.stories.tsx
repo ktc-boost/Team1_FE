@@ -96,19 +96,19 @@ function TypographyPreview({ title, items }: { title?: string; items: Typography
 const displayItems: TypographyItem[] = [
   {
     className: 'display1-bold',
-    sample: '디자인 시스템 타이포그래피',
+    sample: '메인 헤드라인 텍스트',
   },
   {
     className: 'display1-regular',
-    sample: '디자인 시스템 타이포그래피',
+    sample: '메인 헤드라인 텍스트',
   },
   {
     className: 'display2-bold',
-    sample: '디자인 시스템 타이포그래피',
+    sample: '메인 헤드라인 텍스트',
   },
   {
     className: 'display2-regular',
-    sample: '디자인 시스템 타이포그래피',
+    sample: '메인 헤드라인 텍스트',
   },
 ];
 
