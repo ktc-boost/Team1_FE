@@ -1,7 +1,7 @@
-import { Button } from '@/shared/components/shadcn/button';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Plus } from 'lucide-react';
 import { fn } from 'storybook/test';
+import { Button, buttonVariantOptions, buttonSizeOptions } from '@/shared/components/shadcn/button';
 
 const meta = {
   title: 'Shared/Button',
@@ -13,23 +13,11 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: [
-        'default',
-        'defaultBoost',
-        'secondaryBoost',
-        'destructive',
-        'outline',
-        'outlineBoost',
-        'outlineSecondaryBoost',
-        'secondary',
-        'ghost',
-        'link',
-      ],
+      options: buttonVariantOptions,
     },
-
     size: {
       control: 'select',
-      options: ['default', 'sm', 'lg', 'icon', 'icon-sm', 'icon-lg'],
+      options: buttonSizeOptions,
     },
     asChild: {
       control: 'boolean',
