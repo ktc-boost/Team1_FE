@@ -3,6 +3,12 @@ import { Plus } from 'lucide-react';
 import { fn } from 'storybook/test';
 import { Button, buttonVariantOptions, buttonSizeOptions } from '@/shared/components/shadcn/button';
 
+const iconStoryArgTypes = {
+  children: { control: false },
+  size: { control: false },
+  asChild: { control: false },
+} as const;
+
 const meta = {
   title: 'Shared/Button',
   component: Button,
@@ -52,18 +58,21 @@ export const SecondaryBoost: Story = {
     children: '추가하기',
   },
 };
+
 export const OutlineBoost: Story = {
   args: {
     variant: 'outlineBoost',
     children: '자세히 보기',
   },
 };
+
 export const OutlineSecondaryBoost: Story = {
   args: {
     variant: 'outlineSecondaryBoost',
     children: '자세히 보기',
   },
 };
+
 export const Actions: Story = {
   render: () => (
     <div className="flex flex-wrap gap-3">
@@ -89,11 +98,7 @@ export const SizeLg: Story = {
 };
 
 export const SizeIcon: Story = {
-  argTypes: {
-    children: { control: false },
-    size: { control: false },
-    asChild: { control: false },
-  },
+  argTypes: iconStoryArgTypes,
   render: (args) => (
     <Button {...args} size="icon" aria-label="추가">
       <Plus />
@@ -102,11 +107,7 @@ export const SizeIcon: Story = {
 };
 
 export const SizeIconSm: Story = {
-  argTypes: {
-    children: { control: false },
-    size: { control: false },
-    asChild: { control: false },
-  },
+  argTypes: iconStoryArgTypes,
   render: (args) => (
     <Button {...args} size="icon-sm" aria-label="추가">
       <Plus />
@@ -115,11 +116,7 @@ export const SizeIconSm: Story = {
 };
 
 export const SizeIconLg: Story = {
-  argTypes: {
-    children: { control: false },
-    size: { control: false },
-    asChild: { control: false },
-  },
+  argTypes: iconStoryArgTypes,
   render: (args) => (
     <Button {...args} size="icon-lg" aria-label="추가">
       <Plus />
