@@ -79,10 +79,7 @@ const PDFViewer = () => {
   return (
     <div className="flex flex-col w-full h-full bg-gray-300">
       <PdfHeaderBar />
-      <div
-        ref={viewportRef}
-        className="flex-1 overflow-auto overscroll-contain px-2 py-2 sm:px-4 sm:py-4"
-      >
+      <div ref={viewportRef} className="flex-1 overflow-hidden px-2 py-2 sm:px-4 sm:py-4">
         <div
           className={cn(
             'mx-auto w-fit relative bg-white',
