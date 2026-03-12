@@ -1,70 +1,61 @@
-import { SidebarMenu } from '@/shared/components/shadcn/sidebar';
+import { LogOut } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarHeader,
+  SidebarMenu,
 } from '@/shared/components/shadcn/sidebar';
 import { Separator } from '@/shared/components/shadcn/separator';
-import { items } from '@/features/sidebar/data/menuData';
-import { LogOut, User } from 'lucide-react';
-import AppSidebarMenuItem from '@/features/sidebar/components/AppSidebarMenuItem';
-import AppSidebarProjectMenuItem from '@/features/sidebar/components/AppSidebarProjectMenuItem';
-import AppSidebarAlarmMenuItem from '@/features/notifications/components/AppSidebarNotificationMenuItem';
+import { Avatar } from '@/shared/components/shadcn/avatar';
+import UserAvatar from '@/shared/components/ui/UserAvatar';
+import { sidebarItems } from '@/features/sidebar/data/sidebarData';
+import AppSidebarLinkItem from '@/features/sidebar/components/AppSidebarItem/AppSidebarLinkItem';
+import AppSidebarProjectItem from '@/features/sidebar/components/AppSidebarItem/AppSidebarProjectItem';
+import AppSidebarNotificationItem from '@/features/sidebar/components/AppSidebarItem/AppSidebarNotificationItem';
 import { useLogoutMutation } from '@/features/auth/hooks/useLogoutMutation';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
-import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
-import { Avatar } from '@/shared/components/shadcn/avatar';
 
 const AppSidebar = () => {
   const user = useAuthStore((state) => state.user);
-  const { mutate: LogoutMutaion } = useLogoutMutation();
+  const { mutate: LogoutMutation } = useLogoutMutation();
 
-  const handleLogoutClick = () => {
-    LogoutMutaion();
-  };
+  const handleLogoutClick = () => LogoutMutation();
 
   return (
     <Sidebar variant="sidebar" className="border-0 border-gray-300" collapsible="icon">
       <SidebarHeader className="flex-row text-center pt-4 pb-4 pl-3 pr-3 h-18 bg-white">
         <Avatar
           style={{ backgroundColor: user?.backgroundColor }}
-          className="flex justify-center items-center w-11 h-11 shadow-sm"
+          className="justify-center items-center w-11 h-11 shadow-sm"
         >
-          {user ? (
-            <img
-              src={getAvatarSrc({ avatar: user?.avatar })}
-              alt="user avatar"
-              className="w-8 h-8 object-cover"
-            />
-          ) : (
-            <User className="w-6 h-6 text-white" strokeWidth={2} />
-          )}
+          <UserAvatar user={user} />
         </Avatar>
       </SidebarHeader>
 
-      <SidebarContent className=" pl-3 pr-3 bg-white">
+      <SidebarContent className="pl-3 pr-3 bg-white">
         <Separator />
         <SidebarGroup />
-        <SidebarMenu className="flex flex-col items-center">
-          {items.map((item) =>
-            item.title === '프로젝트' ? (
-              <AppSidebarProjectMenuItem key={item.title} item={item} />
-            ) : item.title === '알림' ? (
-              <AppSidebarAlarmMenuItem key={item.title} />
-            ) : (
-              <AppSidebarMenuItem key={item.title} item={item} />
-            ),
-          )}
+        <SidebarMenu className="flex-col items-center">
+          {sidebarItems.map((item) => {
+            if (item.type === 'project')
+              return <AppSidebarProjectItem key={item.title} item={item} />;
+            if (item.type === 'notification')
+              return <AppSidebarNotificationItem key={item.title} />;
+            return <AppSidebarLinkItem key={item.title} item={item} />;
+          })}
         </SidebarMenu>
         <SidebarGroup />
       </SidebarContent>
 
       <Separator className="pl-3 pr-3" />
+
       {user && (
-        <SidebarFooter className="w-full pl-6 pr-3 pt-4 pb-4 bg-white">
-          <LogOut onClick={handleLogoutClick} color="#D55F5A" />
+        <SidebarFooter className="w-full items-center justify-center bg-white">
+          <div onClick={handleLogoutClick} className="cursor-pointer p-1 my-2">
+            <LogOut className="text-red-600 hover:text-red-500" />
+          </div>
         </SidebarFooter>
       )}
     </Sidebar>
