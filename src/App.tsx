@@ -2,7 +2,7 @@ import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppRouter } from '@/app/routes/Router';
 import AppInitializer from '@/app/AppInitializer';
-import RootErrorBoundary from '@/app/RootErrorBoundary/RootErrorBoundary';
+import RootErrorBoundary from '@/app/error/root-error/RootErrorBoundary';
 
 const queryClient = new QueryClient();
 
