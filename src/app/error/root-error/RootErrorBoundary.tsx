@@ -1,6 +1,6 @@
-import RootFallback from '@/app/RootErrorBoundary/RootFallback';
 import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+import RootFallback from '@/app/error/root-error/RootFallback';
 
 type RootErrorBoundaryProps = {
   children: React.ReactNode;
