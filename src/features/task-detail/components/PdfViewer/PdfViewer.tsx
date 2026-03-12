@@ -15,9 +15,11 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { PAGE_HORIZONTAL_PADDING } from '@/features/task-detail/constants/task-detail.ui.constants';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+
 const PDFViewer = () => {
   const viewportRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
+
   const { pageNumber, zoom, position, isDragging, pdfDocument, pageSize } = usePdfStore(
     useShallow((s) => ({
       pageNumber: s.pageNumber,
@@ -28,34 +30,49 @@ const PDFViewer = () => {
       pageSize: s.pageSize,
     })),
   );
-  const selectedFile = useTaskDetailStore((s) => s.selectedFile);
 
+  const selectedFile = useTaskDetailStore((s) => s.selectedFile);
   const { onMouseDown, onMouseMove, onMouseUp, mouseMoved } = usePdfDrag();
   const { onDocumentLoadSuccess, setPdfDocument } = usePdfDocument(pdfDocument, pageNumber);
   const { setActivePinCommentId } = useTaskDetailStore();
   const { handleOverlayClick } = usePdfPinInteraction(pageNumber, pageSize);
+
   const handleOverlayClickWithDragCheck = (e: React.MouseEvent) => {
     if (mouseMoved.current) return;
     handleOverlayClick(e);
     setActivePinCommentId(null);
   };
+
   useLayoutEffect(() => {
     const el = viewportRef.current;
     if (!el) return;
+
     const update = () => {
       const w = el.clientWidth;
       setContainerWidth(Math.max(0, w - PAGE_HORIZONTAL_PADDING));
     };
+
     update();
     const ro = new ResizeObserver(update);
     ro.observe(el);
+
     window.visualViewport?.addEventListener('resize', update);
     return () => {
       ro.disconnect();
       window.visualViewport?.removeEventListener('resize', update);
     };
   }, []);
+
   const dragEnabled = zoom > 1;
+
+  const LoadingPlaceholder = () => (
+    <div
+      style={{ width: containerWidth || '100%', height: '80vh' }}
+      className="flex items-center justify-center bg-white animate-pulse"
+    >
+      <span className="text-gray-400 text-sm">Loading PDF...</span>
+    </div>
+  );
 
   return (
     <div className="flex flex-col w-full h-full bg-gray-300">
@@ -84,13 +101,19 @@ const PDFViewer = () => {
         >
           <Document
             file={selectedFile?.fileUrl}
+            loading={<LoadingPlaceholder />}
             onLoadSuccess={(pdf) => {
               onDocumentLoadSuccess(pdf);
               setPdfDocument(pdf);
             }}
           >
             {containerWidth > 0 && (
-              <Page pageNumber={pageNumber} width={containerWidth} scale={zoom} />
+              <Page
+                pageNumber={pageNumber}
+                width={containerWidth}
+                scale={zoom}
+                loading={<LoadingPlaceholder />}
+              />
             )}
           </Document>
           <Overlay onClick={handleOverlayClickWithDragCheck} />
