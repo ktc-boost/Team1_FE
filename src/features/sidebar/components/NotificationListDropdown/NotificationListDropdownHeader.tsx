@@ -10,7 +10,7 @@ const NotificationListDropdownHeader = ({
   unreadCount,
   onMarkAll,
 }: NotificationListDropdownHeaderProps) => {
-  const hasUnread = unreadCount && unreadCount > 0;
+  const hasUnread = !!unreadCount && unreadCount > 0;
 
   return (
     <DropdownMenuLabel className="flex items-center justify-between py-2 px-3 sm:py-3 sm:px-4">
