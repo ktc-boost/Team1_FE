@@ -1,0 +1,18 @@
+export const ROUTE_PATH = {
+  MAIN: '/',
+  LOGIN: '/login',
+  PROJECT: '/project/:projectId',
+  PROJECT_BOARD: '/project/:projectId/board',
+  PROJECT_MEMO: '/project/:projectId/memo',
+  MEMO_EDIT: '/project/:projectId/memo/edit/:memoId?',
+  MEMO_DETAIL: '/project/:projectId/memo/:memoId',
+  PROJECT_FILE: '/project/:projectId/file',
+  MY_TASK: '/my-task',
+  ERROR: '/error',
+  AVATAR: '/avatar',
+  CALLBACK: '/auth/callback',
+  TASK_DETAIL: '/project/:projectId/tasks/:taskId',
+  ALARM_SETUP: '/alarm/setup',
+  ALARM_SETUP_MOBILE: '/alarm/permission',
+  SETTINGS: '/my-settings',
+};
