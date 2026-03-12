@@ -18,13 +18,13 @@ const NotificationListDropdownHeader = ({
 
       {hasUnread && (
         <div className="flex items-center gap-3 sm:gap-4">
-          <span className="caption1-regular sm:label2-regular text-gray-500">
+          <span className="caption1-regular sm:label2-regular text-gray-500 cursor-default">
             안읽음 {unreadCount}
           </span>
           <Button
             variant="defaultBoost"
             onClick={onMarkAll}
-            className="caption1-regular sm:label2-regular px-2 py-0 sm:px-3 rounded-full"
+            className="!caption1-regular sm:!label2-regular px-3 py-0 rounded-full"
           >
             모두 읽음
           </Button>
