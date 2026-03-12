@@ -1,14 +1,14 @@
 import { lazy } from 'react';
 import { createBrowserRouter, generatePath, RouterProvider } from 'react-router-dom';
 import ProtectedRoute from '@/app/routes/ProtectedRoute';
-import RootFallback from '@/app/RootErrorBoundary/RootFallback';
+import RootFallback from '@/app/error/root-error/RootFallback';
+import PageErrorBoundary from '@/app/error/page-error/PageErrorBoundary';
 import AppLayout from '@/app/layout/AppLayout';
 import LandingPage from '@/pages/LandingPage';
 import LoginPage from '@/pages/LoginPage';
 import MyTaskPage from '@/pages/MyTaskPage';
 import ProjectPage from '@/pages/ProjectPage';
 import SettingsPage from '@/pages/SettingsPage';
-import PageErrorBoundary from '@/pages/PageErrorBoundary/PagaErrorBoundary';
 import ServerErrorPage from '@/pages/ServerErrorPage';
 import AvatarPickerPage from '@/pages/AvatarSettingsPage';
 import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
@@ -110,12 +110,7 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <AppLayoutWithModal />,
-    errorElement: (
-      <RootFallback
-        error={new Error('라우터 레벨 디자인 테스트')}
-        resetErrorBoundary={() => window.location.reload()}
-      />
-    ),
+    errorElement: <RootFallback />,
     children: [
       ...PROTECTED_ROUTES.map((route) => ({
         ...route,
