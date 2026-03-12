@@ -6,13 +6,17 @@ import { useIsMobile } from '@/shared/hooks/use-mobile';
 interface AppSidebarBaseItemProps {
   tooltip: string;
   children: ReactNode;
+  isActive?: boolean;
 }
 
-const AppSidebarBaseItem = ({ tooltip, children }: AppSidebarBaseItemProps) => {
+const AppSidebarBaseItem = ({ tooltip, children, isActive }: AppSidebarBaseItemProps) => {
   const isMobile = useIsMobile();
 
   const SidebarItemButton = (
-    <SidebarMenuButton className="cursor-pointer focus:ring-transparent ">
+    <SidebarMenuButton
+      isActive={isActive}
+      className="cursor-pointer focus:ring-transparent data-[active=true]:bg-gray-300"
+    >
       {children}
     </SidebarMenuButton>
   );
