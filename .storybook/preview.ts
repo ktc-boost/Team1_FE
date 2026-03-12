@@ -2,7 +2,7 @@ import type { Preview } from '@storybook/react-vite';
 import '@/index.css';
 import '@/shared/design-tokens/index.css';
 import '@/app/styles/global.css';
-/** @type { import('@storybook/react').Preview } */
+
 const preview: Preview = {
   parameters: {
     controls: {
