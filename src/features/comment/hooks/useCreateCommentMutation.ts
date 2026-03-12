@@ -31,7 +31,7 @@ export const useCreateCommentMutation = (projectId: string, taskId: string) => {
           memberId: user?.id ?? 'unknown',
           name: commentData.isAnonymous ? '익명' : (user?.name ?? '사용자'),
           avatar: commentData.isAnonymous ? 'default' : (user?.avatar ?? 'default'),
-          backgroundColor: '',
+          backgroundColor: commentData.isAnonymous ? '' : (user?.backgroundColor ?? ''),
         },
         createdAt: now,
         updatedAt: now,
