@@ -1,9 +1,9 @@
 import { Link } from 'lucide-react';
 import FileItem from '@/features/task-detail/components/FileSection/FileItem';
-import { useTaskFilesQuery } from '@/features/task-detail/hooks/useTaskFilesQuery';
+import { useTaskFilesQuery } from '@/features/task-detail/hooks/query/useTaskFilesQuery';
 import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
 import ContentItem from '@/shared/components/ui/ContentItem';
-import { useDeleteFileMutation } from '@/features/task-detail/hooks/useDeleteFileMutation';
+import { useDeleteFileMutation } from '@/features/task-detail/hooks/mutation/useDeleteFileMutation';
 import { Suspense } from 'react';
 import { FileUploadAction } from '@/features/task-detail/components/FileSection/FileUploadAction';
 
