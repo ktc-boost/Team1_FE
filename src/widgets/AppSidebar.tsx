@@ -42,7 +42,7 @@ const AppSidebar = () => {
             if (item.type === 'project')
               return <AppSidebarProjectItem key={item.title} item={item} />;
             if (item.type === 'notification')
-              return <AppSidebarNotificationItem key={item.title} />;
+              return <AppSidebarNotificationItem key={item.title} item={item} />;
             return <AppSidebarLinkItem key={item.title} item={item} />;
           })}
         </SidebarMenu>
