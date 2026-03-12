@@ -1,36 +1,34 @@
+import { useShallow } from 'zustand/react/shallow';
 import { useCreateCommentMutation } from '@/features/comment/hooks/useCreateCommentMutation';
 import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteCommentMutation';
 import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateCommentMutation';
-import { useCommentSelect } from '@/features/task-detail/hooks/useCommentSelect';
+import { useCommentSelect } from '@/features/task-detail/hooks/domain/useCommentSelect';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
 import { commentToast } from '@/features/task-detail/utils/toast/commentToast';
 import { buildCreateCommentPayload, isBlank } from '@/features/task-detail/utils/commentPayload';
-import { useShallow } from 'zustand/react/shallow';
-import { useTaskDetailQuery } from '@/features/task/hooks/query/useTaskDetailQuery';
 
 export const useCommentActions = (projectId: string, taskId: string) => {
   const { mutate: createComment } = useCreateCommentMutation(projectId, taskId);
   const { mutate: updateComment } = useUpdateCommentMutation(projectId, taskId);
   const { mutate: deleteComment } = useDeleteCommentMutation(projectId, taskId);
 
-  const { data: task } = useTaskDetailQuery(projectId, taskId);
-  const { pins, clearCurrentPin, currentPin, persona } = useTaskDetailStore(
+  const { commentSelect } = useCommentSelect(projectId, taskId);
+
+  const { clearCurrentPin, currentPin, persona } = useTaskDetailStore(
     useShallow((s) => ({
-      pins: s.pins,
       clearCurrentPin: s.clearCurrentPin,
       currentPin: s.currentPin,
       persona: s.persona,
     })),
   );
-  const { commentSelect } = useCommentSelect();
 
-  const handlePinClick = (fileInfo: FileInfo | null) => {
-    if (!fileInfo || !task?.files) return;
-    commentSelect(fileInfo, task.files, pins);
+  const handleCommentSelect = (fileInfo: FileInfo | null) => {
+    if (!fileInfo) return;
+    commentSelect(fileInfo);
   };
 
-  const handleCreate = (data: { content: string; isAnonymous: boolean }) => {
+  const handleCommentCreate = (data: { content: string; isAnonymous: boolean }) => {
     if (isBlank(data.content)) return commentToast.emptyContent();
 
     const payload = buildCreateCommentPayload({
@@ -43,7 +41,10 @@ export const useCommentActions = (projectId: string, taskId: string) => {
     createComment({ commentData: payload }, { onSuccess: clearCurrentPin });
   };
 
-  const handleUpdate = (commentId: string, data: { content: string; isAnonymous: boolean }) => {
+  const handleCommentUpdate = (
+    commentId: string,
+    data: { content: string; isAnonymous: boolean },
+  ) => {
     if (isBlank(data.content)) return commentToast.emptyContent();
 
     updateComment({
@@ -56,5 +57,10 @@ export const useCommentActions = (projectId: string, taskId: string) => {
     });
   };
 
-  return { handlePinClick, handleCreate, handleUpdate, handleDelete: deleteComment };
+  return {
+    handleCommentSelect,
+    handleCommentCreate,
+    handleCommentUpdate,
+    handleCommentDelete: deleteComment,
+  };
 };
