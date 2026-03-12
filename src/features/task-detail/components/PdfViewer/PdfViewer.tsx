@@ -1,17 +1,17 @@
-import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
-import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
+import { useLayoutEffect, useRef, useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
+import { Document, Page, pdfjs } from 'react-pdf';
 import { cn } from '@/shared/lib/utils';
+import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
+import { usePdfDrag } from '@/features/task-detail/hooks/ui/usePdfDrag';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
+import { usePdfPinInteraction } from '@/features/task-detail/hooks/ui/usePdfPinInteraction';
+import { usePdfDocument } from '@/features/task-detail/hooks/ui/usePdfDocument';
 import Overlay from '@/features/task-detail/components/PdfViewer/PdfOverlay';
 import PdfControlBar from '@/features/task-detail/components/PdfViewer/PdfControlBar';
-import { usePdfDrag } from '@/features/task-detail/hooks/usePdfDrag';
-import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
-import { usePdfPinInteraction } from '@/features/task-detail/hooks/usePdfPinInteraction';
-import { usePdfDocument } from '@/features/task-detail/hooks/usePdfDocument';
 import PdfHeaderBar from '@/features/task-detail/components/PdfViewer/PdfHeaderBar';
-import { useShallow } from 'zustand/react/shallow';
-import { useLayoutEffect, useRef, useState } from 'react';
 import { PAGE_HORIZONTAL_PADDING } from '@/features/task-detail/constants/task-detail.ui.constants';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
@@ -30,11 +30,12 @@ const PDFViewer = () => {
       pageSize: s.pageSize,
     })),
   );
-
   const selectedFile = useTaskDetailStore((s) => s.selectedFile);
+  const setActivePinCommentId = useTaskDetailStore((s) => s.setActivePinCommentId);
+
   const { onMouseDown, onMouseMove, onMouseUp, mouseMoved } = usePdfDrag();
   const { onDocumentLoadSuccess, setPdfDocument } = usePdfDocument(pdfDocument, pageNumber);
-  const { setActivePinCommentId } = useTaskDetailStore();
+
   const { handleOverlayClick } = usePdfPinInteraction(pageNumber, pageSize);
 
   const handleOverlayClickWithDragCheck = (e: React.MouseEvent) => {
@@ -45,6 +46,7 @@ const PDFViewer = () => {
 
   useLayoutEffect(() => {
     const el = viewportRef.current;
+
     if (!el) return;
 
     const update = () => {
@@ -53,24 +55,24 @@ const PDFViewer = () => {
     };
 
     update();
+
     const ro = new ResizeObserver(update);
     ro.observe(el);
 
     window.visualViewport?.addEventListener('resize', update);
+
     return () => {
       ro.disconnect();
       window.visualViewport?.removeEventListener('resize', update);
     };
   }, []);
 
-  const dragEnabled = zoom > 1;
-
   const LoadingPlaceholder = () => (
     <div
       style={{ width: containerWidth || '100%', height: '80vh' }}
       className="flex items-center justify-center bg-white animate-pulse"
     >
-      <span className="text-gray-400 text-sm">Loading PDF...</span>
+      <span className="text-gray-400 label2-regular">Loading PDF...</span>
     </div>
   );
 
@@ -84,20 +86,16 @@ const PDFViewer = () => {
         <div
           className={cn(
             'mx-auto w-fit relative bg-white',
-            dragEnabled ? (isDragging ? 'cursor-grabbing' : 'cursor-grab') : 'cursor-default',
+            isDragging ? 'cursor-grabbing' : 'cursor-grab',
           )}
-          style={
-            dragEnabled
-              ? {
-                  transform: `translate(${position.x}px, ${position.y}px)`,
-                  willChange: 'transform',
-                }
-              : undefined
-          }
-          onMouseDown={dragEnabled ? onMouseDown : undefined}
-          onMouseMove={dragEnabled ? onMouseMove : undefined}
-          onMouseUp={dragEnabled ? onMouseUp : undefined}
-          onMouseLeave={dragEnabled ? onMouseUp : undefined}
+          style={{
+            transform: `translate(${position.x}px, ${position.y}px)`,
+            willChange: 'transform',
+          }}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUp}
+          onMouseLeave={onMouseUp}
         >
           <Document
             file={selectedFile?.fileUrl}
