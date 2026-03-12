@@ -1,7 +1,7 @@
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import type { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { ROUTE_PATH } from '@/app/routes/Router';
+import { ROUTE_PATH } from '@/app/routes/routePaths';
 
 interface ProtectedRouteProps {
   children: ReactNode;

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Calendar, MessageCircle, Paperclip, ArrowRightLeft } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { ROUTES } from '@/app/routes/Router';
+import { ROUTES } from '@/app/routes/routeHelpers';
 import { cn } from '@/shared/lib/utils';
 import Siren from '@/shared/assets/images/boost/siren.png';
 import { calculateDDay } from '@/shared/utils/dateUtils';

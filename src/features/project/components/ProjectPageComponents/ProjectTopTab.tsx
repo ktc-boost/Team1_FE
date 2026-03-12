@@ -1,6 +1,6 @@
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import TopTab from '@/widgets/TopTab';
-import { ROUTES } from '@/app/routes/Router';
+import { ROUTES } from '@/app/routes/routeHelpers';
 
 const ProjectTopTab = () => {
   const { projectId } = useParams<{ projectId: string }>();

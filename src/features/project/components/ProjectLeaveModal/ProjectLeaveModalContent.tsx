@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import { ROUTE_PATH } from '@/app/routes/Router';
+import { ROUTE_PATH } from '@/app/routes/routePaths';
 import { useModal } from '@/shared/hooks/useModal';
 import { Button } from '@/shared/components/shadcn/button';
 import MovingBoo from '@/shared/components/ui/MovingBoo';

@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import { ROUTE_PATH } from '@/app/routes/Router';
+import { ROUTE_PATH } from '@/app/routes/routePaths';
 import AvatarHeader from '@/features/avatar-picker/components/AvatarHeader';
 import AvatarSelector from '@/features/avatar-picker/components/AvatarSelector';
 import AvatarInfo from '@/features/avatar-picker/components/AvatarInfo';

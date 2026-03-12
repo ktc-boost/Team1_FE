@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { ROUTE_PATH } from '@/app/routes/Router';
+import { ROUTE_PATH } from '@/app/routes/routePaths';
 import { Button } from '@/shared/components/shadcn/button';
 import { floatVariant } from '@/shared/utils/animations/motionVariants';
 import MotionImage from '@/shared/components/ui/image/MotionImage';

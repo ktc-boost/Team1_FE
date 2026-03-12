@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { AlertCircle } from 'lucide-react';
 import type { FallbackProps } from 'react-error-boundary';
-import { ROUTE_PATH } from '@/app/routes/Router';
+import { ROUTE_PATH } from '@/app/routes/routePaths';
 import { Button } from '@/shared/components/shadcn/button';
 import {
   Card,

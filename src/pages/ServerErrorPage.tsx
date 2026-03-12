@@ -1,6 +1,6 @@
 import { AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { ROUTE_PATH } from '@/app/routes/Router';
+import { ROUTE_PATH } from '@/app/routes/routePaths';
 import { Button } from '@/shared/components/shadcn/button';
 import {
   Card,
