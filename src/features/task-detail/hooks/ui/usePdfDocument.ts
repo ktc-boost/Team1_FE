@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
-import type { PDFDocumentProxy } from 'pdfjs-dist';
 import { useShallow } from 'zustand/react/shallow';
+import type { PDFDocumentProxy } from 'pdfjs-dist';
+import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
 
 export const usePdfDocument = (pdfDocument: PDFDocumentProxy | null, pageNumber: number) => {
   const { setNumPages, updatePageSize, setPdfDocument } = usePdfStore(
@@ -15,6 +15,7 @@ export const usePdfDocument = (pdfDocument: PDFDocumentProxy | null, pageNumber:
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
   };
+
   useEffect(() => {
     if (pdfDocument && pageNumber) {
       updatePageSize(pageNumber);

@@ -1,13 +1,14 @@
 import { useRef } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import type { PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
-import type { PageSize } from '@/features/task-detail/types/pdfTypes'; // width, height 타입
+import type { PageSize } from '@/features/task-detail/types/pdfTypes';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
-import { useShallow } from 'zustand/react/shallow';
 
 export const usePdfPinInteraction = (pageNumber: number, pageSize: PageSize) => {
   const mouseMoved = useRef(false);
   const user = useAuthStore((s) => s.user);
+
   const { persona, setCurrentPin, selectedFile, isAnonymous } = useTaskDetailStore(
     useShallow((s) => ({
       persona: s.persona,
