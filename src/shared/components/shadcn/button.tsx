@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/shared/lib/utils';
+
 const buttonVariantClasses = {
   default: 'bg-primary text-primary-foreground shadow-xs hover:bg-primary/90',
   defaultBoost: 'bg-boost-blue hover:bg-boost-blue-hover text-white shadow-xs',
