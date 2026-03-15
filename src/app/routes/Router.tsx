@@ -18,6 +18,7 @@ import ModalRenderer from '@/shared/components/ui/modal/ModalRenderer';
 import BoardSection from '@/features/board/components/BoardSection';
 import MemoSection from '@/features/memo/components/MemoSection';
 import FileSection from '@/features/file/components/FileSection';
+import SentryTestPage from '@/pages/SentryTestPage';
 
 const TaskDetailPage = lazy(() => import('@/pages/TaskDetailPage'));
 const MemoDetail = lazy(() => import('@/features/memo/components/MemoDetail/MemoDetail'));
@@ -40,6 +41,7 @@ export const ROUTE_PATH = {
   ALARM_SETUP: '/alarm/setup',
   ALARM_SETUP_MOBILE: '/alarm/permission',
   SETTINGS: '/my-settings',
+  SENTRY_TEST: '/sentry-test',
 };
 
 export const ROUTES = {
@@ -62,6 +64,7 @@ const PUBLIC_ROUTES = [
   { path: ROUTE_PATH.ERROR, element: <ServerErrorPage /> },
   { path: ROUTE_PATH.CALLBACK, element: <KakaoCallbackPage /> },
   { path: ROUTE_PATH.ALARM_SETUP_MOBILE, element: <AlarmSetupMobilePage /> },
+  { path: ROUTE_PATH.SENTRY_TEST, element: <SentryTestPage /> },
 ];
 
 const PROTECTED_ROUTES = [

@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react';
 import type { User } from '@/features/user/types/userTypes';
 import { create } from 'zustand';
 
@@ -16,10 +17,23 @@ export const useAuthStore = create<AuthState>((set) => ({
   isInitializing: true,
   setIsInitializing: (status) => set({ isInitializing: status }),
   setAuth: ({ user, accessToken }) =>
-    set((prevState) => ({
-      user: user ? ({ ...prevState.user, ...user } as User) : prevState.user,
-      accessToken: accessToken ?? prevState.accessToken,
-    })),
+    set((prevState) => {
+      const newUser = user ? ({ ...prevState.user, ...user } as User) : prevState.user;
 
-  clearAuth: () => set({ user: null, accessToken: null }),
+      if (newUser && newUser.id && newUser.name) {
+        Sentry.setUser({
+          id: newUser.id,
+          username: newUser.name,
+        });
+      }
+
+      return {
+        user: newUser,
+        accessToken: accessToken ?? prevState.accessToken,
+      };
+    }),
+  clearAuth: () => {
+    Sentry.setUser(null);
+    set({ user: null, accessToken: null });
+  },
 }));
