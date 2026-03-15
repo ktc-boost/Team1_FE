@@ -1,3 +1,5 @@
+import axios from 'axios';
+import * as Sentry from '@sentry/react';
 import { useEffect, useRef, type ReactNode } from 'react';
 import { fetchRefreshToken } from '@/features/auth/api/authApi';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
@@ -44,8 +46,17 @@ const AppInitializer = ({ children }: AppInitializerProps) => {
           setAuth({ user });
         }
       } catch (error) {
-        console.error('리프레시 토큰 만료 또는 사용자 정보 조회 실패:', error);
-        clearAuth();
+        if (axios.isAxiosError(error) && error.response?.status === 401) {
+          console.error('리프레시 토큰 만료 또는 사용자 정보 조회 실패:', error);
+          clearAuth();
+        } else {
+          Sentry.captureException(error, {
+            tags: { section: 'app-initializer' },
+            extra: {
+              pathname: window.location.pathname,
+            },
+          });
+        }
       } finally {
         setIsInitializing(false);
       }

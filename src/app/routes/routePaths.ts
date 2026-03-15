@@ -15,4 +15,5 @@ export const ROUTE_PATH = {
   ALARM_SETUP: '/alarm/setup',
   ALARM_SETUP_MOBILE: '/alarm/permission',
   SETTINGS: '/my-settings',
+  SENTRY_TEST: '/sentry-test',
 };
