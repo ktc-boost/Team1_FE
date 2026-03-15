@@ -14,7 +14,6 @@ import {
 export default function PageFallback({ error, resetErrorBoundary }: FallbackProps) {
   const navigate = useNavigate();
   const message = error?.message ?? '알 수 없는 오류가 발생했습니다.';
-  console.error(error);
 
   const handleGoBack = () => navigate(-1);
   const handleGoHome = () => navigate(ROUTE_PATH.MAIN);
