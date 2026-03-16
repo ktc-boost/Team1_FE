@@ -1,14 +1,15 @@
 import { lazy } from 'react';
-import { createBrowserRouter, generatePath, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ROUTE_PATH } from '@/app/routes/routePaths';
 import ProtectedRoute from '@/app/routes/ProtectedRoute';
-import RootFallback from '@/app/RootErrorBoundary/RootFallback';
+import RootFallback from '@/app/error/root-error/RootFallback';
+import PageErrorBoundary from '@/app/error/page-error/PageErrorBoundary';
 import AppLayout from '@/app/layout/AppLayout';
 import LandingPage from '@/pages/LandingPage';
 import LoginPage from '@/pages/LoginPage';
 import MyTaskPage from '@/pages/MyTaskPage';
 import ProjectPage from '@/pages/ProjectPage';
 import SettingsPage from '@/pages/SettingsPage';
-import PageErrorBoundary from '@/pages/PageErrorBoundary/PagaErrorBoundary';
 import ServerErrorPage from '@/pages/ServerErrorPage';
 import AvatarPickerPage from '@/pages/AvatarSettingsPage';
 import KakaoCallbackPage from '@/pages/KakaoCallbackPage';
@@ -23,40 +24,6 @@ import SentryTestPage from '@/pages/SentryTestPage';
 const TaskDetailPage = lazy(() => import('@/pages/TaskDetailPage'));
 const MemoDetail = lazy(() => import('@/features/memo/components/MemoDetail/MemoDetail'));
 const MemoEditor = lazy(() => import('@/features/memo/components/MemoEditor/MemoEditor'));
-
-export const ROUTE_PATH = {
-  MAIN: '/',
-  LOGIN: '/login',
-  PROJECT: '/project/:projectId',
-  PROJECT_BOARD: '/project/:projectId/board',
-  PROJECT_MEMO: '/project/:projectId/memo',
-  MEMO_EDIT: '/project/:projectId/memo/edit/:memoId?',
-  MEMO_DETAIL: '/project/:projectId/memo/:memoId',
-  PROJECT_FILE: '/project/:projectId/file',
-  MY_TASK: '/my-task',
-  ERROR: '/error',
-  AVATAR: '/avatar',
-  CALLBACK: '/auth/callback',
-  TASK_DETAIL: '/project/:projectId/tasks/:taskId',
-  ALARM_SETUP: '/alarm/setup',
-  ALARM_SETUP_MOBILE: '/alarm/permission',
-  SETTINGS: '/my-settings',
-  SENTRY_TEST: '/sentry-test',
-};
-
-export const ROUTES = {
-  PROJECT_MEMO_LIST: (projectId: string) => generatePath(ROUTE_PATH.PROJECT_MEMO, { projectId }),
-  PROJECT_MEMO_DETAIL: (projectId: string, memoId: string) =>
-    generatePath(ROUTE_PATH.MEMO_DETAIL, { projectId, memoId }),
-  PROJECT_MEMO_EDIT: (projectId: string, memoId?: string) =>
-    memoId
-      ? generatePath(ROUTE_PATH.MEMO_EDIT, { projectId, memoId })
-      : `/project/${projectId}/memo/edit`,
-  PROJECT_BOARD: (projectId: string) => generatePath(ROUTE_PATH.PROJECT_BOARD, { projectId }),
-  PROJECT_FILE: (projectId: string) => generatePath(ROUTE_PATH.PROJECT_FILE, { projectId }),
-  TASK_DETAIL: (projectId: string, taskId: string) =>
-    generatePath(ROUTE_PATH.TASK_DETAIL, { projectId, taskId }),
-};
 
 const PUBLIC_ROUTES = [
   { path: ROUTE_PATH.MAIN, element: <LandingPage /> },
@@ -98,37 +65,28 @@ const AppLayoutWithModal = () => {
   );
 };
 
+const withProtected = (element: React.ReactNode) => (
+  <ProtectedRoute>
+    <PageErrorBoundary>{element}</PageErrorBoundary>
+  </ProtectedRoute>
+);
+
 export const router = createBrowserRouter([
   ...PUBLIC_ROUTES,
 
   ...PROTECTED_ROUTES_NO_LAYOUT.map((route) => ({
     ...route,
-    element: (
-      <ProtectedRoute>
-        <PageErrorBoundary>{route.element}</PageErrorBoundary>
-      </ProtectedRoute>
-    ),
+    element: withProtected(route.element),
   })),
 
   {
     path: '/',
     element: <AppLayoutWithModal />,
-    errorElement: (
-      <RootFallback
-        error={new Error('라우터 레벨 디자인 테스트')}
-        resetErrorBoundary={() => window.location.reload()}
-      />
-    ),
-    children: [
-      ...PROTECTED_ROUTES.map((route) => ({
-        ...route,
-        element: (
-          <ProtectedRoute>
-            <PageErrorBoundary>{route.element}</PageErrorBoundary>
-          </ProtectedRoute>
-        ),
-      })),
-    ],
+    errorElement: <RootFallback />,
+    children: PROTECTED_ROUTES.map((route) => ({
+      ...route,
+      element: withProtected(route.element),
+    })),
   },
 ]);
 

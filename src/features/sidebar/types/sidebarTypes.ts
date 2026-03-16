@@ -8,4 +8,5 @@ export interface SidebarItem {
   url?: string;
   icon: React.ReactNode;
   subItems?: SidebarSubItem[];
+  type: 'project' | 'notification' | 'link';
 }

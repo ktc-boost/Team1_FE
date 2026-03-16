@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import MemoList from '@/features/memo/components/MemoList/MemoList';
-import { ROUTES } from '@/app/routes/Router';
+import { ROUTES } from '@/app/routes/routeHelpers';
 
 export default function MemoSection() {
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import { ChevronDown } from 'lucide-react';
 import { Button } from '@/shared/components/shadcn/button';
 import InlineLoader from '@/shared/components/ui/loading/InlineLoader';
 
-export interface NotificationLoadMoreButtonProps {
+interface NotificationLoadMoreButtonProps {
   isFetching: boolean;
   onClick: () => void;
 }
@@ -12,7 +12,7 @@ const NotificationLoadMoreButton = ({ isFetching, onClick }: NotificationLoadMor
     <div className="p-2 border-t border-gray-200">
       <Button
         variant="ghost"
-        className="w-full justify-center gap-2 !body2-regular hover:text-gray-900 hover:bg-gray-50"
+        className="w-full gap-2 !body2-regular hover:text-gray-900 hover:bg-gray-50"
         onClick={onClick}
         disabled={isFetching}
         aria-busy={isFetching}

@@ -3,7 +3,7 @@ import type { KakaoLoginRequest, KakaoLoginResponse } from '@/features/auth/type
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { fetchKaKaoLogin } from '@/features/auth/api/authApi';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ROUTE_PATH } from '@/app/routes/Router';
+import { ROUTE_PATH } from '@/app/routes/routePaths';
 import toast from 'react-hot-toast';
 import type { User } from '@/features/user/types/userTypes';
 

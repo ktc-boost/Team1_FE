@@ -1,4 +1,4 @@
-import { ROUTE_PATH } from '@/app/routes/Router';
+import { ROUTE_PATH } from '@/app/routes/routePaths';
 import { REFRESH_INTERVAL_MS } from '@/features/webpush/constants/qrConstants';
 import { useCreatePushSessionMutation } from '@/features/webpush/hooks/useCreatePushSessionMutation';
 import { useEnableServiceAlarmMutation } from '@/features/webpush/hooks/useEnableServiceAlarmMutation';

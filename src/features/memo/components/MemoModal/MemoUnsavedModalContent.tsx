@@ -1,5 +1,5 @@
 import type { NavigateFunction } from 'react-router-dom';
-import { ROUTES } from '@/app/routes/Router';
+import { ROUTES } from '@/app/routes/routeHelpers';
 import { Button } from '@/shared/components/shadcn/button';
 import { useModal } from '@/shared/hooks/useModal';
 import MovingBoo from '@/shared/components/ui/MovingBoo';

@@ -9,7 +9,7 @@ import { useUpdateProjectNotificationSettingsMutation } from '@/features/setting
 import { useMyInfoQuery } from '@/features/settings/hooks/useMyInfoQuery';
 import { Button } from '@/shared/components/shadcn/button';
 import { useNavigate } from 'react-router-dom';
-import { ROUTE_PATH } from '@/app/routes/Router';
+import { ROUTE_PATH } from '@/app/routes/routePaths';
 
 const AlarmSettingCard = () => {
   const [isServiceAlarmOn, setIsServiceAlarmOn] = useState(true);

@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '@/app/routes/Router';
+import { ROUTES } from '@/app/routes/routeHelpers';
 import { ERROR } from '@/shared/constants/errorTypes';
 import { useModal } from '@/shared/hooks/useModal';
 import { useJoinProjectMutation } from '@/features/project/hooks/mutation/useJoinProjectMutation';

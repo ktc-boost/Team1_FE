@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { ROUTES } from '@/app/routes/Router';
+import { ROUTES } from '@/app/routes/routeHelpers';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { useDeleteTaskMutation } from '@/features/task/hooks/mutation/useDeleteTaskMutation';
 import { useModal } from '@/shared/hooks/useModal';

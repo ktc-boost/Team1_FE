@@ -1,7 +1,7 @@
-import PageFallback from '@/pages/PageErrorBoundary/PageFallback';
 import type { PropsWithChildren } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useLocation } from 'react-router-dom';
+import PageFallback from '@/app/error/page-error/PageFallback';
 
 type PageErrorBoundaryProps = PropsWithChildren<{
   onReset?: () => void;

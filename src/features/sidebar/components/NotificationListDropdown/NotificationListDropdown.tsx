@@ -2,26 +2,26 @@ import {
   DropdownMenuContent,
   DropdownMenuSeparator,
 } from '@/shared/components/shadcn/dropdown-menu';
+import type { NotificationItem } from '@/features/notifications/types/NotificationsType';
 import { useNotificationCountsQuery } from '@/features/notifications/hooks/useNotificationCountsQuery';
 import { useMarkNotificationAsReadMutation } from '@/features/notifications/hooks/useMarkNotificationAsReadMutation';
-import NotificationDropdownHeader from '@/features/notifications/components/notificationDropdownMenu/NotificationDropdownHeader';
-import NotificationList from '@/features/notifications/components/notificationDropdownMenu/NotificationList';
-import type { NotificationItem } from '@/features/notifications/types/NotificationsType';
 import { useMarkAllNotificationAsReadMutation } from '@/features/notifications/hooks/useMarkAllNotificationAsReadMutation';
+import NotificationDropdownHeader from '@/features/sidebar/components/NotificationListDropdown/NotificationListDropdownHeader';
+import NotificationList from '@/features/sidebar/components/NotificationListDropdown/NotificationList';
 
-export interface NotificationDropdownMenuProps {
+interface NotificationDropdownProps {
   notifications: NotificationItem[];
   hasNextPage: boolean;
   fetchNextPage: () => void;
   isFetchingNextPage: boolean;
 }
 
-const NotificationDropdownMenu = ({
+const NotificationDropdown = ({
   notifications,
   hasNextPage,
   fetchNextPage,
   isFetchingNextPage,
-}: NotificationDropdownMenuProps) => {
+}: NotificationDropdownProps) => {
   const { data: notificationCountData } = useNotificationCountsQuery();
   const { mutate: markAsRead } = useMarkNotificationAsReadMutation();
   const { mutate: markAllAsRead } = useMarkAllNotificationAsReadMutation();
@@ -30,8 +30,8 @@ const NotificationDropdownMenu = ({
     <DropdownMenuContent
       side="right"
       align="start"
-      sideOffset={16}
-      className="w-72 h-80 sm:w-96 sm:h-[450px] border border-gray-300 bg-white shadow-lg rounded-md flex flex-col"
+      sideOffset={30}
+      className="w-72 h-80 sm:w-96 sm:h-100 border-gray-300 bg-white flex flex-col"
     >
       <NotificationDropdownHeader
         unreadCount={notificationCountData?.unreadCount}
@@ -50,4 +50,4 @@ const NotificationDropdownMenu = ({
   );
 };
 
-export default NotificationDropdownMenu;
+export default NotificationDropdown;

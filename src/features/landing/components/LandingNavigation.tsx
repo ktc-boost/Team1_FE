@@ -1,4 +1,4 @@
-import { ROUTE_PATH } from '@/app/routes/Router';
+import { ROUTE_PATH } from '@/app/routes/routePaths';
 import { Button } from '@/shared/components/shadcn/button';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';

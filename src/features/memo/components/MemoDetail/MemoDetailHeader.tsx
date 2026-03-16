@@ -1,6 +1,6 @@
 import { Calendar, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '@/app/routes/Router';
+import { ROUTES } from '@/app/routes/routeHelpers';
 import Rocket from '@/shared/assets/images/boost/rocket-2d.png';
 import { Button } from '@/shared/components/shadcn/button';
 import MetaItem from '@/shared/components/ui/MetaItem';
