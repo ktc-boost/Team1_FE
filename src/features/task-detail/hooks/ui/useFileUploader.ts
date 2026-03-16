@@ -1,5 +1,5 @@
 import { useDropzone } from 'react-dropzone';
-import { useUploadFileMutation } from '@/features/task-detail/hooks/useFileUploadUrlMutation';
+import { useUploadFileMutation } from '@/features/task-detail/hooks/mutation/useFileUploadUrlMutation';
 import { fileToast } from '@/features/task-detail/utils/toast/fileToast';
 
 export const useFileUploader = (taskId: string) => {

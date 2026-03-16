@@ -1,30 +1,33 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
 import { User } from 'lucide-react';
+import { cn } from '@/shared/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
 import BOO from '@/shared/assets/images/boost/boo.webp';
 import type { PersonaType } from '@/features/comment/constants/personaConstants';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 
-interface AuthorAvatarProps {
-  persona?: PersonaType; // 'BOO' | null
+interface CommentAuthorAvatarProps {
+  persona?: PersonaType;
   isAnonymous: boolean;
   avatar?: string | null;
   backgroundColor?: string | null;
   name?: string | null;
 }
 
-export const AuthorAvatar = ({
+const CommentAuthorAvatar = ({
   persona,
   isAnonymous,
   avatar,
   backgroundColor,
   name,
-}: AuthorAvatarProps) => {
+}: CommentAuthorAvatarProps) => {
   const isBooPersona = persona === 'BOO';
   const effectiveAnonymous = isBooPersona ? true : isAnonymous;
 
+  const avatarCommonClasses = 'flex items-center justify-center h-8 w-8 shrink-0 shadow-xs';
+
   if (isBooPersona) {
     return (
-      <Avatar className="flex items-center justify-center h-8 w-8 shrink-0 shadow-xs bg-boost-yellow">
+      <Avatar className={cn(avatarCommonClasses, 'bg-boost-yellow')}>
         <AvatarImage className="w-6 h-6" src={BOO} alt="BOO" />
         <AvatarFallback>BOO</AvatarFallback>
       </Avatar>
@@ -33,7 +36,7 @@ export const AuthorAvatar = ({
 
   if (effectiveAnonymous) {
     return (
-      <Avatar className="flex items-center justify-center h-8 w-8 shrink-0 shadow-xs bg-gray-500">
+      <Avatar className={cn(avatarCommonClasses, ' bg-gray-500')}>
         <User className="w-4 h-4 text-white" />
       </Avatar>
     );
@@ -41,7 +44,7 @@ export const AuthorAvatar = ({
 
   return (
     <Avatar
-      className="flex items-center justify-center h-8 w-8 shrink-0 shadow-xs text-white text-xs"
+      className={cn(avatarCommonClasses, 'text-white caption1-regular')}
       style={{
         backgroundColor: backgroundColor ?? undefined,
       }}
@@ -58,3 +61,5 @@ export const AuthorAvatar = ({
     </Avatar>
   );
 };
+
+export default CommentAuthorAvatar;

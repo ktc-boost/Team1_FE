@@ -1,17 +1,17 @@
 import { useEffect, useRef } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import type { CommentUIType } from '@/features/comment/types/commentTypes';
 import type { FileInfo } from '@/features/task-detail/types/taskDetailType';
-import { useShallow } from 'zustand/react/shallow';
-import CommentItem from '@/features/task-detail/components/CommentSection/CommentItem';
+import CommentItem from '@/features/task-detail/components/CommentSection/CommentList/CommentItem';
 
 interface CommentListProps {
   comments: CommentUIType[];
-  onDelete: (id: string) => void;
-  onSelectPin: (fileInfo: FileInfo | null) => void;
+  onCommentDelete: (id: string) => void;
+  onCommentSelect: (fileInfo: FileInfo | null) => void;
 }
 
-const CommentList = ({ comments, onDelete, onSelectPin }: CommentListProps) => {
+const CommentList = ({ comments, onCommentDelete, onCommentSelect }: CommentListProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const pinnedRef = useRef<HTMLDivElement | null>(null);
 
@@ -24,6 +24,16 @@ const CommentList = ({ comments, onDelete, onSelectPin }: CommentListProps) => {
         setEditingComment: s.setEditingComment,
       })),
     );
+
+  const handleCommentEdit = (comment: CommentUIType) => {
+    setEditingComment({
+      id: comment.commentId,
+      content: comment.content,
+      isAnonymous: comment.isAnonymous,
+      fileInfo: comment.fileInfo ?? null,
+    });
+  };
+
   useEffect(() => {
     if (!activePinCommentId) return;
 
@@ -43,26 +53,25 @@ const CommentList = ({ comments, onDelete, onSelectPin }: CommentListProps) => {
 
   return (
     <div ref={scrollRef} className="px-4 flex-1 overflow-y-auto pb-40">
-      {comments.map((comment) => (
-        <CommentItem
-          key={comment.commentId}
-          ref={comment.commentId === activePinCommentId ? pinnedRef : null}
-          comment={comment}
-          isEditing={editingComment?.id === comment.commentId}
-          isSelected={comment.commentId === selectedCommentId}
-          isPinHighlighted={comment.commentId === activePinCommentId && !editingComment}
-          onEdit={() =>
-            setEditingComment({
-              id: comment.commentId,
-              content: comment.content,
-              isAnonymous: comment.isAnonymous,
-              fileInfo: comment.fileInfo ?? null,
-            })
-          }
-          onDelete={() => onDelete(comment.commentId)}
-          onSelectPin={onSelectPin}
-        />
-      ))}
+      {comments.map((comment) => {
+        const isCurrentEditing = editingComment?.id === comment.commentId;
+        const isSelected = comment.commentId === selectedCommentId;
+        const isPinned = comment.commentId === activePinCommentId;
+
+        return (
+          <CommentItem
+            key={comment.commentId}
+            ref={isPinned ? pinnedRef : null}
+            comment={comment}
+            isEditing={isCurrentEditing}
+            isSelected={isSelected}
+            isPinHighlighted={isPinned && !editingComment}
+            onCommentEdit={handleCommentEdit}
+            onCommentDelete={() => onCommentDelete(comment.commentId)}
+            onCommentSelect={onCommentSelect}
+          />
+        );
+      })}
     </div>
   );
 };
