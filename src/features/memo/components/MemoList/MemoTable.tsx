@@ -46,7 +46,7 @@ const MemoTable = ({
               <Checkbox
                 checked={isAllSelected}
                 onCheckedChange={onSelectAll}
-                className="rounded-md"
+                className="data-[state=checked]:bg-boost-blue data-[state=checked]:border-boost-blue"
               />
             </TableHead>
             <TableHead className={cn('w-[80px]')}>번호</TableHead>

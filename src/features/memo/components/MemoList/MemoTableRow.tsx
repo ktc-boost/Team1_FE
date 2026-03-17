@@ -54,7 +54,7 @@ const MemoTableRow = ({
           checked={selected}
           onCheckedChange={handleSelectRow}
           onClick={(e) => e.stopPropagation()}
-          className="rounded-md"
+          className="data-[state=checked]:bg-boost-blue data-[state=checked]:border-boost-blue"
         />
       </TableCell>
 
