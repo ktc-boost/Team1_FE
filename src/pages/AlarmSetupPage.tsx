@@ -28,7 +28,7 @@ const AlarmSetupPage = () => {
           </Button>
         </div>
 
-        <div aria-label="image" className="mt-auto flex shrink-0 flex-col items-center pb-2">
+        <div aria-label="image" className="mt-auto flex shrink-0 flex-col items-center">
           <div aria-label="mockup" className="relative w-[400px] md:w-[640px] flex justify-center">
             <motion.img
               src={AlarmBell}
