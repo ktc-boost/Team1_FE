@@ -36,14 +36,7 @@ const TaskDetailTopTab = ({
   const [hintOpen, setHintOpen] = useState(false);
 
   useEffect(() => {
-    if (!isMobile) return;
-    if (!currentPin) {
-      setHintOpen(false);
-      return;
-    }
-    setHintOpen(true);
-    const t = setTimeout(() => setHintOpen(false), 2000);
-    return () => clearTimeout(t);
+    setHintOpen(isMobile && !!currentPin);
   }, [isMobile, currentPin]);
 
   return (
