@@ -49,14 +49,14 @@ const DoneColumn = ({ tasks }: DoneColumnProps) => {
           transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
         >
           <div
-            className={cn('items-center title1-bold mt-2 text-gray-600', {
+            className={cn('items-center title2-bold md:title1-bold mt-4 md:mt-0', {
               'mr-10 md:mr-18': isProfileCollapsible,
             })}
           >
             진행 완료
           </div>
 
-          <div className="flex justify-center items-center mt-2 md:mt-0 bg-gray-300 px-2 py-1 label1-regular rounded-md w-fit">
+          <div className="flex justify-center items-center mt-4 md:mt-0 bg-gray-300 px-2 py-1 label1-regular rounded-md w-fit">
             {filteredTasks.length}
           </div>
         </motion.div>
