@@ -50,10 +50,10 @@ const FileItem = ({
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <EllipsisVertical className="mt-1 w-4 h-4 sm:w-5 sm:h-5 text-gray-700 " />
+            <EllipsisVertical className="mt-1 w-4 h-4 sm:w-5 sm:h-5 text-gray-700" />
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-30 sm:w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-1 z-50 border border-gray-200"
+            className="w-30 sm:w-40 bg-white rounded-lg shadow-lg py-1 z-50 border border-gray-200"
             align="end"
           >
             <DropdownMenuGroup>
@@ -62,7 +62,7 @@ const FileItem = ({
                   e.stopPropagation();
                   downloadFile({ fileId, fileName });
                 }}
-                className="px-4 py-2 !label2-regular sm:!label1-regular text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded-md"
+                className="px-4 py-2 !label2-regular sm:!label1-regular text-gray-800 hover:bg-gray-200 cursor-pointer"
               >
                 다운로드
               </DropdownMenuItem>
@@ -71,7 +71,7 @@ const FileItem = ({
                   e.stopPropagation();
                   if (onDelete) onDelete();
                 }}
-                className="px-4 py-2 !label2-regular sm:!label1-regular text-red-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded-md"
+                className="px-4 py-2 !label2-regular sm:!label1-regular text-red-600 hover:bg-gray-200 cursor-pointer"
               >
                 삭제
               </DropdownMenuItem>
