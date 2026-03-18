@@ -53,7 +53,7 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
       <Button size="sm" variant="defaultBoost" onClick={handleNameSave} disabled={isPending}>
         {isPending ? '저장 중...' : '저장'}
       </Button>
-      <Button size="sm" variant="ghost" onClick={handleNameCancel}>
+      <Button size="sm" variant="outline" onClick={handleNameCancel}>
         취소
       </Button>
     </div>

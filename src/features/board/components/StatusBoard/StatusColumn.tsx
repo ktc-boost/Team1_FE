@@ -1,6 +1,5 @@
 import { SortableContext } from '@dnd-kit/sortable';
 import { useDroppable } from '@dnd-kit/core';
-import { useRef } from 'react';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
 import type { TaskStatusMeta } from '@/features/task/types/task.domain.types';
 import type { TaskQuery } from '@/features/task/types/task.query.types';
@@ -8,6 +7,7 @@ import { getTaskCountByStatus } from '@/features/task/utils/taskUtils';
 import { useStatusTaskCountQueries } from '@/features/board/hooks/useStatusTaskCountQueries';
 import { useTagFilterStore } from '@/features/tag/store/useTagFilterStore';
 import InlineLoader from '@/shared/components/ui/loading/InlineLoader';
+import { useInfiniteScroll } from '@/features/board/hooks/useInfiniteScroll';
 
 interface StatusColumnProps {
   column: TaskStatusMeta;
@@ -19,6 +19,7 @@ const StatusColumn = ({ column, query, projectId }: StatusColumnProps) => {
   const { data: statusTaskCountList } = useStatusTaskCountQueries(projectId);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = query;
   const { selectedTags } = useTagFilterStore();
+
   const tasks = data?.pages.flatMap((page) => page.tasks) || [];
   const sortedTasks = Array.from(new Map(tasks.map((t) => [t.taskId, t])).values());
 
@@ -36,24 +37,16 @@ const StatusColumn = ({ column, query, projectId }: StatusColumnProps) => {
     data: { type: 'Column', column },
   });
 
-  const observer = useRef<IntersectionObserver | null>(null);
-  const lastTaskRef = (node: HTMLDivElement) => {
-    if (isFetchingNextPage) return;
-    if (observer.current) observer.current.disconnect();
-
-    observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && hasNextPage) {
-        fetchNextPage();
-      }
-    });
-
-    if (node) observer.current.observe(node);
-  };
+  const lastTaskRef = useInfiniteScroll({
+    isFetching: isFetchingNextPage,
+    hasNextPage,
+    onLoadMore: fetchNextPage,
+  });
 
   return (
     <div
       ref={setNodeRef}
-      className="bg-gray-200 m-0.5 md:m-1 shadow-md rounded-xl flex flex-col flex-none w-[calc(100vw-32px)] snap-center md:w-full min-w-[250px] md:snap-align-none md:flex-1"
+      className="bg-gray-200 m-0.5 md:m-1 shadow-md rounded-xl flex flex-col flex-1 min-w-[250px]"
     >
       <div className="bg-gray-200 shadow-xs text-md h-[45px] rounded-md p-3 label1-regular flex items-center">
         <div className="flex gap-2 text-gray-600 items-center">

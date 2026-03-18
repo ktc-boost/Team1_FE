@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ROUTES } from '@/app/routes/Router';
+import { ROUTES } from '@/app/routes/routeHelpers';
 import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 import { useCreateMemoMutation } from '@/features/memo/hooks/mutation/useCreateMemoMutation';
 import { useUpdateMemoMutation } from '@/features/memo/hooks/mutation/useUpdateMemoMutation';

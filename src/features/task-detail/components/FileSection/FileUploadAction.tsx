@@ -1,6 +1,6 @@
 import { Upload } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
-import { useUploadFileMutation } from '@/features/task-detail/hooks/useFileUploadUrlMutation';
+import { useUploadFileMutation } from '@/features/task-detail/hooks/mutation/useFileUploadUrlMutation';
 import { fileToast } from '@/features/task-detail/utils/toast/fileToast';
 
 export function FileUploadAction({ taskId }: { taskId: string }) {

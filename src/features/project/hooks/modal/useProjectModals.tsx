@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '@/app/routes/Router';
+import { ROUTES } from '@/app/routes/routeHelpers';
 import { useModal } from '@/shared/hooks/useModal';
 import type { MemberWithBoosting } from '@/features/project/types/projectTypes';
 import { useCreateProjectMutation } from '@/features/project/hooks/mutation/useCreateProjectMutation';

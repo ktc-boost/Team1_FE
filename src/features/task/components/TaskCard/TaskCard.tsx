@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Calendar, MessageCircle, Paperclip, ArrowRightLeft } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { ROUTES } from '@/app/routes/Router';
+import { ROUTES } from '@/app/routes/routeHelpers';
 import { cn } from '@/shared/lib/utils';
 import Siren from '@/shared/assets/images/boost/siren.png';
 import { calculateDDay } from '@/shared/utils/dateUtils';
@@ -76,7 +76,7 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
         {...attributes}
         {...listeners}
         className={cn(
-          'bg-gray-100 flex-shrink-0 shadow-sm p-3 min-h-[150px] flex flex-col rounded-2xl border border-gray-200 transition-shadow relative group',
+          'bg-gray-100 flex-shrink-0 shadow-sm p-3 min-h-[150px] flex flex-col rounded-2xl border border-gray-200 transition-shadow relative group select-none',
           'hover:shadow-md',
           draggable ? 'cursor-grab' : 'cursor-default',
         )}

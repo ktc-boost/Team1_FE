@@ -6,7 +6,7 @@ import { useFileDownloadMutation } from '@/features/file/hooks/useFileDownloadMu
 import { formatDateTime } from '@/shared/utils/dateUtils';
 import type { ProjectFile } from '@/features/file/types/fileApiTypes';
 import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '@/app/routes/Router';
+import { ROUTES } from '@/app/routes/routeHelpers';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
 import { cn } from '@/shared/lib/utils';
 import FileMobileActionMenu from '@/features/file/components/FileMobileActionMenu';

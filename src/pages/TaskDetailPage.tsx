@@ -8,11 +8,9 @@ import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 import { useCommentQuery } from '@/features/comment/hooks/useCommentQuery';
 import TaskDetailInfoSection from '@/features/task-detail/components/TaskDetailInfoSection';
 import TaskDetailCommentSection from '@/features/task-detail/components/TaskDetailCommentSection';
-import TaskReviewActions from '@/features/task-detail/components/TaskDetailTopTab/TaskReviewActions';
-import { cn } from '@/shared/lib/utils';
-import { Collapsible, CollapsibleContent } from '@/shared/components/shadcn/collapsible';
 import CommentDrawerMobile from '@/features/task-detail/components/CommentSection/CommentDrawerMobile';
 import { useShallow } from 'zustand/react/shallow';
+import TaskReviewActionCollapsible from '@/features/task-detail/components/TaskReviewActionCollapsible';
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
   const { data: comments = [] } = useCommentQuery(projectId!, taskId!);
@@ -44,22 +42,7 @@ const TaskDetailPage = () => {
         onOpenComments={() => setCommentDrawerOpen(true)}
         onToggleReviewAction={() => setIsReviewActionOpen((v) => !v)}
       />
-      <Collapsible open={isReviewActionOpen}>
-        <CollapsibleContent forceMount>
-          <div
-            className={cn(
-              'sm:hidden grid transition-[grid-template-rows] duration-300 ease-in-out',
-              isReviewActionOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
-            )}
-          >
-            <div className="overflow-hidden bg-gray-50">
-              <div className="p-2">
-                <TaskReviewActions task={task} />
-              </div>
-            </div>
-          </div>
-        </CollapsibleContent>
-      </Collapsible>
+      <TaskReviewActionCollapsible isReviewActionOpen={isReviewActionOpen} task={task} />
 
       <div className="flex flex-1 overflow-hidden">
         <TaskDetailInfoSection task={task} taskId={taskId} />

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { memoApi } from '@/features/memo/api/memoApi';
 import type { Memo } from '@/features/memo/types/memoTypes';
-import { ROUTES } from '@/app/routes/Router';
+import { ROUTES } from '@/app/routes/routeHelpers';
 import { useNavigate } from 'react-router-dom';
 import { MEMO_QUERY_KEYS } from '@/features/memo/constants/memoQueryKeys';
 

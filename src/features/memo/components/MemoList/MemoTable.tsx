@@ -42,14 +42,14 @@ const MemoTable = ({
       <Table className="min-w-full table-fixed border-collapse">
         <TableHeader className="sticky top-0 z-10 bg-white text-gray-800 subtitle2-bold">
           <TableRow className="border-b border-gray-300 h-12 hover:bg-white">
-            <TableHead className="w-[60px] px-5">
+            <TableHead className="w-[50px] md:w-[60px] px-5">
               <Checkbox
                 checked={isAllSelected}
                 onCheckedChange={onSelectAll}
-                className="rounded-md"
+                className="data-[state=checked]:bg-boost-blue data-[state=checked]:border-boost-blue"
               />
             </TableHead>
-            <TableHead className={cn('w-[80px]')}>번호</TableHead>
+            <TableHead className="w-[50px] md:w-[80px]">번호</TableHead>
             <TableHead>제목</TableHead>
             <TableHead className={cn('w-[200px]', mobileHiddenClass)}>생성일</TableHead>
             <TableHead className={cn('w-[200px]', mobileHiddenClass)}>수정일</TableHead>

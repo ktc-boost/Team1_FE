@@ -96,3 +96,15 @@ export const isToday = (dateStr: string) => {
     d.getDate() === now.getDate()
   );
 };
+
+// ex) 3월 12일 오후 03:40
+export const formatShortDateTime = (isoString: string) => {
+  const date = new Date(isoString);
+
+  return date.toLocaleString('ko-KR', {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};

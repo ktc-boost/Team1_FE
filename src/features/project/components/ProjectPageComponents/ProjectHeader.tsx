@@ -5,7 +5,7 @@ import ProjectManageModalContent from '@/features/project/components/ProjectMana
 import ProjectJoinCodeViewModalContent from '@/features/project/components/ProjectJoinModal/ProjectJoinCodeViewModalContent';
 import TaskCreateModalContent from '@/features/task/components/TaskModal/TaskCreateModalContent';
 import type { Project } from '@/features/project/types/projectTypes';
-import { ROUTES } from '@/app/routes/Router';
+import { ROUTES } from '@/app/routes/routeHelpers';
 import { ROLES } from '@/features/project/constants/projectConstants';
 import ProjectInfoModalContent from '@/features/project/components/ProjectInfoModal/ProjectInfoModalContent';
 import { useMemoEditorStore } from '@/features/memo/store/useMemoEditorStore';

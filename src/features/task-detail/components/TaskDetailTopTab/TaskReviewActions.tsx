@@ -3,8 +3,8 @@ import { cn } from '@/shared/lib/utils';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { AssigneeActionButton } from '@/features/task-detail/components/TaskDetailTopTab/AssigneeActionButton';
 import { ReviewerActionButton } from '@/features/task-detail/components/TaskDetailTopTab/ReviewerActionButton';
-import { useAssigneeTask } from '@/features/task-detail/hooks/useAssigneeTask';
-import { useReviewerTask } from '@/features/task-detail/hooks/useReviewerTask';
+import { useAssigneeTask } from '@/features/task-detail/hooks/domain/useAssigneeTask';
+import { useReviewerTask } from '@/features/task-detail/hooks/domain/useReviewerTask';
 import type { TaskDetail } from '@/features/task/types/task.domain.types';
 import { TASK_STATUS } from '@/features/task/constants/task.domain.constants';
 
