@@ -17,10 +17,14 @@ interface StatusBoardProps {
 
 const StatusBoard = ({ projectId }: StatusBoardProps) => {
   const columnsData = useStatusBoardQueries(projectId);
-  const { sensors, activeTask, onDragStart, onDragOver, onDragEnd } = useTaskDrag({ projectId });
 
   const { isMobileView, chunkedColumns, currentIndex, scrollContainerRef, onScroll } =
     useBoardSlider(columnsData);
+
+  const { sensors, activeTask, onDragStart, onDragOver, onDragEnd } = useTaskDrag({
+    projectId,
+    isMobileView,
+  });
 
   const handleIndicatorClick = (index: number) => {
     const el = scrollContainerRef.current;

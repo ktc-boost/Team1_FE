@@ -8,7 +8,6 @@ import {
 } from '@dnd-kit/core';
 import { useRef, useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useIsMobile } from '@/shared/hooks/use-mobile';
 import {
   useMoveTaskMutation,
   optimisticallyMoveTask,
@@ -19,17 +18,16 @@ import type { TaskListItem, TaskStatus } from '@/features/task/types/task.domain
 
 interface TaskDragProps {
   projectId?: string;
+  isMobileView: boolean;
 }
 
-export const useTaskDrag = ({ projectId }: TaskDragProps) => {
+export const useTaskDrag = ({ projectId, isMobileView }: TaskDragProps) => {
   const queryClient = useQueryClient();
   const [activeTask, setActiveTask] = useState<TaskListItem | null>(null);
 
-  const isMobile = useIsMobile();
-
   const sensors = useSensors(
-    useSensor(isMobile ? TouchSensor : PointerSensor, {
-      activationConstraint: isMobile ? { delay: 250, tolerance: 5 } : { distance: 10 },
+    useSensor(isMobileView ? TouchSensor : PointerSensor, {
+      activationConstraint: isMobileView ? { delay: 250, tolerance: 5 } : { distance: 10 },
     }),
   );
 
