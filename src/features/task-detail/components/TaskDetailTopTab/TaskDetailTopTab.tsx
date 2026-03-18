@@ -2,19 +2,14 @@ import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailSt
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
 import BackButton from '@/shared/components/ui/BackButton';
 import { usePdfStore } from '@/features/task-detail/store/usePdfStore';
-import { CheckCircle2, MessageSquare } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 import TaskReviewActions from '@/features/task-detail/components/TaskDetailTopTab/TaskReviewActions';
 import { Button } from '@/shared/components/shadcn/button';
 import { useShallow } from 'zustand/react/shallow';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/shared/components/shadcn/tooltip';
 import { useIsMobile } from '@/shared/hooks/use-mobile';
 import { useEffect, useState } from 'react';
 import type { TaskDetail } from '@/features/task/types/task.domain.types';
+import PinCommentTooltip from '@/features/task-detail/components/TaskDetailTopTab/PinCommentTooltip';
 
 interface TaskDetailTopTabProps {
   task: TaskDetail;
@@ -27,8 +22,12 @@ const TaskDetailTopTab = ({
   onOpenComments,
   onToggleReviewAction,
 }: TaskDetailTopTabProps) => {
-  const { resetAll, currentPin } = useTaskDetailStore(
-    useShallow((s) => ({ resetAll: s.resetAll, currentPin: s.currentPin })),
+  const { resetAll, currentPin, isCommentDrawerOpen } = useTaskDetailStore(
+    useShallow((s) => ({
+      resetAll: s.resetAll,
+      currentPin: s.currentPin,
+      isCommentDrawerOpen: s.isCommentDrawerOpen,
+    })),
   );
   const resetAiComment = useAiTransformStore((state) => state.reset);
   const resetPdf = usePdfStore((state) => state.resetPdf);
@@ -36,14 +35,7 @@ const TaskDetailTopTab = ({
   const [hintOpen, setHintOpen] = useState(false);
 
   useEffect(() => {
-    if (!isMobile) return;
-    if (!currentPin) {
-      setHintOpen(false);
-      return;
-    }
-    setHintOpen(true);
-    const t = setTimeout(() => setHintOpen(false), 2000);
-    return () => clearTimeout(t);
+    setHintOpen(isMobile && !!currentPin);
   }, [isMobile, currentPin]);
 
   return (
@@ -60,28 +52,18 @@ const TaskDetailTopTab = ({
         {task.title}
       </div>
       <div className="sm:hidden flex gap-2">
-        <TooltipProvider delayDuration={0}>
-          <Tooltip open={hintOpen}>
-            <TooltipTrigger asChild>
-              <Button onClick={onOpenComments} variant="ghost" className="relative">
-                <MessageSquare className="size-5 transition-colors text-black" />
-                {currentPin && (
-                  <span className="absolute top-2 right-2 flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gray-900 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-gray-900"></span>
-                  </span>
-                )}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent className="sm:hidden" side="bottom">
-              <p> 핀댓글 달기</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
-        <Button onClick={onToggleReviewAction} variant="ghost">
-          <CheckCircle2 className="size-5" />
-        </Button>
+        {!isCommentDrawerOpen && (
+          <PinCommentTooltip
+            currentPin={currentPin}
+            hintOpen={hintOpen}
+            onOpenComments={onOpenComments}
+          />
+        )}
+        {task.requiredReviewerCount > 0 && (
+          <Button onClick={onToggleReviewAction} variant="ghost">
+            <CheckCircle2 className="size-5" />
+          </Button>
+        )}
       </div>
 
       <div className="hidden sm:flex">

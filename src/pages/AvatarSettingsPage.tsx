@@ -38,16 +38,14 @@ const AvatarSettingsPage = () => {
   };
 
   return (
-    <div className="h-dvh overflow-hidden">
-      <div className="relative mx-auto flex min-h-screen flex-col overflow-hidden">
-        <AvatarHeader />
-        <div className="flex flex-1 flex-col justify-center">
-          <AvatarSelector />
-          <AvatarInfo />
-        </div>
-        <div className="shrink-0 mx-auto pb-6 sm:pb-20">
-          <AvatarSaveBtn handleSave={handleSave} />
-        </div>
+    <div className="h-dvh flex flex-col">
+      <AvatarHeader />
+      <div className="flex flex-1 flex-col justify-center overflow-y-auto">
+        <AvatarSelector />
+        <AvatarInfo />
+      </div>
+      <div className="pb-6 flex mx-auto sm:pb-20">
+        <AvatarSaveBtn handleSave={handleSave} />
       </div>
     </div>
   );
