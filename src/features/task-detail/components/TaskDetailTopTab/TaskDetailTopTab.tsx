@@ -59,9 +59,11 @@ const TaskDetailTopTab = ({
             onOpenComments={onOpenComments}
           />
         )}
-        <Button onClick={onToggleReviewAction} variant="ghost">
-          <CheckCircle2 className="size-5" />
-        </Button>
+        {task.requiredReviewerCount > 0 && (
+          <Button onClick={onToggleReviewAction} variant="ghost">
+            <CheckCircle2 className="size-5" />
+          </Button>
+        )}
       </div>
 
       <div className="hidden sm:flex">
