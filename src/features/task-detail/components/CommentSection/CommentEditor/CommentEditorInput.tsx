@@ -23,7 +23,7 @@ const CommentEditorInput = ({
   return (
     <div className="flex items-center gap-2 mb-4 sm:mb-2">
       <Textarea
-        className="rounded-xl !label2-regular sm:!label1-regular focus:ring-transparent flex-1 h-10 resize-none"
+        className="rounded-xl sm:!label1-regular focus:ring-transparent flex-1 h-10 resize-none"
         placeholder={isEditing ? '댓글 수정중..' : '댓글을 입력해주세요'}
         value={input}
         onChange={(e) => setInput(e.target.value)}

@@ -79,7 +79,7 @@ const CommentItem = forwardRef<HTMLDivElement, CommentItemProps>(
                   name={comment.authorInfo.name}
                 />
 
-                <span className="label2-bold sm:label1-bold text-gray-800 ">
+                <span className="label1-bold sm:body2-bold text-gray-800 ">
                   {isAnonymous ? '익명' : comment.authorInfo.name}
                 </span>
 
@@ -102,7 +102,7 @@ const CommentItem = forwardRef<HTMLDivElement, CommentItemProps>(
               </div>
             </div>
 
-            <p className="px-1 sm:px-2 label2-regular sm:label1-regular text-gray-800">
+            <p className="px-1 sm:px-2 label1-regular sm:body2-regular text-gray-800">
               {comment.content}
             </p>
           </div>
