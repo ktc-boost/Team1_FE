@@ -22,6 +22,16 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
   const { isMobileView, chunkedColumns, currentIndex, scrollContainerRef, onScroll } =
     useBoardSlider(columnsData);
 
+  const handleIndicatorClick = (index: number) => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+
+    el.scrollTo({
+      left: el.clientWidth * index,
+      behavior: 'smooth',
+    });
+  };
+
   const renderFallback = (status: TaskStatus, state: 'loading' | 'error') => (
     <ColumnFallback key={status} status={status} state={state} />
   );
@@ -48,6 +58,7 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
             {chunkedColumns.map((_, idx) => (
               <div
                 key={idx}
+                onClick={() => handleIndicatorClick(idx)}
                 className="h-2 rounded-full bg-gray-400 transition-[width, background-color] duration-300 ease-out"
                 style={{
                   width: idx === currentIndex ? 24 : 8,
