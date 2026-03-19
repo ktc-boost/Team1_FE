@@ -18,19 +18,23 @@ import type { TaskListItem, TaskStatus } from '@/features/task/types/task.domain
 
 interface TaskDragProps {
   projectId?: string;
-  isMobileView: boolean;
 }
 
-export const useTaskDrag = ({ projectId, isMobileView }: TaskDragProps) => {
+export const useTaskDrag = ({ projectId }: TaskDragProps) => {
   const queryClient = useQueryClient();
   const [activeTask, setActiveTask] = useState<TaskListItem | null>(null);
 
   const sensors = useSensors(
-    useSensor(isMobileView ? TouchSensor : PointerSensor, {
-      activationConstraint: isMobileView ? { delay: 250, tolerance: 5 } : { distance: 10 },
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 8 },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 8,
+      },
     }),
   );
-
   const moveTaskMutation = useMoveTaskMutation();
 
   const { sortBy, direction } = useSortStore();
