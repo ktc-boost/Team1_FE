@@ -21,7 +21,11 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
   const { isMobileView, chunkedColumns, currentIndex, scrollContainerRef, onScroll } =
     useBoardSlider(columnsData);
 
-  const { sensors, activeTask, onDragStart, onDragOver, onDragEnd } = useTaskDrag({ projectId });
+  const { sensors, activeTask, onDragStart, onDragOver, onDragEnd } = useTaskDrag({
+    projectId,
+    isMobileView,
+    scrollContainerRef,
+  });
 
   const handleIndicatorClick = (index: number) => {
     const el = scrollContainerRef.current;

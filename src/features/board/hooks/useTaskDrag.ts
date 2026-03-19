@@ -18,23 +18,20 @@ import type { TaskListItem, TaskStatus } from '@/features/task/types/task.domain
 
 interface TaskDragProps {
   projectId?: string;
+  isMobileView: boolean;
+  scrollContainerRef: React.RefObject<HTMLDivElement | null>;
 }
 
-export const useTaskDrag = ({ projectId }: TaskDragProps) => {
+export const useTaskDrag = ({ projectId, isMobileView, scrollContainerRef }: TaskDragProps) => {
   const queryClient = useQueryClient();
   const [activeTask, setActiveTask] = useState<TaskListItem | null>(null);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: { distance: 8 },
-    }),
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 200,
-        tolerance: 8,
-      },
+    useSensor(isMobileView ? TouchSensor : PointerSensor, {
+      activationConstraint: isMobileView ? { delay: 250, tolerance: 5 } : { distance: 10 },
     }),
   );
+
   const moveTaskMutation = useMoveTaskMutation();
 
   const { sortBy, direction } = useSortStore();
@@ -90,16 +87,35 @@ export const useTaskDrag = ({ projectId }: TaskDragProps) => {
     dropTargetRef.current = null;
   };
 
-  const onDragOver = ({ active, over }: DragOverEvent) => {
-    if (!over) return;
+  const getClientX = (event: Event | null): number | null => {
+    if (!event) return null;
+
+    if (event instanceof TouchEvent) {
+      if (event.touches.length > 0) return event.touches[0].clientX;
+      if (event.changedTouches.length > 0) return event.changedTouches[0].clientX;
+      return null;
+    }
+
+    if (event instanceof PointerEvent || event instanceof MouseEvent) {
+      return event.clientX;
+    }
+
+    return null;
+  };
+
+  const EDGE_THRESHOLD = 80;
+  const SCROLL_SPEED = 12;
+
+  const onDragOver = (event: DragOverEvent) => {
+    if (!event.over) return;
 
     const { sortBy: currentSortBy, direction: currentDirection } = sortStateRef.current;
 
-    const activeTask = active.data.current?.task as TaskListItem | undefined;
-    const overData = over.data.current;
-    const activeId = active.id as string;
+    const activeTask = event.active.data.current?.task as TaskListItem | undefined;
+    const overData = event.over.data.current;
+    const activeId = event.active.id as string;
 
-    if (!activeTask || activeId === over.id) return;
+    if (!activeTask || activeId === event.over.id) return;
 
     const toStatus =
       overData?.type === 'Task'
@@ -109,7 +125,7 @@ export const useTaskDrag = ({ projectId }: TaskDragProps) => {
           : undefined;
     if (!toStatus) return;
 
-    const overId = overData?.type === 'Task' ? (over.id as string) : undefined;
+    const overId = overData?.type === 'Task' ? (event.over.id as string) : undefined;
 
     if (
       dropTargetRef.current?.activeId === activeId &&
@@ -134,6 +150,22 @@ export const useTaskDrag = ({ projectId }: TaskDragProps) => {
     };
 
     optimisticallyMoveTask(queryClient, params);
+
+    if (isMobileView && scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const rect = container.getBoundingClientRect();
+      const clientX = getClientX(event.activatorEvent);
+
+      if (clientX == null) return;
+
+      if (clientX < rect.left + EDGE_THRESHOLD) {
+        container.scrollLeft -= SCROLL_SPEED;
+      }
+
+      if (clientX > rect.right - EDGE_THRESHOLD) {
+        container.scrollLeft += SCROLL_SPEED;
+      }
+    }
   };
 
   return {
