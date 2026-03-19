@@ -5,7 +5,6 @@ import {
   TouchSensor,
   type DragStartEvent,
   type DragOverEvent,
-  rectIntersection,
 } from '@dnd-kit/core';
 import { useRef, useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -19,15 +18,17 @@ import type { TaskListItem, TaskStatus } from '@/features/task/types/task.domain
 
 interface TaskDragProps {
   projectId?: string;
+  isMobileView: boolean;
 }
 
-export const useTaskDrag = ({ projectId }: TaskDragProps) => {
+export const useTaskDrag = ({ projectId, isMobileView }: TaskDragProps) => {
   const queryClient = useQueryClient();
   const [activeTask, setActiveTask] = useState<TaskListItem | null>(null);
 
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 10 } }),
-    useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5 } }),
+    useSensor(isMobileView ? TouchSensor : PointerSensor, {
+      activationConstraint: isMobileView ? { delay: 250, tolerance: 5 } : { distance: 10 },
+    }),
   );
 
   const moveTaskMutation = useMoveTaskMutation();
@@ -89,6 +90,7 @@ export const useTaskDrag = ({ projectId }: TaskDragProps) => {
     if (!over) return;
 
     const { sortBy: currentSortBy, direction: currentDirection } = sortStateRef.current;
+
     const activeTask = active.data.current?.task as TaskListItem | undefined;
     const overData = over.data.current;
     const activeId = active.id as string;
@@ -132,7 +134,6 @@ export const useTaskDrag = ({ projectId }: TaskDragProps) => {
 
   return {
     sensors,
-    collisionDetection: rectIntersection,
     activeTask,
     onDragStart,
     onDragOver,

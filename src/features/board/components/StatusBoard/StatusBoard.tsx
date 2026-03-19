@@ -21,10 +21,10 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
   const { isMobileView, chunkedColumns, currentIndex, scrollContainerRef, onScroll } =
     useBoardSlider(columnsData);
 
-  const { sensors, collisionDetection, activeTask, onDragStart, onDragOver, onDragEnd } =
-    useTaskDrag({
-      projectId,
-    });
+  const { sensors, activeTask, onDragStart, onDragOver, onDragEnd } = useTaskDrag({
+    projectId,
+    isMobileView,
+  });
 
   const handleIndicatorClick = (index: number) => {
     const el = scrollContainerRef.current;
@@ -53,7 +53,6 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
     <div className="flex-1 flex flex-col p-3 h-full">
       <DndContext
         sensors={sensors}
-        collisionDetection={collisionDetection}
         onDragStart={onDragStart}
         onDragOver={onDragOver}
         onDragEnd={onDragEnd}
