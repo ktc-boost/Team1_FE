@@ -5,6 +5,7 @@ import {
   TouchSensor,
   type DragStartEvent,
   type DragOverEvent,
+  rectIntersection,
 } from '@dnd-kit/core';
 import { useRef, useState, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -18,18 +19,15 @@ import type { TaskListItem, TaskStatus } from '@/features/task/types/task.domain
 
 interface TaskDragProps {
   projectId?: string;
-  isMobileView: boolean;
-  scrollContainerRef: React.RefObject<HTMLDivElement | null>;
 }
 
-export const useTaskDrag = ({ projectId, isMobileView, scrollContainerRef }: TaskDragProps) => {
+export const useTaskDrag = ({ projectId }: TaskDragProps) => {
   const queryClient = useQueryClient();
   const [activeTask, setActiveTask] = useState<TaskListItem | null>(null);
 
   const sensors = useSensors(
-    useSensor(isMobileView ? TouchSensor : PointerSensor, {
-      activationConstraint: isMobileView ? { delay: 250, tolerance: 5 } : { distance: 10 },
-    }),
+    useSensor(PointerSensor, { activationConstraint: { distance: 10 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5 } }),
   );
 
   const moveTaskMutation = useMoveTaskMutation();
@@ -87,35 +85,15 @@ export const useTaskDrag = ({ projectId, isMobileView, scrollContainerRef }: Tas
     dropTargetRef.current = null;
   };
 
-  const getClientX = (event: Event | null): number | null => {
-    if (!event) return null;
-
-    if (event instanceof TouchEvent) {
-      if (event.touches.length > 0) return event.touches[0].clientX;
-      if (event.changedTouches.length > 0) return event.changedTouches[0].clientX;
-      return null;
-    }
-
-    if (event instanceof PointerEvent || event instanceof MouseEvent) {
-      return event.clientX;
-    }
-
-    return null;
-  };
-
-  const EDGE_THRESHOLD = 80;
-  const SCROLL_SPEED = 12;
-
-  const onDragOver = (event: DragOverEvent) => {
-    if (!event.over) return;
+  const onDragOver = ({ active, over }: DragOverEvent) => {
+    if (!over) return;
 
     const { sortBy: currentSortBy, direction: currentDirection } = sortStateRef.current;
+    const activeTask = active.data.current?.task as TaskListItem | undefined;
+    const overData = over.data.current;
+    const activeId = active.id as string;
 
-    const activeTask = event.active.data.current?.task as TaskListItem | undefined;
-    const overData = event.over.data.current;
-    const activeId = event.active.id as string;
-
-    if (!activeTask || activeId === event.over.id) return;
+    if (!activeTask || activeId === over.id) return;
 
     const toStatus =
       overData?.type === 'Task'
@@ -125,7 +103,7 @@ export const useTaskDrag = ({ projectId, isMobileView, scrollContainerRef }: Tas
           : undefined;
     if (!toStatus) return;
 
-    const overId = overData?.type === 'Task' ? (event.over.id as string) : undefined;
+    const overId = overData?.type === 'Task' ? (over.id as string) : undefined;
 
     if (
       dropTargetRef.current?.activeId === activeId &&
@@ -150,26 +128,11 @@ export const useTaskDrag = ({ projectId, isMobileView, scrollContainerRef }: Tas
     };
 
     optimisticallyMoveTask(queryClient, params);
-
-    if (isMobileView && scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
-      const rect = container.getBoundingClientRect();
-      const clientX = getClientX(event.activatorEvent);
-
-      if (clientX == null) return;
-
-      if (clientX < rect.left + EDGE_THRESHOLD) {
-        container.scrollLeft -= SCROLL_SPEED;
-      }
-
-      if (clientX > rect.right - EDGE_THRESHOLD) {
-        container.scrollLeft += SCROLL_SPEED;
-      }
-    }
   };
 
   return {
     sensors,
+    collisionDetection: rectIntersection,
     activeTask,
     onDragStart,
     onDragOver,
