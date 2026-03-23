@@ -1,4 +1,9 @@
-import { DndContext, DragOverlay, defaultDropAnimationSideEffects } from '@dnd-kit/core';
+import {
+  DndContext,
+  DragOverlay,
+  closestCorners,
+  defaultDropAnimationSideEffects,
+} from '@dnd-kit/core';
 import { createPortal } from 'react-dom';
 import { cn } from '@/shared/lib/utils';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
@@ -21,9 +26,11 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
   const { isMobileView, chunkedColumns, currentIndex, scrollContainerRef, onScroll } =
     useBoardSlider(columnsData);
 
-  const { sensors, activeTask, onDragStart, onDragOver, onDragEnd } = useTaskDrag({
+  const { sensors, activeTask, onDragStart, onDragOver, onDragMove, onDragEnd } = useTaskDrag({
     projectId,
     isMobileView,
+    scrollRef: scrollContainerRef,
+    chunkedColumns,
   });
 
   const handleIndicatorClick = (index: number) => {
@@ -53,8 +60,10 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
     <div className="flex-1 flex flex-col p-3 h-full">
       <DndContext
         sensors={sensors}
+        collisionDetection={closestCorners}
         onDragStart={onDragStart}
         onDragOver={onDragOver}
+        onDragMove={onDragMove}
         onDragEnd={onDragEnd}
       >
         {isMobileView && (
@@ -77,8 +86,12 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
           ref={scrollContainerRef}
           onScroll={onScroll}
           className={cn(
-            'flex flex-grow gap-3 items-stretch scroll-smooth',
-            isMobileView ? 'overflow-x-auto snap-x snap-mandatory' : 'overflow-hidden',
+            'flex flex-grow gap-3 items-stretch pb-1',
+            isMobileView
+              ? activeTask
+                ? 'overflow-x-auto snap-none touch-pan-y'
+                : 'overflow-x-auto snap-x snap-mandatory touch-pan-y'
+              : 'overflow-hidden',
           )}
         >
           {isMobileView
@@ -93,8 +106,15 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
         {createPortal(
           <DragOverlay
             dropAnimation={{
+              duration: 120,
+              easing: 'cubic-bezier(0.2, 0, 0, 1)',
               sideEffects: defaultDropAnimationSideEffects({
-                styles: { active: { opacity: '0.5' } },
+                styles: {
+                  active: {
+                    opacity: '0.7',
+                    transform: 'scale(0.98)',
+                  },
+                },
               }),
             }}
           >
