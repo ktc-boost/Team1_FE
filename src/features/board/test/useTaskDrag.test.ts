@@ -82,19 +82,24 @@ export const useTaskDragTest = ({
     dropTargetRef.current = { activeId, toStatus, overId };
 
     setTaskList((prev) => {
-      const newTasks = [...prev];
-      const idx = newTasks.findIndex((t) => t.taskId === activeId);
-      if (idx === -1) return prev;
+      const activeIdx = prev.findIndex((t) => t.taskId === activeId);
+      if (activeIdx === -1) return prev;
 
-      const [movedTask] = newTasks.splice(idx, 1);
+      const currentTask = prev[activeIdx];
+      const targetIdx = overId ? prev.findIndex((t) => t.taskId === overId) : prev.length;
+
+      if (currentTask.status === toStatus && activeIdx === targetIdx) {
+        return prev;
+      }
+
+      const newTasks = [...prev];
+      const [movedTask] = newTasks.splice(activeIdx, 1);
       const updatedTask = { ...movedTask, status: toStatus };
 
-      if (overId) {
-        const targetIdx = newTasks.findIndex((t) => t.taskId === overId);
-        newTasks.splice(targetIdx, 0, updatedTask);
-      } else {
-        newTasks.push(updatedTask);
-      }
+      const finalTargetIdx = overId
+        ? newTasks.findIndex((t) => t.taskId === overId)
+        : newTasks.length;
+      newTasks.splice(finalTargetIdx, 0, updatedTask);
 
       return newTasks;
     });

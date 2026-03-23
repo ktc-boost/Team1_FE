@@ -5,7 +5,7 @@ import {
   closestCorners,
 } from '@dnd-kit/core';
 import { createPortal } from 'react-dom';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { cn } from '@/shared/lib/utils';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
 import StatusColumnTest from '@/features/board/test/StatusColumn.test';
@@ -19,10 +19,12 @@ import type { ColumnData, TestColumnData } from '@/features/board/types/board.do
 const StatusBoardTest = () => {
   const [taskList, setTaskList] = useState<TaskListItem[]>(initialTasks);
 
-  const columnsData: TestColumnData[] = TASK_STATUS_META.map((col) => ({
-    status: col.status,
-    tasks: taskList.filter((t) => t.status === col.status),
-  }));
+  const columnsData: TestColumnData[] = useMemo(() => {
+    return TASK_STATUS_META.map((col) => ({
+      status: col.status,
+      tasks: taskList.filter((t) => t.status === col.status),
+    }));
+  }, [taskList]);
 
   const { isMobileView, chunkedColumns, currentIndex, scrollContainerRef, onScroll } =
     useBoardSlider(columnsData as ColumnData[]);
