@@ -1,4 +1,4 @@
-import type { NavigateFunction } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/app/routes/routeHelpers';
 import { Button } from '@/shared/components/shadcn/button';
 import { useModal } from '@/shared/hooks/useModal';
@@ -6,11 +6,11 @@ import MovingBoo from '@/shared/components/ui/MovingBoo';
 
 interface MemoUnsavedModalContentProps {
   projectId: string;
-  navigate: NavigateFunction;
 }
 
-const MemoUnsavedModalContent = ({ projectId, navigate }: MemoUnsavedModalContentProps) => {
+const MemoUnsavedModalContent = ({ projectId }: MemoUnsavedModalContentProps) => {
   const { resetModal } = useModal();
+  const navigate = useNavigate();
 
   const handleConfirm = () => {
     resetModal();
