@@ -27,7 +27,7 @@ const ProjectHeader = ({ project }: ProjectHeaderProps) => {
   const handleButtonClick = () => {
     if (location.pathname.includes('/memo')) {
       if (isDirty) {
-        showUnsavedChangesModal(project.id, navigate);
+        showUnsavedChangesModal(project.id);
         return;
       }
       navigate(ROUTES.PROJECT_MEMO_EDIT(project.id));
