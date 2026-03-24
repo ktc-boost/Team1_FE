@@ -56,15 +56,6 @@ const PROTECTED_ROUTES_NO_LAYOUT = [
   { path: ROUTE_PATH.ALARM_SETUP, element: <AlarmSetupPage /> },
 ];
 
-const AppLayoutWithModal = () => {
-  return (
-    <>
-      <ModalRenderer />
-      <AppLayout />
-    </>
-  );
-};
-
 const withProtected = (element: React.ReactNode) => (
   <ProtectedRoute>
     <PageErrorBoundary>{element}</PageErrorBoundary>
@@ -81,7 +72,7 @@ export const router = createBrowserRouter([
 
   {
     path: '/',
-    element: <AppLayoutWithModal />,
+    element: <AppLayout />,
     errorElement: <RootFallback />,
     children: PROTECTED_ROUTES.map((route) => ({
       ...route,
@@ -91,5 +82,10 @@ export const router = createBrowserRouter([
 ]);
 
 export const AppRouter = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <ModalRenderer />
+      <RouterProvider router={router} />
+    </>
+  );
 };
