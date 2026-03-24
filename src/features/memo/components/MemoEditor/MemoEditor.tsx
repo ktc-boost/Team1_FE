@@ -77,7 +77,7 @@ const MemoEditor = () => {
       navigate(ROUTES.PROJECT_MEMO_DETAIL(projectId ?? '', memoId ?? ''));
       return;
     }
-    showUnsavedChangesModal(projectId ?? '', navigate);
+    showUnsavedChangesModal(projectId ?? '');
   };
 
   if (!projectId) return <div className="p-4">프로젝트 ID를 찾을 수 없습니다.</div>;
