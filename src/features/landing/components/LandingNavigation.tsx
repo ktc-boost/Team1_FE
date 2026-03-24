@@ -49,7 +49,7 @@ const LandingNavigation = () => {
   );
 
   return (
-    <nav className="fixed top-0 left-0 w-screen bg-gray-100 shadow-sm z-50">
+    <nav className="fixed top-0 left-0 w-full bg-gray-100 shadow-sm z-50">
       <div className="px-4 sm:px-6 xl:px-0 max-w-7xl mx-auto flex items-center justify-between py-3">
         <button
           className="text-xl font-bold text-boost-blue cursor-pointer"
