@@ -41,7 +41,10 @@ export const useJoinProjectMutation = (options?: UseJoinProjectMutationOptions) 
       queryClient.setQueryData<Project[]>(PROJECT_QUERY_KEYS.myProjects(), (old) =>
         old ? [...old, project] : [project],
       );
-
+      window.gtag?.('event', 'join_project', {
+        project_id: joinedProject.projectId,
+        role: joinedProject.role,
+      });
       options?.onSuccess?.(project);
     },
 
