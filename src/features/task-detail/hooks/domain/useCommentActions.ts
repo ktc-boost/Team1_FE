@@ -59,14 +59,25 @@ export const useCommentActions = (projectId: string, taskId: string) => {
   ) => {
     if (isBlank(data.content)) return commentToast.emptyContent();
 
-    updateComment({
-      commentId,
-      updatedData: {
-        content: data.content,
-        isAnonymous: data.isAnonymous,
-        fileInfo: currentPin,
+    updateComment(
+      {
+        commentId,
+        updatedData: {
+          content: data.content,
+          isAnonymous: data.isAnonymous,
+          fileInfo: currentPin,
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          toast.success('댓글이 수정되었습니다.');
+        },
+        onError: (error) => {
+          if (error instanceof ApiError) toast.error(getErrorMessage(error));
+          else toast.error('댓글 수정을 실패했어요.');
+        },
+      },
+    );
   };
 
   return {
