@@ -14,6 +14,7 @@ const LandingPage = () => {
   useEffect(() => {
     resetInitialHash();
     const observer = observeSections();
+    window.gtag('event', 'view_landing');
     return () => observer.disconnect();
   }, []);
 
