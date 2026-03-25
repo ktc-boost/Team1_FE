@@ -37,6 +37,7 @@ export const useCreateProjectMutation = () => {
       queryClient.setQueryData<Project[]>(PROJECT_QUERY_KEYS.myProjects(), (old) =>
         old ? old.map((p) => (p.id === context?.tempId ? createdProject : p)) : [createdProject],
       );
+      window.gtag('event', 'create_project');
     },
 
     onError: (error, __, context) => {
