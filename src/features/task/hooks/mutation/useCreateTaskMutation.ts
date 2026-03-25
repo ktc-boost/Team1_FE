@@ -143,7 +143,6 @@ export const useCreateTaskMutation = (projectId: string) => {
       queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountStatus(projectId) });
       queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.projectCountMember(projectId) });
       queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.meCountStatus() });
-      window.gtag('event', 'create_task');
     },
   });
 };
