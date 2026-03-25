@@ -6,17 +6,19 @@ import AiTransformTextCard from '@/features/ai-transform/components/AiTransformS
 import AiTransformGuide from '@/features/ai-transform/components/AiTransformSelectModal/AiTransformGuide';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import { PERSONA } from '@/features/comment/constants/personaConstants';
+import { AI_COMMENT_SIDE } from '@/features/ai-transform/constants/ai-transform.ui.constants';
+import type { AiCommentSide } from '@/features/ai-transform/types/ai-transform.ui.types';
 
 const AiTransformSelectModalContent = () => {
   const { transformedText, originalText, setSelectedText } = useAiTransformStore();
-  const [hoveredSide, setHoveredSide] = useState<'original' | 'transformed' | null>(null);
+  const [hoveredSide, setHoveredSide] = useState<AiCommentSide>(AI_COMMENT_SIDE.DEFAULT);
   const { resetModal } = useModal();
   const { setIsAnonymous, setPersona } = useTaskDetailStore();
-  const handleSelect = (type: 'original' | 'transformed') => {
-    const text = type === 'original' ? originalText : transformedText;
+  const handleSelect = (type: AiCommentSide) => {
+    const text = type === AI_COMMENT_SIDE.ORIGIN ? originalText : transformedText;
     if (!text) return;
     setSelectedText(text);
-    if (type === 'transformed') {
+    if (type === AI_COMMENT_SIDE.TRANSFORM) {
       setIsAnonymous(true);
       setPersona(PERSONA.BOO);
       toast.success('댓글이 반영되었어요!');
@@ -30,9 +32,9 @@ const AiTransformSelectModalContent = () => {
         <AiTransformTextCard
           type="original"
           text={originalText}
-          isHovered={hoveredSide === 'original'}
+          isHovered={hoveredSide === AI_COMMENT_SIDE.ORIGIN}
           onHover={setHoveredSide}
-          onSelect={() => handleSelect('original')}
+          onSelect={() => handleSelect(AI_COMMENT_SIDE.ORIGIN)}
         />
 
         <AiTransformGuide hoveredSide={hoveredSide} />
@@ -40,9 +42,9 @@ const AiTransformSelectModalContent = () => {
         <AiTransformTextCard
           type="transformed"
           text={transformedText}
-          isHovered={hoveredSide === 'transformed'}
+          isHovered={hoveredSide === AI_COMMENT_SIDE.TRANSFORM}
           onHover={setHoveredSide}
-          onSelect={() => handleSelect('transformed')}
+          onSelect={() => handleSelect(AI_COMMENT_SIDE.TRANSFORM)}
         />
       </div>
     </div>

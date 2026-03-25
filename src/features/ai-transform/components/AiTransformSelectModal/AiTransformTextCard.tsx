@@ -1,11 +1,13 @@
 import { Button } from '@/shared/components/shadcn/button';
 import { cn } from '@/shared/lib/utils';
+import { AI_COMMENT_SIDE } from '@/features/ai-transform/constants/ai-transform.ui.constants';
+import type { AiCommentSide } from '@/features/ai-transform/types/ai-transform.ui.types';
 
 interface AiTransformTextCardProps {
-  type: 'original' | 'transformed';
+  type: AiCommentSide;
   text: string | null;
   onSelect: () => void;
-  onHover: (side: 'original' | 'transformed' | null) => void;
+  onHover: (side: AiCommentSide) => void;
   isHovered: boolean;
 }
 
@@ -16,8 +18,8 @@ const AiTransformTextCard = ({
   onHover,
   isHovered,
 }: AiTransformTextCardProps) => {
-  const color = type === 'original' ? 'boost-orange' : 'boost-blue';
-  const label = type === 'original' ? '원래 댓글 선택' : 'Boo의 댓글 선택';
+  const color = type === AI_COMMENT_SIDE.ORIGIN ? 'boost-orange' : 'boost-blue';
+  const label = type === AI_COMMENT_SIDE.ORIGIN ? '원래 댓글 선택' : 'Boo의 댓글 선택';
 
   return (
     <div
@@ -26,7 +28,7 @@ const AiTransformTextCard = ({
         isHovered && `border-${color}`,
       )}
       onMouseEnter={() => onHover(type)}
-      onMouseLeave={() => onHover(null)}
+      onMouseLeave={() => onHover(AI_COMMENT_SIDE.DEFAULT)}
     >
       <div
         className={cn('flex-1 overflow-y-auto mb-4 label2-regular sm:label1-regular break-words')}
