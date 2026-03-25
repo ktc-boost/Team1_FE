@@ -11,7 +11,8 @@ import TaskDetailCommentSection from '@/features/task-detail/components/TaskDeta
 import CommentDrawerMobile from '@/features/task-detail/components/CommentSection/CommentDrawerMobile';
 import { useShallow } from 'zustand/react/shallow';
 import TaskReviewActionCollapsible from '@/features/task-detail/components/TaskReviewActionCollapsible';
-import { useIsMobile } from './../shared/hooks/use-mobile';
+import { useIsMobile } from '@/shared/hooks/use-mobile';
+
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
   const { data: comments = [] } = useCommentQuery(projectId!, taskId!);
