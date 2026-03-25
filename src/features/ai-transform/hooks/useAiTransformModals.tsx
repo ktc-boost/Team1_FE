@@ -1,10 +1,12 @@
 import { useModal } from '@/shared/hooks/useModal';
+import { useIsTablet } from '@/shared/hooks/use-tablet';
 import AiTransformConfirmModalContent from '@/features/ai-transform/components/AiTransformConfirmModal/AiTransformConfirmModalContent';
 import AiTransformLoadingModalContent from '@/features/ai-transform/components/AiTransformLoadingModal/AiTransformLoadingModalContent';
 import AiTransformSelectModalContent from '@/features/ai-transform/components/AiTransformSelectModal/AiTransformSelectModalContent';
 
 export const useAiTransformModals = () => {
   const { showCustom } = useModal();
+  const isTablet = useIsTablet();
 
   const showAiTransformConfirmModal = () => {
     showCustom({
@@ -31,7 +33,7 @@ export const useAiTransformModals = () => {
     showCustom({
       title: '댓글 변환이 완료되었어요!',
       description: '원하는 쪽을 선택해주세요.',
-      size: 'xl',
+      size: isTablet ? 'lg' : 'lgPlus',
       titleAlign: 'center',
       content: <AiTransformSelectModalContent />,
     });

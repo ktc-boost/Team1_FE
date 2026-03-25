@@ -25,8 +25,8 @@ const AiTransformSelectModalContent = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 h-[400px]">
-      <div className="flex gap-12 h-full">
+    <div className="flex flex-col gap-4 h-full">
+      <div className="flex flex-col sm:flex-row gap-1 sm:gap-12 h-full items-center">
         <AiTransformTextCard
           type="original"
           text={originalText}
