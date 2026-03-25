@@ -2,11 +2,12 @@ import { Button } from '@/shared/components/shadcn/button';
 import { cn } from '@/shared/lib/utils';
 import { AI_COMMENT_SIDE } from '@/features/ai-transform/constants/ai-transform.ui.constants';
 import type { AiCommentSide } from '@/features/ai-transform/types/ai-transform.ui.types';
+import type React from 'react';
 
 interface AiTransformTextCardProps {
   type: AiCommentSide;
   text: string | null;
-  onSelect: () => void;
+  onSelect: (e: React.MouseEvent) => void;
   onHover: (side: AiCommentSide) => void;
   isHovered: boolean;
 }
