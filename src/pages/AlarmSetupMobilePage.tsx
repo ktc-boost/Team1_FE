@@ -39,8 +39,8 @@ const AlarmSetupMobilePage = () => {
 
   const getDisabledReason = (): DisabledReasonType | null => {
     if (!isQrValid) return 'INVALID_QR';
-    if (!isWebPushSupported) return 'NOT_SUPPORTED';
     if (isIOSNotStandalone) return 'IOS_NOT_STANDALONE';
+    if (!isWebPushSupported) return 'NOT_SUPPORTED';
     return null;
   };
 
@@ -52,13 +52,11 @@ const AlarmSetupMobilePage = () => {
       hasShownError.current = true;
       return;
     }
-
-    if (!isWebPushSupported) {
-      toast.error('이 브라우저는 알림 기능을 지원하지 않습니다.');
+    if (isIOSNotStandalone) {
       return;
     }
-
-    if (isIOSNotStandalone) {
+    if (!isWebPushSupported) {
+      toast.error('이 브라우저는 알림 기능을 지원하지 않습니다.');
       return;
     }
 

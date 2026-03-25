@@ -68,6 +68,19 @@ export const useCreateCommentMutation = (projectId: string, taskId: string) => {
       queryClient.setQueryData<CommentType[]>(context.queryKey, (prev = []) =>
         prev.map((c) => (c.commentId === context.tempId ? newComment : c)),
       );
+      window.gtag('event', 'send_comment', {
+        project_id: projectId,
+        task_id: taskId,
+        comment_id: newComment.commentId,
+      });
+
+      if (newComment.fileInfo) {
+        window.gtag('event', 'send_pin_comment', {
+          project_id: projectId,
+          task_id: taskId,
+          comment_id: newComment.commentId,
+        });
+      }
       queryClient.invalidateQueries({ queryKey: context.queryKey });
     },
 

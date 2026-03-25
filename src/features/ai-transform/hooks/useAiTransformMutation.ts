@@ -15,6 +15,7 @@ export const useAiTransformMutation = (
       return res;
     },
     onSuccess: (data) => {
+      window.gtag('event', 'use_boo_transform');
       onSuccessCallback?.(data);
     },
     onError: (error) => {

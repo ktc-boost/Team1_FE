@@ -34,9 +34,11 @@ export const useKakaoLoginMutation = () => {
     },
     onSuccess: (isNewUser) => {
       toast.success('로그인이 완료되었습니다.');
-
-      if (isNewUser) navigate(ROUTE_PATH.AVATAR);
-      else if (from) navigate(from, { replace: true });
+      window.gtag('event', 'login');
+      if (isNewUser) {
+        window.gtag('event', 'sign_up');
+        navigate(ROUTE_PATH.AVATAR);
+      } else if (from) navigate(from, { replace: true });
       else navigate(ROUTE_PATH.MY_TASK);
 
       localStorage.removeItem('login_from');
