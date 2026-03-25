@@ -7,6 +7,11 @@ export const COLUMN_STATUS_LIST = TASK_STATUS_META.map((c) => c.status);
 /* Member Board에서 사용하는 스크롤 threshold 상수 */
 export const COLLAPSIBLE_SCROLL_THRESHOLD = 100;
 
+/* Status Board에서 사용하는 보드 auto scroll 상수 */
+export const BOARD_AUTO_SCROLL_THRESHOLD = 120;
+export const BOARD_AUTO_SCROLL_MIN_SPEED = 8;
+export const BOARD_AUTO_SCROLL_MAX_SPEED = 25;
+
 /* Column 별 테마 */
 const BASE_BLUE_THEME = {
   icon: CircleArrowRight,

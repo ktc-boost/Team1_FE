@@ -1,3 +1,4 @@
+import { isAxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import { ArrowDown } from 'lucide-react';
 import { Button } from '@/shared/components/shadcn/button';
@@ -6,13 +7,14 @@ import MovingBoo from '@/shared/components/ui/MovingBoo';
 import { useAiTransformMutation } from '@/features/ai-transform/hooks/useAiTransformMutation';
 import { useAiTransformStore } from '@/features/ai-transform/store/useAiTransformStore';
 import { useAiTransformModals } from '@/features/ai-transform/hooks/useAiTransformModals';
-import { isAxiosError } from 'axios';
 
 const AiTransformConfirmModalContent = () => {
   const originalText = useAiTransformStore((state) => state.originalText);
   const setTransformedText = useAiTransformStore((state) => state.setTransformedText);
+
   const { showAiTransformLoadingModal, showAiTransformSelectModal } = useAiTransformModals();
   const { resetModal } = useModal();
+
   const { mutateAsync: aiTransformMutateAsync } = useAiTransformMutation();
 
   const handleTransformConfirm = async () => {
@@ -24,6 +26,7 @@ const AiTransformConfirmModalContent = () => {
         minDelay,
         aiTransformMutateAsync({ text: originalText }),
       ]);
+
       setTransformedText(firstAttempt[1].transformedText);
       showAiTransformSelectModal();
     } catch (error) {
@@ -39,9 +42,16 @@ const AiTransformConfirmModalContent = () => {
       } else {
         console.log(error);
       }
+
       resetModal();
       toast.error('댓글 변환을 실패했어요.');
     }
+  };
+
+  const handleCancelClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    resetModal();
+    useAiTransformStore.getState().reset();
   };
 
   return (
@@ -55,21 +65,14 @@ const AiTransformConfirmModalContent = () => {
       </div>
 
       <div className="flex gap-2 mt-2 w-full flex-col">
-        <Button
-          variant="default"
-          onClick={handleTransformConfirm}
-          className="flex flex-1 bg-boost-blue hover:bg-boost-blue-hover duration-300 cursor-pointer"
-        >
+        <Button variant="defaultBoost" onClick={handleTransformConfirm} className="flex-1">
           변환하기
         </Button>
 
         <Button
-          onClick={() => {
-            resetModal();
-            useAiTransformStore.getState().reset();
-          }}
-          variant="outline"
-          className="border-none text-gray-500 p-1 hover:text-gray-600 underline cursor-pointer hover:bg-gray-100"
+          onClick={handleCancelClick}
+          variant="link"
+          className="text-gray-500 hover:text-gray-600"
         >
           안 할래요
         </Button>

@@ -1,4 +1,4 @@
-import api from '@/shared/api/axiosInstance';
+import { api } from '@/shared/api/axiosInstance';
 import type { User } from '@/features/user/types/userTypes';
 
 export const memberApi = {

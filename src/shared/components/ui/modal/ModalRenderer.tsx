@@ -7,7 +7,7 @@ import {
   DialogDescription,
 } from '@/shared/components/shadcn/dialog';
 import { ModalButtons } from '@/shared/components/ui/modal/ModalButtons';
-import { ModalSize } from '@/shared/types/modalTypes';
+import { ModalSizeMap } from '@/shared/types/modalTypes';
 import { cn } from '@/shared/lib/utils';
 
 const ModalRenderer = () => {
@@ -15,7 +15,7 @@ const ModalRenderer = () => {
   const current = stack[stack.length - 1];
   if (!current) return null;
 
-  const modalSize = ModalSize[current.size || 'md'];
+  const modalSize = ModalSizeMap[current.size || 'md'];
 
   return (
     <Dialog

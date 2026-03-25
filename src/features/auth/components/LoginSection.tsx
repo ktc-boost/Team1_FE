@@ -1,6 +1,6 @@
 import KakaoLoginButton from '@/features/auth/components/KakaoLoginButton';
 import BubbleDecoration from '@/features/auth/components/BubbleDecoration';
-import { PRIVACY_URL, TERMS_URL } from '@/features/auth/constants/auth.constants';
+import { EXTERNAL_LINKS } from '@/shared/constants/external-links';
 
 interface LoginSectionProps {
   onKakaoLogin: () => void;
@@ -34,11 +34,11 @@ const LoginSection = ({ onKakaoLogin }: LoginSectionProps) => {
       <div className="bg-gray-200 p-4 md:p-5 rounded-xl">
         <p className="label2-regular sm:body1-regular text-gray-600 leading-relaxed text-center">
           로그인 시{' '}
-          <a href={TERMS_URL} className="text-boost-blue font-bold hover:underline">
+          <a href={EXTERNAL_LINKS.TERMS} className="text-boost-blue font-bold hover:underline">
             이용약관
           </a>{' '}
           및{' '}
-          <a href={PRIVACY_URL} className="text-boost-blue font-bold hover:underline">
+          <a href={EXTERNAL_LINKS.PRIVACY} className="text-boost-blue font-bold hover:underline">
             개인정보처리방침
           </a>
           에 동의하게 됩니다.

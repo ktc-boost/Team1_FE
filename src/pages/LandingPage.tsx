@@ -8,11 +8,13 @@ import {
   FEATURES,
   SECTION_INTERSECTION_THRESHOLD,
 } from '@/features/landing/constants/landingConstants';
+import InquireFloatingButton from '@/features/inquire/components/InquireFloatingButton';
 
 const LandingPage = () => {
   useEffect(() => {
     resetInitialHash();
     const observer = observeSections();
+    window.gtag('event', 'view_landing');
     return () => observer.disconnect();
   }, []);
 
@@ -67,9 +69,11 @@ const LandingPage = () => {
         <TeamSection />
       </section>
 
-      <section id="help" aria-label="도움말 섹션">
+      <section id="help" aria-label="도움말 섹션" className="w-full">
         <LandingFooter />
       </section>
+
+      <InquireFloatingButton />
     </div>
   );
 };

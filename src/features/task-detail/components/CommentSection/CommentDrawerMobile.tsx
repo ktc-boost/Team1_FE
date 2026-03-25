@@ -17,7 +17,12 @@ const CommentDrawerMobile = ({
   comments,
 }: CommentDrawerMobileProps) => {
   return (
-    <Drawer open={isCommentOpen} onOpenChange={setIsCommentOpen}>
+    <Drawer
+      open={isCommentOpen}
+      onOpenChange={(open) => {
+        setIsCommentOpen(open);
+      }}
+    >
       <DrawerContent className="h-[90vh]">
         <div className="flex-1 overflow-y-auto px-1">
           <CommentSection projectId={projectId!} taskId={taskId!} comments={comments} />

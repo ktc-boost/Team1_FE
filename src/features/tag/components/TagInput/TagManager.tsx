@@ -4,6 +4,9 @@ import { useDeleteTagMutation } from '@/features/tag/hooks/useDeleteTagMutation'
 import { useUpdateTagMutation } from '@/features/tag/hooks/useUpdateTagMutation';
 import TagInput from '@/features/tag/components/TagInput/TagInput';
 import type { Tag, TagList } from '@/features/tag/types/tagTypes';
+import { ApiError } from '@/shared/error/types/apiError.types';
+import { getErrorMessage } from '@/shared/error/utils/error.utils';
+import toast from 'react-hot-toast';
 
 interface TagManagerProps {
   projectId: string;
@@ -35,6 +38,10 @@ const TagManager = ({ projectId, selectedTags, onChangeTags }: TagManagerProps) 
         onSuccess: (createdTag) => {
           onChangeTags([...selectedTags, createdTag]);
         },
+        onError: (error) => {
+          if (error instanceof ApiError) toast.error(getErrorMessage(error));
+          else toast.error('태그 생성을 실패했어요.');
+        },
       },
     );
   };
@@ -48,8 +55,13 @@ const TagManager = ({ projectId, selectedTags, onChangeTags }: TagManagerProps) 
     const previous = [...selectedTags];
     handleRemoveTag(tagId);
     deleteTagMutation(tagId, {
-      onError: () => {
+      onSuccess: () => {
+        toast.success('태그가 삭제되었습니다.');
+      },
+      onError: (error) => {
         onChangeTags(previous);
+        if (error instanceof ApiError) toast.error(getErrorMessage(error));
+        else toast.error('태그 삭제를 실패했어요.');
       },
     });
   };
@@ -65,9 +77,12 @@ const TagManager = ({ projectId, selectedTags, onChangeTags }: TagManagerProps) 
         {
           onSuccess: (serverTag) => {
             onChangeTags(selectedTags.map((t) => (t.tagId === serverTag.tagId ? serverTag : t)));
+            toast.success('태그가 수정되었습니다.');
           },
-          onError: () => {
+          onError: (error) => {
             onChangeTags(previous);
+            if (error instanceof ApiError) toast.error(getErrorMessage(error));
+            else toast.error('태그 수정을 실패했어요.');
           },
         },
       );

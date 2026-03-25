@@ -50,7 +50,9 @@ const CommentItem = forwardRef<HTMLDivElement, CommentItemProps>(
       onCommentSelect?.(comment.fileInfo ?? null);
       setActivePinCommentId(comment.commentId);
       clearCurrentPin();
-      closeCommentDrawer();
+      if (comment.fileInfo) {
+        closeCommentDrawer();
+      }
     };
 
     return (

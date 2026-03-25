@@ -7,14 +7,16 @@ interface AppSidebarBaseItemProps {
   tooltip: string;
   children: ReactNode;
   isActive?: boolean;
+  onClick?: () => void;
 }
 
-const AppSidebarBaseItem = ({ tooltip, children, isActive }: AppSidebarBaseItemProps) => {
+const AppSidebarBaseItem = ({ tooltip, children, isActive, onClick }: AppSidebarBaseItemProps) => {
   const isMobile = useIsMobile();
 
   const SidebarItemButton = (
     <SidebarMenuButton
       isActive={isActive}
+      onClick={onClick}
       className="cursor-pointer focus:ring-transparent data-[active=true]:bg-gray-300"
     >
       {children}

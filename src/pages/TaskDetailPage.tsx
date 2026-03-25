@@ -11,6 +11,8 @@ import TaskDetailCommentSection from '@/features/task-detail/components/TaskDeta
 import CommentDrawerMobile from '@/features/task-detail/components/CommentSection/CommentDrawerMobile';
 import { useShallow } from 'zustand/react/shallow';
 import TaskReviewActionCollapsible from '@/features/task-detail/components/TaskReviewActionCollapsible';
+import { useIsMobile } from '@/shared/hooks/use-mobile';
+
 const TaskDetailPage = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
   const { data: comments = [] } = useCommentQuery(projectId!, taskId!);
@@ -25,6 +27,14 @@ const TaskDetailPage = () => {
 
   const extractedPins = useMemo(() => extractPinsFromComments(comments), [comments]);
   const [isReviewActionOpen, setIsReviewActionOpen] = useState(false);
+  const isMobile = useIsMobile();
+
+  useEffect(() => {
+    if (!isMobile && isCommentDrawerOpen) {
+      setCommentDrawerOpen(false);
+    }
+  }, [isMobile, isCommentDrawerOpen, setCommentDrawerOpen]);
+
   useEffect(() => {
     setPins(extractedPins);
   }, [extractedPins, setPins]);
@@ -49,14 +59,16 @@ const TaskDetailPage = () => {
         <TaskDetailCommentSection projectId={projectId!} taskId={taskId!} comments={comments} />
       </div>
 
-      <div className="sm:hidden">
-        <CommentDrawerMobile
-          isCommentOpen={isCommentDrawerOpen}
-          setIsCommentOpen={setCommentDrawerOpen}
-          projectId={projectId}
-          taskId={taskId}
-          comments={comments}
-        />
+      <div>
+        {isMobile && (
+          <CommentDrawerMobile
+            isCommentOpen={isCommentDrawerOpen}
+            setIsCommentOpen={setCommentDrawerOpen}
+            projectId={projectId}
+            taskId={taskId}
+            comments={comments}
+          />
+        )}
       </div>
     </div>
   );

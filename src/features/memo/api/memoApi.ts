@@ -1,5 +1,5 @@
 import type { Memo } from '@/features/memo/types/memoTypes';
-import api from '@/shared/api/axiosInstance';
+import { api } from '@/shared/api/axiosInstance';
 
 export const memoApi = {
   // 전체 메모 목록 조회

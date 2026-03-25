@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import type { CommentType } from '@/features/comment/types/commentTypes';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { COMMENT_QUERY_KEYS } from '@/features/comment/api/commentQueryKey';
-import toast from 'react-hot-toast';
 
 // 댓글 생성
 export const useCreateCommentMutation = (projectId: string, taskId: string) => {
@@ -68,12 +67,24 @@ export const useCreateCommentMutation = (projectId: string, taskId: string) => {
       queryClient.setQueryData<CommentType[]>(context.queryKey, (prev = []) =>
         prev.map((c) => (c.commentId === context.tempId ? newComment : c)),
       );
+      window.gtag('event', 'send_comment', {
+        project_id: projectId,
+        task_id: taskId,
+        comment_id: newComment.commentId,
+      });
+
+      if (newComment.fileInfo) {
+        window.gtag('event', 'send_pin_comment', {
+          project_id: projectId,
+          task_id: taskId,
+          comment_id: newComment.commentId,
+        });
+      }
       queryClient.invalidateQueries({ queryKey: context.queryKey });
     },
 
     onError: (_err, _vars, context) => {
       if (!context) return;
-      toast.error('댓글 등록에 실패했습니다');
       queryClient.setQueryData<CommentType[]>(context.queryKey, context.previous ?? []);
     },
   });

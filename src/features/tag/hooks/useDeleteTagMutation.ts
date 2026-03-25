@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
 import type { TagList } from '@/features/tag/types/tagTypes';
 import { tagApi } from '@/features/tag/api/tagApi';
 import { TAG_QUERY_KEYS } from '@/features/tag/constants/tagQueryKeys';
@@ -29,12 +28,10 @@ export const useDeleteTagMutation = (projectId: string) => {
       if (context) {
         queryClient.setQueryData(TAG_QUERY_KEYS.project(projectId), context.previousTags);
       }
-      toast.error('태그 삭제 중 오류가 발생했습니다.');
     },
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: TAG_QUERY_KEYS.project(projectId) });
-      toast.success('태그가 삭제되었습니다.');
     },
   });
 };

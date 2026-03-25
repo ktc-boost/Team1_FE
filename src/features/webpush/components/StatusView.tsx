@@ -19,11 +19,16 @@ const StatusView = ({
   textClass,
   children,
 }: StatusViewProps) => (
-  <div className="flex flex-col h-screen justify-center items-center text-center p-6 space-y-6">
-    <div className="relative inline-block">
-      <div className={cn('absolute inset-0 rounded-full blur-xs', blurClass)} />
-      <div className={cn('relative p-4 rounded-full w-fit mx-auto', bgClass)}>
-        <Icon className={cn('w-10 h-10', textClass)} />
+  <div className="flex min-h-[100dvh] flex-col items-center justify-center p-6 text-center space-y-6">
+    <div className="relative flex h-18 w-18 items-center justify-center">
+      <div className={cn('absolute inset-0 rounded-full blur-md', blurClass)} />
+      <div
+        className={cn(
+          'relative z-10 flex h-18 w-18 items-center justify-center rounded-full',
+          bgClass,
+        )}
+      >
+        <Icon className={cn('h-10 w-10', textClass)} />
       </div>
     </div>
 

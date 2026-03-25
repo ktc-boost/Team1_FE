@@ -11,19 +11,11 @@ interface ProjectCreateModalProps {
 
 const ProjectCreateModalContent = ({ onConfirm, onJoinClick }: ProjectCreateModalProps) => {
   const [projectName, setProjectName] = useState('');
-  const { resetModal, setLoading, backModal, stack } = useModalStore();
+  const { resetModal, backModal, stack } = useModalStore();
   const isLoading = stack[stack.length - 1]?.isLoading ?? false;
 
   const handleConfirm = async () => {
-    setLoading(true);
-    try {
-      await onConfirm(projectName);
-      resetModal();
-    } catch (error) {
-      console.error('프로젝트 생성 실패 :', error);
-    } finally {
-      setLoading(false);
-    }
+    await onConfirm(projectName);
   };
 
   return (

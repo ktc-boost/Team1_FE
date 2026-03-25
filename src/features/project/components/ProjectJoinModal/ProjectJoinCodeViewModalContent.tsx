@@ -1,11 +1,13 @@
+import toast from 'react-hot-toast';
+import { Copy, RefreshCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/shared/components/shadcn/button';
 import { DialogFooter } from '@/shared/components/shadcn/dialog';
 import useModalStore from '@/shared/store/useModalStore';
-import toast from 'react-hot-toast';
-import { Copy, RefreshCw } from 'lucide-react';
-import { useJoinCode } from '@/features/project/hooks/domain/useJoinCode';
+import { ApiError } from '@/shared/error/types/apiError.types';
+import { getErrorMessage } from '@/shared/error/utils/error.utils';
 import { formatSecondsToHHMMSS, getRemainingSeconds } from '@/shared/utils/dateUtils';
+import { useJoinCode } from '@/features/project/hooks/domain/useJoinCode';
 import { useCreateJoinCodeMutation } from '@/features/project/hooks/mutation/useCreateJoinCodeMutation';
 
 interface ProjectJoinCodeViewModalContentProps {
@@ -51,18 +53,17 @@ const ProjectJoinCodeViewModalContent = ({ projectId }: ProjectJoinCodeViewModal
           loadJoinCode();
           toast.success('새 참여 코드가 발급되었습니다!');
         },
-        onError: (err) => {
-          toast.error('참여 코드 재발급에 실패했습니다.');
-          console.error('참여 코드 재발급 실패:', err);
+        onError: (error) => {
+          if (error instanceof ApiError) toast.error(getErrorMessage(error));
+          else toast.error('참여 코드 재발급을 실패했어요.');
         },
         onSettled: () => {
           setIsCreating(false);
         },
       });
-    } catch (err) {
+    } catch {
       setIsCreating(false);
-      toast.error('참여 코드 재발급 중 에러가 발생했습니다.');
-      console.error(err);
+      toast.error('예상치 못한 오류가 발생했습니다.');
     }
   };
 

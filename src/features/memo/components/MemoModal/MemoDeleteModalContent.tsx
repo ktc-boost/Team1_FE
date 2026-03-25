@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast';
-import type { NavigateFunction } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/app/routes/routeHelpers';
 import { Button } from '@/shared/components/shadcn/button';
 import MovingBoo from '@/shared/components/ui/MovingBoo';
@@ -10,18 +10,14 @@ import { useProjectStore } from '@/features/project/store/useProjectStore';
 
 interface MemoDeleteModalContentProps {
   memoIds: string[];
-  navigate: NavigateFunction;
   onDeleteSuccess?: (deletedIds: string[]) => void;
 }
 
-const MemoDeleteModalContent = ({
-  memoIds,
-  navigate,
-  onDeleteSuccess,
-}: MemoDeleteModalContentProps) => {
+const MemoDeleteModalContent = ({ memoIds, onDeleteSuccess }: MemoDeleteModalContentProps) => {
   const { projectData } = useProjectStore();
   const { resetModal } = useModal();
   const { mutateAsync: deleteMemo, isPending } = useDeleteMemoMutation(projectData.id);
+  const navigate = useNavigate();
 
   if (!projectData) return null;
 

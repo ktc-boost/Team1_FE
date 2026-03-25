@@ -12,6 +12,7 @@ on:
       - 'test/**'
       - 'deploy/**'
       - 'hotfix/**'
+      - 'chore/**'
 
       - 'main'
   pull_request:

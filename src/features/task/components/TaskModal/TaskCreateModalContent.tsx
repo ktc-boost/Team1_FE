@@ -11,6 +11,8 @@ import { useCreateTaskForm } from '@/features/task/hooks/form/useCreateTaskForm'
 import TaskFormField from '@/features/task/components/TaskModal/TaskFormField';
 import { getTagIds } from '@/features/tag/utils/tagUtils';
 import type { Tag } from '@/features/tag/types/tagTypes';
+import { getErrorMessage } from '@/shared/error/utils/error.utils';
+import { ApiError } from '@/shared/error/types/apiError.types';
 
 interface TaskCreateModalContentProps {
   isMyTask: boolean;
@@ -39,15 +41,16 @@ const TaskCreateModalContent = ({
         await createTask(payload);
         toast.success('할 일이 생성되었습니다!');
         resetModal();
-      } catch (err) {
-        console.log(err);
-        toast.error('할 일 생성에 실패했습니다');
+      } catch (error) {
+        if (error instanceof ApiError) toast.error(getErrorMessage(error));
+        else toast.error('할 일 생성을 실패했습니다.');
+        throw error;
       }
     },
   );
 
   const selectedProjectId = form.watch('projectId') || propProjectId;
-  const { mutate: createTask } = useCreateTaskMutation(selectedProjectId ?? '');
+  const { mutateAsync: createTask } = useCreateTaskMutation(selectedProjectId ?? '');
   const { data: projectMembers } = useProjectMembersQuery(selectedProjectId);
 
   useEffect(() => {

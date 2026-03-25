@@ -1,4 +1,4 @@
-import api from '@/shared/api/axiosInstance';
+import { api } from '@/shared/api/axiosInstance';
 import type { TagResponse } from '@/features/tag/types/tagTypes';
 
 export const tagApi = {

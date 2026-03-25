@@ -1,24 +1,23 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { isAxiosError } from 'axios';
 import { projectMembershipApi } from '@/features/project/api/projectMembershipApi';
 import type { Project } from '@/features/project/types/projectTypes';
 import { PROJECT_QUERY_KEYS } from '@/features/project/constants/projectQueryKeys';
-
-interface JoinProjectError {
-  type?: string;
-}
+import { ApiError } from '@/shared/error/types/apiError.types';
 
 interface UseJoinProjectMutationOptions {
   onSuccess?: (project: Project) => void;
-  onError?: (error: JoinProjectError) => void;
+  onError?: (error: ApiError) => void;
 }
 
 // 프로젝트 참여
 export const useJoinProjectMutation = (options?: UseJoinProjectMutationOptions) => {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (joinCode: string) => projectMembershipApi.joinProject(joinCode),
+  type JoinProjectResponse = Awaited<ReturnType<typeof projectMembershipApi.joinProject>>;
+  type JoinProjectContext = { previousProjects?: Project[] };
+
+  return useMutation<JoinProjectResponse, ApiError, string, JoinProjectContext>({
+    mutationFn: (joinCode) => projectMembershipApi.joinProject(joinCode),
 
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: PROJECT_QUERY_KEYS.myProjects() });
@@ -41,7 +40,10 @@ export const useJoinProjectMutation = (options?: UseJoinProjectMutationOptions) 
       queryClient.setQueryData<Project[]>(PROJECT_QUERY_KEYS.myProjects(), (old) =>
         old ? [...old, project] : [project],
       );
-
+      window.gtag?.('event', 'join_project', {
+        project_id: joinedProject.projectId,
+        role: joinedProject.role,
+      });
       options?.onSuccess?.(project);
     },
 
@@ -50,8 +52,7 @@ export const useJoinProjectMutation = (options?: UseJoinProjectMutationOptions) 
         queryClient.setQueryData(PROJECT_QUERY_KEYS.myProjects(), context.previousProjects);
       }
 
-      if (isAxiosError(error)) options?.onError?.({ type: error.response?.data?.type });
-      else options?.onError?.({});
+      options?.onError?.(error);
     },
 
     onSettled: () => {

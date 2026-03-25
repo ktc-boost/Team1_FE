@@ -1,5 +1,8 @@
 import type { ReactNode } from 'react';
 
+type ModalType = 'confirm' | 'alert' | 'custom' | 'select';
+type ModalSize = 'sm' | 'md' | 'lg' | 'lgPlus' | 'xl';
+
 export type ModalButton = {
   text: string;
   onClick: () => void | Promise<void>;
@@ -19,8 +22,8 @@ export type ModalButton = {
 };
 
 export type ModalPayload = {
-  type: 'confirm' | 'alert' | 'custom' | 'select';
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  type: ModalType;
+  size?: ModalSize;
   title: string;
   description?: string;
   content?: ReactNode;
@@ -31,9 +34,10 @@ export type ModalPayload = {
   showCloseButton?: boolean;
 };
 
-export const ModalSize: Record<string, string> = {
+export const ModalSizeMap: Record<string, string> = {
   sm: 'sm:max-w-[300px]',
   md: 'sm:max-w-[500px]',
   lg: 'sm:max-w-[700px]',
+  lgPlus: 'sm:max-w-[800px]',
   xl: 'sm:max-w-[900px]',
 };

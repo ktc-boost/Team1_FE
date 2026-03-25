@@ -1,8 +1,8 @@
-import { useAuthStore } from '@/features/auth/store/useAuthStore';
-import axios from 'axios';
-import { handleUnauthorizedRequest } from '@/shared/api/interceptors/handleUnauthorizedRequest';
-import { ApiError } from '@/shared/api/error/ApiError';
 import * as Sentry from '@sentry/react';
+import axios, { isAxiosError } from 'axios';
+import { handleUnauthorizedRequest } from '@/shared/api/interceptors/handleUnauthorizedRequest';
+import { ApiError } from '@/shared/error/types/apiError.types';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -20,39 +20,46 @@ export const apiPublic = axios.create({
   },
 });
 
-api.interceptors.request.use(async (config) => {
+api.interceptors.request.use((config) => {
   const { accessToken } = useAuthStore.getState();
-  if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
-  }
+
+  if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
 
   return config;
 });
+
 api.interceptors.response.use(
   (res) => res,
   async (error) => {
     const originalRequest = error.config;
+
+    if (!isAxiosError(error)) {
+      Sentry.captureException(error);
+      throw error;
+    }
+
     if (!error.response) {
       Sentry.captureException(error, {
         tags: { type: 'network_error' },
         extra: { url: originalRequest?.url },
       });
-      throw new ApiError('NETWORK_ERROR', 0);
+      throw new ApiError(error);
     }
-    if (error.response.status === 401 && !originalRequest._retry) {
+
+    const status = error.response.status;
+
+    if (status === 401 && !originalRequest._retry)
       return handleUnauthorizedRequest(originalRequest);
-    }
-    if (error.response.status >= 500) {
+
+    if (status >= 500) {
       Sentry.withScope((scope) => {
         scope.setTag('type', 'server_error');
         scope.setExtra('url', originalRequest?.url);
-        scope.setExtra('status', error.response?.status);
+        scope.setExtra('status', status);
         Sentry.captureException(error);
       });
-      throw new ApiError('SERVER_ERROR', 500);
     }
-    throw error;
+
+    throw new ApiError(error);
   },
 );
-
-export default api;
