@@ -3,7 +3,7 @@ import type {
   NotificationCountsResponse,
   NotificationsResponse,
 } from '@/features/notifications/types/NotificationsType';
-import api from '@/shared/api/axiosInstance';
+import { api } from '@/shared/api/axiosInstance';
 
 export const notificationsApi = {
   fetchNotifications: async (cursor?: string, limit = 6): Promise<NotificationsResponse> => {

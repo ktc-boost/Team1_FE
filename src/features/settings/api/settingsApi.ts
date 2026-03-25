@@ -1,4 +1,4 @@
-import api from '@/shared/api/axiosInstance';
+import { api } from '@/shared/api/axiosInstance';
 import type { MyInfoResponse } from '@/features/settings/types/settingsTypes';
 import type { AvatarInfo } from '@/features/user/types/userTypes';
 

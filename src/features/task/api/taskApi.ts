@@ -8,7 +8,7 @@ import type {
 } from '@/features/task/types/task.query.types';
 import type { TaskDetail, TaskListItem, TaskStatus } from '@/features/task/types/task.domain.types';
 import type { CreateTaskInput, UpdateTaskInput } from '@/features/task/schemas/taskSchema';
-import api from '@/shared/api/axiosInstance';
+import { api } from '@/shared/api/axiosInstance';
 import { SORT_BY, DIRECTION } from '@/features/board/constants/board.sort.constants';
 import type { Direction, SortBy } from '@/features/board/types/board.sort.types';
 
