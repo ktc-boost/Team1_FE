@@ -13,8 +13,7 @@ import { FILE_HEADER_HEIGHT, FILE_ROW_HEIGHT } from '@/features/file/constants/f
 const FileSection = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const tableContainerRef = useRef<HTMLDivElement>(null);
-  const { data, isLoading, error } = useProjectFilesQuery(projectId!);
-  const allFiles = data?.pages.flatMap((page) => page.files) ?? [];
+  const { data: allFiles = [], isLoading, error } = useProjectFilesQuery(projectId!);
   const { currentPage, setCurrentPage, pageSize, pageCount, currentData } = usePagination({
     data: allFiles,
     containerRef: tableContainerRef,
@@ -42,11 +41,7 @@ const FileSection = () => {
           <TableBody>
             {currentData.length > 0 ? (
               currentData.map((file, index) => (
-                <FileTableRow
-                  key={file.fileId}
-                  file={file}
-                  index={currentPage * pageSize + index}
-                />
+                <FileTableRow key={file.id} file={file} index={currentPage * pageSize + index} />
               ))
             ) : (
               <FileTableEmpty />

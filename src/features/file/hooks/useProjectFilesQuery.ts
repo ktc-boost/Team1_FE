@@ -1,14 +1,11 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { fileApi } from '@/features/file/api/fileApi';
-import type { ProjectFilesResponse } from '@/features/file/types/fileApiTypes';
+import type { ProjectFile } from '@/features/file/types/fileApiTypes';
 
 export const useProjectFilesQuery = (projectId: string) => {
-  return useInfiniteQuery<ProjectFilesResponse, Error>({
+  return useQuery<ProjectFile[], Error>({
     queryKey: ['projectFiles', projectId],
-    queryFn: ({ pageParam }) =>
-      fileApi.fetchFiles(projectId, typeof pageParam === 'string' ? pageParam : undefined, 50),
-    getNextPageParam: (lastPage) => (lastPage.hasNext ? lastPage.nextCursor : undefined),
+    queryFn: () => fileApi.fetchFiles(projectId),
     enabled: !!projectId,
-    initialPageParam: undefined,
   });
 };

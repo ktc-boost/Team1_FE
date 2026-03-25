@@ -8,7 +8,7 @@ export interface FileDownloadUrlResponse {
 }
 
 export interface ProjectFile {
-  fileId: string;
+  id: string;
   filename: string;
   contentType: string;
   type: string;

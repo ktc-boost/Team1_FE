@@ -23,7 +23,7 @@ const FileTableRow = ({ file, index }: FileTableRowProps) => {
   const mobileHiddenClass = 'hidden md:table-cell';
   const commonCellClass = '!label2-regular sm:!body2-regular text-gray-600';
   const handleNavigate = () => navigate(ROUTES.TASK_DETAIL(projectData.id, file.taskId));
-  const handleDownload = () => downloadFile({ fileId: file.fileId, fileName: file.filename });
+  const handleDownload = () => downloadFile({ fileId: file.id, fileName: file.filename });
   return (
     <TableRow className="bg-white border-b border-gray-100 hover:bg-boost-blue/5 transition-colors duration-150 h-[54px]">
       <TableCell className={cn('pl-6 text-center', commonCellClass)}>{index + 1}</TableCell>
