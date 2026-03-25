@@ -39,8 +39,6 @@ export const useKakaoLoginMutation = () => {
         window.gtag('event', 'sign_up');
         navigate(ROUTE_PATH.AVATAR);
       } else if (from) navigate(from, { replace: true });
-      if (isNewUser) navigate(ROUTE_PATH.AVATAR);
-      else if (from) navigate(from, { replace: true });
       else navigate(ROUTE_PATH.MY_TASK);
 
       localStorage.removeItem('login_from');
