@@ -11,18 +11,25 @@ import type { AiCommentSide } from '@/features/ai-transform/types/ai-transform.u
 
 const AiTransformSelectModalContent = () => {
   const { transformedText, originalText, setSelectedText } = useAiTransformStore();
-  const [hoveredSide, setHoveredSide] = useState<AiCommentSide>(AI_COMMENT_SIDE.DEFAULT);
-  const { resetModal } = useModal();
   const { setIsAnonymous, setPersona } = useTaskDetailStore();
+  const { resetModal } = useModal();
+
+  const [hoveredSide, setHoveredSide] = useState<AiCommentSide>(AI_COMMENT_SIDE.DEFAULT);
+
   const handleSelect = (type: AiCommentSide) => {
     const text = type === AI_COMMENT_SIDE.ORIGIN ? originalText : transformedText;
+
     if (!text) return;
+
     setSelectedText(text);
+
     if (type === AI_COMMENT_SIDE.TRANSFORM) {
       setIsAnonymous(true);
       setPersona(PERSONA.BOO);
+
       toast.success('댓글이 반영되었어요!');
     }
+
     resetModal();
   };
 
