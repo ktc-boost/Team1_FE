@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import type {
   AiTransformRequest,
   AiTransformResponse,
-} from '@/features/ai-transform/types/aiTransformTypes';
+} from '@/features/ai-transform/types/ai-transform.query.types';
 import { aiTransformApi } from '@/features/ai-transform/api/aiTransformApi';
 
 export const useAiTransformMutation = (
