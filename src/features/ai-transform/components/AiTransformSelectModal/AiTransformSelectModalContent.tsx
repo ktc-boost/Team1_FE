@@ -15,10 +15,10 @@ const AiTransformSelectModalContent = () => {
   const { resetModal } = useModal();
 
   const [hoveredSide, setHoveredSide] = useState<AiCommentSide>(AI_COMMENT_SIDE.DEFAULT);
+  const handleSelect = (e: React.MouseEvent, type: AiCommentSide) => {
+    e.stopPropagation();
 
-  const handleSelect = (type: AiCommentSide) => {
     const text = type === AI_COMMENT_SIDE.ORIGIN ? originalText : transformedText;
-
     if (!text) return;
 
     setSelectedText(text);
@@ -26,7 +26,6 @@ const AiTransformSelectModalContent = () => {
     if (type === AI_COMMENT_SIDE.TRANSFORM) {
       setIsAnonymous(true);
       setPersona(PERSONA.BOO);
-
       toast.success('댓글이 반영되었어요!');
     }
 
@@ -41,7 +40,7 @@ const AiTransformSelectModalContent = () => {
           text={originalText}
           isHovered={hoveredSide === AI_COMMENT_SIDE.ORIGIN}
           onHover={setHoveredSide}
-          onSelect={() => handleSelect(AI_COMMENT_SIDE.ORIGIN)}
+          onSelect={(e) => handleSelect(e, AI_COMMENT_SIDE.ORIGIN)}
         />
 
         <AiTransformGuide hoveredSide={hoveredSide} />
@@ -51,7 +50,7 @@ const AiTransformSelectModalContent = () => {
           text={transformedText}
           isHovered={hoveredSide === AI_COMMENT_SIDE.TRANSFORM}
           onHover={setHoveredSide}
-          onSelect={() => handleSelect(AI_COMMENT_SIDE.TRANSFORM)}
+          onSelect={(e) => handleSelect(e, AI_COMMENT_SIDE.TRANSFORM)}
         />
       </div>
     </div>

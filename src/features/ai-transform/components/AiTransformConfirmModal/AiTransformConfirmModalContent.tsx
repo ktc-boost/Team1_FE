@@ -48,7 +48,8 @@ const AiTransformConfirmModalContent = () => {
     }
   };
 
-  const handleCancelClick = () => {
+  const handleCancelClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     resetModal();
     useAiTransformStore.getState().reset();
   };
