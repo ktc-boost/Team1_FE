@@ -41,7 +41,11 @@ const FileSection = () => {
           <TableBody>
             {currentData.length > 0 ? (
               currentData.map((file, index) => (
-                <FileTableRow key={file.id} file={file} index={currentPage * pageSize + index} />
+                <FileTableRow
+                  key={file.fileId}
+                  file={file}
+                  index={currentPage * pageSize + index}
+                />
               ))
             ) : (
               <FileTableEmpty />
