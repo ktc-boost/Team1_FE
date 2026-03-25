@@ -1,4 +1,3 @@
-import { isAxiosError } from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { projectApi } from '@/features/project/api/projectApi';
 import type { Project } from '@/features/project/types/projectTypes';
@@ -28,15 +27,9 @@ export const useDeleteProjectMutation = (options?: UseDeleteProjectMutationOptio
       return { previousProjects };
     },
 
-    onError: (error, __, context) => {
-      console.error('프로젝트 삭제 실패:', error);
+    onError: (_, __, context) => {
       if (context?.previousProjects) {
         queryClient.setQueryData(PROJECT_QUERY_KEYS.myProjects(), context.previousProjects);
-      }
-
-      if (options?.onError) {
-        if (isAxiosError(error)) options.onError(error);
-        else console.error('AxiosError가 아닌 에러 발생', error);
       }
     },
 

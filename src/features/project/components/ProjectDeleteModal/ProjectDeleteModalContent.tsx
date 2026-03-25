@@ -4,6 +4,8 @@ import { ROUTE_PATH } from '@/app/routes/routePaths';
 import { useModal } from '@/shared/hooks/useModal';
 import { Button } from '@/shared/components/shadcn/button';
 import MovingBoo from '@/shared/components/ui/MovingBoo';
+import { ApiError } from '@/shared/error/types/apiError.types';
+import { getErrorMessage } from '@/shared/error/utils/error.utils';
 import { useProjectStore } from '@/features/project/store/useProjectStore';
 import { useDeleteProjectMutation } from '@/features/project/hooks/mutation/useDeleteProjectMutation';
 import ProjectDeleteRotatingText from '@/features/project/components/ProjectDeleteModal/ProjectDeleteRotatingText';
@@ -19,7 +21,10 @@ const ProjectDeleteModalContent = () => {
       toast.success('프로젝트가 삭제되었습니다.');
       navigate(ROUTE_PATH.MY_TASK);
     },
-    onError: () => toast.error('프로젝트 삭제를 실패했습니다.'),
+    onError: (error) => {
+      if (error instanceof ApiError) toast.error(getErrorMessage(error));
+      else toast.error('프로젝트 삭제를 실패했어요.');
+    },
   });
 
   if (!projectData) {

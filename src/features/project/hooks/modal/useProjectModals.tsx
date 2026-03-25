@@ -2,6 +2,9 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/app/routes/routeHelpers';
 import { useModal } from '@/shared/hooks/useModal';
+import { getErrorMessage } from '@/shared/error/utils/error.utils';
+import { ApiError } from '@/shared/error/types/apiError.types';
+import useModalStore from '@/shared/store/useModalStore';
 import type { MemberWithBoosting } from '@/features/project/types/projectTypes';
 import { useCreateProjectMutation } from '@/features/project/hooks/mutation/useCreateProjectMutation';
 import { useJoinProject } from '@/features/project/hooks/domain/useJoinProject';
@@ -13,6 +16,8 @@ import ProjectKickMemberModalContent from '@/features/project/components/Project
 
 export const useProjectModals = () => {
   const { showCustom } = useModal();
+  const { resetModal, setLoading } = useModalStore();
+
   const { joinProject } = useJoinProject();
   const { mutateAsync: createProjectMutation } = useCreateProjectMutation();
   const navigate = useNavigate();
@@ -24,12 +29,17 @@ export const useProjectModals = () => {
       content: (
         <ProjectCreateModalContent
           onConfirm={async (projectName) => {
+            setLoading(true);
             try {
               const createdProject = await createProjectMutation(projectName);
-              toast.success('프로젝트가 성공적으로 생성되었습니다!');
+              toast.success('프로젝트가 생성되었습니다!');
+              resetModal();
               navigate(ROUTES.PROJECT_BOARD(createdProject.id));
-            } catch {
-              toast.error('프로젝트 생성에 실패했어요.');
+            } catch (error) {
+              if (error instanceof ApiError) toast.error(getErrorMessage(error));
+              else toast.error('프로젝트 생성을 실패했어요.');
+            } finally {
+              setLoading(false);
             }
           }}
           onJoinClick={showJoinProjectModal}

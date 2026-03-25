@@ -1,11 +1,11 @@
-import { useDeleteAccountMutation } from '@/features/settings/hooks/useDeleteAccountMutation';
-import cryingBoo from '@/shared/assets/images/boost/boo-crying.png';
-import { Button } from '@/shared/components/shadcn/button';
-import { ERROR } from '@/shared/constants/errorTypes';
-import { useModal } from '@/shared/hooks/useModal';
-import { isAxiosError } from 'axios';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
+import cryingBoo from '@/shared/assets/images/boost/boo-crying.png';
+import { Button } from '@/shared/components/shadcn/button';
+import { ApiError } from '@/shared/error/types/apiError.types';
+import { getErrorMessage } from '@/shared/error/utils/error.utils';
+import { useModal } from '@/shared/hooks/useModal';
+import { useDeleteAccountMutation } from '@/features/settings/hooks/useDeleteAccountMutation';
 
 const DeleteAccountModalContent = () => {
   const { resetModal } = useModal();
@@ -16,13 +16,9 @@ const DeleteAccountModalContent = () => {
       await deleteAccount();
       resetModal();
     } catch (error) {
-      if (
-        isAxiosError(error) &&
-        error.response?.data?.type === ERROR.USER.HAS_OWNED_PROJECTS.type
-      ) {
-        toast.error(ERROR.USER.HAS_OWNED_PROJECTS.detail);
-        resetModal();
-      }
+      if (error instanceof ApiError) toast.error(getErrorMessage(error));
+      else toast.error('알 수 없는 오류가 발생했습니다.');
+      resetModal();
     }
   };
 

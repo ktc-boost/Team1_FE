@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { isAxiosError } from 'axios';
 import { getRemainingSeconds, formatSecondsMMSS } from '@/shared/utils/dateUtils';
 import MovingBoo from '@/shared/components/ui/MovingBoo';
-import { ERROR } from '@/shared/constants/errorTypes';
+import { ERROR } from '@/shared/error/constants/error.constants';
+import { getErrorMessage } from '@/shared/error/utils/error.utils';
+import { ApiError } from '@/shared/error/types/apiError.types';
 import { useUpdateTaskStatusMutation } from '@/features/task/hooks/mutation/useUpdateTaskStatusMutation';
 import { useRequestReviewMutation } from '@/features/task/hooks/mutation/useRequestReviewMutation';
 import { TASK_STATUS } from '@/features/task/constants/task.domain.constants';
@@ -35,39 +36,57 @@ export const useAssigneeTask = ({
     if (uiStatus === TASK_STATUS.REVIEW) {
       try {
         await requestReviewMutate();
-      } catch (err) {
-        if (isAxiosError(err) && err.response?.data?.type === ERROR.TASK.RE_REVIEW_COOLDOWN.type) {
-          if (!reReviewRequestedAt) return;
-          const availableAt = new Date(new Date(reReviewRequestedAt).getTime() + 10 * 60 * 1000);
-          const remainingSeconds = getRemainingSeconds(availableAt);
+        toast.success('재검토 요청이 완료되었습니다!', { position: 'top-center' });
+      } catch (error) {
+        if (error instanceof ApiError) {
+          if (error.type === ERROR.TASK.RE_REVIEW_COOLDOWN.type) {
+            if (!reReviewRequestedAt) return;
 
-          if (remainingSeconds > 0) {
-            toast(
-              <div className="flex flex-col">
-                <MovingBoo size={24} />
-                <div className="text-center">
-                  다음 재검토 요청 가능 시간까지
-                  <br />
-                  <strong>{formatSecondsMMSS(remainingSeconds)}</strong> 남았습니다.
-                </div>
-              </div>,
-              { position: 'top-center' },
-            );
+            const availableAt = new Date(new Date(reReviewRequestedAt).getTime() + 10 * 60 * 1000);
+            const remainingSeconds = getRemainingSeconds(availableAt);
+
+            if (remainingSeconds > 0) {
+              toast(
+                <div className="flex flex-col items-center">
+                  <MovingBoo size={24} />
+                  <div className="text-center">
+                    다음 재검토 요청 가능 시간까지
+                    <br />
+                    <strong>{formatSecondsMMSS(remainingSeconds)}</strong> 남았습니다.
+                  </div>
+                </div>,
+                { position: 'top-center' },
+              );
+            }
+            return;
           }
-          return;
+          toast.error(getErrorMessage(error));
+        } else {
+          toast.error('예상치 못한 오류가 발생했습니다.');
         }
-        toast.error('검토 요청 중 오류가 발생했습니다.');
       }
     } else {
-      setUiStatus(TASK_STATUS.REVIEW);
-      await updateTaskStatusMutate({ projectId, taskId, status: TASK_STATUS.REVIEW });
-      toast.success('검토 요청이 완료되었습니다!', { position: 'top-center' });
+      try {
+        setUiStatus(TASK_STATUS.REVIEW);
+        await updateTaskStatusMutate({ projectId, taskId, status: TASK_STATUS.REVIEW });
+        toast.success('검토 요청이 완료되었습니다!', { position: 'top-center' });
+      } catch (error) {
+        if (error instanceof ApiError) toast.error(getErrorMessage(error));
+        else toast.error('검토 요청 중 오류가 발생했습니다.');
+
+        setUiStatus(taskStatus);
+      }
     }
   };
 
   const handleCompleteTask = async () => {
-    await updateTaskStatusMutate({ projectId, taskId, status: TASK_STATUS.DONE });
-    setUiStatus(TASK_STATUS.DONE);
+    try {
+      await updateTaskStatusMutate({ projectId, taskId, status: TASK_STATUS.DONE });
+      setUiStatus(TASK_STATUS.DONE);
+    } catch (error) {
+      if (error instanceof ApiError) toast.error(getErrorMessage(error));
+      else toast.error('알 수 없는 오류가 발생했습니다.');
+    }
   };
 
   const getBadgeClass = () => {

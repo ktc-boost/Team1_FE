@@ -1,17 +1,17 @@
-import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { taskApi } from '@/features/task/api/taskApi';
 import { TASK_QUERY_KEYS } from '@/features/task/constants/task.query.constants';
 import type { UpdateTaskInput } from '@/features/task/schemas/taskSchema';
 import { mapTaskListItemToDetail } from '@/features/task/utils/taskUtils';
 import type { TaskListItem, TaskDetail } from '@/features/task/types/task.domain.types';
+import type { ApiError } from '@/shared/error/types/apiError.types';
 
 export const useUpdateTaskMutation = (projectId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation<
     TaskListItem,
-    Error,
+    ApiError,
     { taskId: string; taskData: UpdateTaskInput },
     { previousTask?: TaskDetail }
   >({
@@ -46,7 +46,6 @@ export const useUpdateTaskMutation = (projectId: string) => {
           context.previousTask,
         );
       }
-      toast.error('할 일 수정에 실패했습니다.');
     },
 
     onSuccess: (updatedTask) => {
