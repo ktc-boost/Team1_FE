@@ -14,7 +14,16 @@ function App() {
         <TooltipProvider>
           <AppInitializer>
             <AppRouter />
-            <Toaster position="top-right" reverseOrder={false} />
+            <Toaster
+              position="top-right"
+              reverseOrder={false}
+              toastOptions={{
+                style: {
+                  maxWidth: '400px',
+                  width: 'fit-content',
+                },
+              }}
+            />
           </AppInitializer>
         </TooltipProvider>
       </QueryClientProvider>

@@ -1,4 +1,4 @@
-import api, { apiPublic } from '@/shared/api/axiosInstance';
+import { api, apiPublic } from '@/shared/api/axiosInstance';
 import type {
   KakaoLoginRequest,
   KakaoLoginResponse,

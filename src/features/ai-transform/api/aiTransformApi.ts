@@ -1,4 +1,5 @@
-import api from '@/shared/api/axiosInstance';
+import { api } from '@/shared/api/axiosInstance';
+
 import type {
   AiTransformRequest,
   AiTransformResponse,

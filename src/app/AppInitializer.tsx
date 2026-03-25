@@ -1,10 +1,11 @@
-import axios from 'axios';
 import * as Sentry from '@sentry/react';
 import { useEffect, useRef, type ReactNode } from 'react';
+import { ROUTE_PATH } from '@/app/routes/routePaths';
+import SplashScreen from '@/pages/SplashScreen';
+import { ApiError } from '@/shared/error/types/apiError.types';
 import { fetchRefreshToken } from '@/features/auth/api/authApi';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { useMyInfoQuery } from '@/features/settings/hooks/useMyInfoQuery';
-import SplashScreen from '@/pages/SplashScreen';
 import type { User } from '@/features/user/types/userTypes';
 
 interface AppInitializerProps {
@@ -13,15 +14,24 @@ interface AppInitializerProps {
 
 const AppInitializer = ({ children }: AppInitializerProps) => {
   const { setAuth, clearAuth, isInitializing, setIsInitializing } = useAuthStore();
-  const hasInit = useRef(false);
   const { refetch: refetchUser } = useMyInfoQuery();
+
+  const hasInit = useRef(false);
 
   useEffect(() => {
     if (hasInit.current) return;
     hasInit.current = true;
 
     const pathname = window.location.pathname;
-    const publicPaths = ['/', '/login', '/error', '/auth/callback', '/alarm/permission'];
+
+    const publicPaths = [
+      ROUTE_PATH.MAIN,
+      ROUTE_PATH.LOGIN,
+      ROUTE_PATH.ERROR,
+      ROUTE_PATH.CALLBACK,
+      ROUTE_PATH.ALARM_SETUP_MOBILE,
+    ];
+
     const isPublic = publicPaths.includes(pathname);
 
     if (isPublic) {
@@ -46,7 +56,7 @@ const AppInitializer = ({ children }: AppInitializerProps) => {
           setAuth({ user });
         }
       } catch (error) {
-        if (axios.isAxiosError(error) && error.response?.status === 401) {
+        if (error instanceof ApiError && error.status === 401) {
           console.error('리프레시 토큰 만료 또는 사용자 정보 조회 실패:', error);
           clearAuth();
         } else {
@@ -65,9 +75,7 @@ const AppInitializer = ({ children }: AppInitializerProps) => {
     init();
   }, [setAuth, clearAuth, setIsInitializing, refetchUser]);
 
-  if (isInitializing) {
-    return <SplashScreen />;
-  }
+  if (isInitializing) return <SplashScreen />;
 
   return <>{children}</>;
 };

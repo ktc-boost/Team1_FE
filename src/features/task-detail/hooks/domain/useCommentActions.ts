@@ -1,4 +1,7 @@
+import toast from 'react-hot-toast';
 import { useShallow } from 'zustand/react/shallow';
+import { getErrorMessage } from '@/shared/error/utils/error.utils';
+import { ApiError } from '@/shared/error/types/apiError.types';
 import { useCreateCommentMutation } from '@/features/comment/hooks/useCreateCommentMutation';
 import { useDeleteCommentMutation } from '@/features/comment/hooks/useDeleteCommentMutation';
 import { useUpdateCommentMutation } from '@/features/comment/hooks/useUpdateCommentMutation';
@@ -38,7 +41,16 @@ export const useCommentActions = (projectId: string, taskId: string) => {
       currentPin,
     });
 
-    createComment({ commentData: payload }, { onSuccess: clearCurrentPin });
+    createComment(
+      { commentData: payload },
+      {
+        onSuccess: clearCurrentPin,
+        onError: (error) => {
+          if (error instanceof ApiError) toast.error(getErrorMessage(error));
+          else toast.error('댓글 생성을 실패했어요.');
+        },
+      },
+    );
   };
 
   const handleCommentUpdate = (
@@ -47,14 +59,25 @@ export const useCommentActions = (projectId: string, taskId: string) => {
   ) => {
     if (isBlank(data.content)) return commentToast.emptyContent();
 
-    updateComment({
-      commentId,
-      updatedData: {
-        content: data.content,
-        isAnonymous: data.isAnonymous,
-        fileInfo: currentPin,
+    updateComment(
+      {
+        commentId,
+        updatedData: {
+          content: data.content,
+          isAnonymous: data.isAnonymous,
+          fileInfo: currentPin,
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          toast.success('댓글이 수정되었습니다.');
+        },
+        onError: (error) => {
+          if (error instanceof ApiError) toast.error(getErrorMessage(error));
+          else toast.error('댓글 수정을 실패했어요.');
+        },
+      },
+    );
   };
 
   return {

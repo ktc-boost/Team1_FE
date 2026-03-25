@@ -1,13 +1,15 @@
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { Pencil } from 'lucide-react';
+import { getErrorMessage } from '@/shared/error/utils/error.utils';
+import { ApiError } from '@/shared/error/types/apiError.types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
 import { Button } from '@/shared/components/shadcn/button';
 import { Input } from '@/shared/components/shadcn/input';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 import { useUpdateNameMutation } from '@/features/settings/hooks/useUpdateNameMutation';
-import toast from 'react-hot-toast';
-import { useState } from 'react';
 import { SettingsSectionCard } from '@/features/settings/components/SettingsSectionCard';
 import { useAvatarStore } from '@/features/avatar-picker/store/useAvatarStore';
-import { Pencil } from 'lucide-react';
 
 interface UserInfoProps {
   name: string;
@@ -22,20 +24,23 @@ interface UserInfoComponentProps {
 export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
   const [isNameEditing, setIsNameEditing] = useState(false);
   const [newName, setNewName] = useState(member.name);
-  const { mutate: updateName, isPending } = useUpdateNameMutation();
+  const { mutateAsync: updateNameAsync, isPending } = useUpdateNameMutation();
   const { openDrawer } = useAvatarStore();
 
-  const handleNameSave = () => {
+  const handleNameSave = async () => {
     if (!newName.trim()) {
       toast.error('이름을 입력해주세요.');
       return;
     }
 
-    updateName(newName, {
-      onSuccess: () => {
-        setIsNameEditing(false);
-      },
-    });
+    try {
+      await updateNameAsync(newName);
+      toast.success('이름이 변경되었습니다!');
+      setIsNameEditing(false);
+    } catch (error) {
+      if (error instanceof ApiError) toast.error(getErrorMessage(error));
+      else toast.error('알 수 없는 오류가 발생했습니다.');
+    }
   };
 
   const handleNameCancel = () => {
@@ -53,7 +58,7 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
       <Button size="sm" variant="defaultBoost" onClick={handleNameSave} disabled={isPending}>
         {isPending ? '저장 중...' : '저장'}
       </Button>
-      <Button size="sm" variant="outline" onClick={handleNameCancel}>
+      <Button size="sm" variant="outline" className="border-gray-400" onClick={handleNameCancel}>
         취소
       </Button>
     </div>

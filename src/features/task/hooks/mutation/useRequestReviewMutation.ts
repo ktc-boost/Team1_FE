@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
 import { taskApi } from '@/features/task/api/taskApi';
 import { TASK_QUERY_KEYS } from '@/features/task/constants/task.query.constants';
 import type { TaskDetail } from '@/features/task/types/task.domain.types';
@@ -40,7 +39,6 @@ export const useRequestReviewMutation = (projectId: string, taskId: string) => {
 
     onSuccess: (updatedTask) => {
       queryClient.setQueryData(TASK_QUERY_KEYS.detail(projectId, taskId), updatedTask);
-      toast.success('검토 요청을 다시 보냈어요!', { position: 'top-center' });
     },
   });
 };

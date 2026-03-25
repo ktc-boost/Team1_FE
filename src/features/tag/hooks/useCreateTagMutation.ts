@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 import { isAxiosError } from 'axios';
-import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { TAG_QUERY_KEYS } from '@/features/tag/constants/tagQueryKeys';
 import type { Tag, TagList, TagRequest } from '@/features/tag/types/tagTypes';
@@ -45,9 +44,6 @@ export const useCreateTagMutation = (projectId: string) => {
         });
         return;
       }
-
-      toast.error('태그 생성 중 오류가 발생했습니다.');
-      console.error('태그 생성 실패:', error);
     },
 
     onSuccess: (createdTag, _, context) => {

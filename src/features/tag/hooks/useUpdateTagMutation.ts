@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
 import type { Tag, TagList } from '@/features/tag/types/tagTypes';
 import { tagApi } from '@/features/tag/api/tagApi';
 import { TAG_QUERY_KEYS } from '@/features/tag/constants/tagQueryKeys';
@@ -29,14 +28,12 @@ export const useUpdateTagMutation = (projectId: string) => {
       if (context) {
         queryClient.setQueryData(TAG_QUERY_KEYS.project(projectId), context.previousTags);
       }
-      toast.error('태그 업데이트 중 오류가 발생했습니다.');
     },
 
     onSuccess: (updatedTag) => {
       queryClient.setQueryData<TagList>(TAG_QUERY_KEYS.project(projectId), (old = []) =>
         old.map((tag) => (tag.tagId === updatedTag.tagId ? updatedTag : tag)),
       );
-      toast.success('태그가 업데이트되었습니다.');
     },
   });
 };

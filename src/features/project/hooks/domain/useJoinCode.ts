@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { isAxiosError } from 'axios';
 import { projectMembershipApi } from '@/features/project/api/projectMembershipApi';
-import { ERROR } from '@/shared/constants/errorTypes';
+import { ERROR } from '@/shared/error/constants/error.constants';
+import { ApiError } from '@/shared/error/types/apiError.types';
 
 export const useJoinCode = (projectId: string) => {
   const [joinCode, setJoinCode] = useState<string | null>(null);
@@ -13,24 +13,21 @@ export const useJoinCode = (projectId: string) => {
     setLoading(true);
 
     try {
-      const codeInfo = await projectMembershipApi
-        .fetchJoinCode(projectId)
-        .catch(async (error: unknown) => {
-          if (isAxiosError(error)) {
-            if (
-              error.response?.data?.type === ERROR.JOIN_CODE.NOT_FOUND.type ||
-              error.response?.status === 400
-            ) {
-              return projectMembershipApi.createJoinCode(projectId);
-            }
+      const codeInfo = await projectMembershipApi.fetchJoinCode(projectId).catch(async (error) => {
+        if (error instanceof ApiError) {
+          const isNotFound = error.type === ERROR.JOIN_CODE.NOT_FOUND.type;
+          const isBadRequest = error.status === 400;
+
+          if (isNotFound || isBadRequest) {
+            return projectMembershipApi.createJoinCode(projectId);
           }
-          throw error;
-        });
+        }
+        throw error;
+      });
 
       setJoinCode(codeInfo.joinCode);
       setExpiresAt(codeInfo.expiresAt);
-    } catch (err) {
-      console.error('참여 코드 조회/생성 실패:', err);
+    } catch {
       setJoinCode(null);
       setExpiresAt(null);
     } finally {

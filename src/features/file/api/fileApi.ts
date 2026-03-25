@@ -1,5 +1,5 @@
 import type { FileSummaryResponse } from '@/features/file/types/fileApiTypes';
-import api from '@/shared/api/axiosInstance';
+import { api } from '@/shared/api/axiosInstance';
 
 export const fileApi = {
   // 프로젝트 파일 목록 조회

@@ -1,6 +1,6 @@
 import type { Project, ProjectBoostingScores } from '@/features/project/types/projectTypes';
 import type { Member } from '@/features/user/types/userTypes';
-import api from '@/shared/api/axiosInstance';
+import { api } from '@/shared/api/axiosInstance';
 
 export const projectApi = {
   // 참여 프로젝트 목록 조회
