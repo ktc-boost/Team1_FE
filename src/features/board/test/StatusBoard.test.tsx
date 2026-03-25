@@ -1,33 +1,36 @@
 import {
   DndContext,
   DragOverlay,
-  closestCorners,
   defaultDropAnimationSideEffects,
+  closestCorners,
 } from '@dnd-kit/core';
 import { createPortal } from 'react-dom';
+import { useMemo, useState } from 'react';
 import { cn } from '@/shared/lib/utils';
 import TaskCard from '@/features/task/components/TaskCard/TaskCard';
-import StatusColumn from '@/features/board/components/StatusBoard/StatusColumn';
+import StatusColumnTest from '@/features/board/test/StatusColumn.test';
 import { TASK_STATUS_META } from '@/features/task/constants/task.domain.constants';
-import { ColumnFallback } from '@/features/board/components/StatusBoard/ColumnFallback';
-import { useStatusBoardQueries } from '@/features/board/hooks/useStatusBoardQueries';
-import type { TaskStatus } from '@/features/task/types/task.domain.types';
-import type { TaskQuery } from '@/features/task/types/task.query.types';
-import { useTaskDrag } from '@/features/board/hooks/useTaskDrag';
+import type { TaskListItem } from '@/features/task/types/task.domain.types';
 import { useBoardSlider } from '@/features/board/hooks/useBoardSlider';
+import { tasks as initialTasks } from '@/features/board/test/mockTasks';
+import { useTaskDragTest } from '@/features/board/test/useTaskDrag.test';
+import type { ColumnData, TestColumnData } from '@/features/board/types/board.domain.types';
 
-interface StatusBoardProps {
-  projectId?: string;
-}
+const StatusBoardTest = () => {
+  const [taskList, setTaskList] = useState<TaskListItem[]>(initialTasks);
 
-const StatusBoard = ({ projectId }: StatusBoardProps) => {
-  const columnsData = useStatusBoardQueries(projectId);
+  const columnsData: TestColumnData[] = useMemo(() => {
+    return TASK_STATUS_META.map((col) => ({
+      status: col.status,
+      tasks: taskList.filter((t) => t.status === col.status),
+    }));
+  }, [taskList]);
 
   const { isMobileView, chunkedColumns, currentIndex, scrollContainerRef, onScroll } =
-    useBoardSlider(columnsData);
+    useBoardSlider(columnsData as ColumnData[]);
 
-  const { sensors, activeTask, onDragStart, onDragOver, onDragMove, onDragEnd } = useTaskDrag({
-    projectId,
+  const { sensors, activeTask, onDragStart, onDragOver, onDragMove, onDragEnd } = useTaskDragTest({
+    setTaskList,
     isMobileView,
     scrollRef: scrollContainerRef,
     chunkedColumns,
@@ -43,28 +46,16 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
     });
   };
 
-  const renderFallback = (status: TaskStatus, state: 'loading' | 'error') => (
-    <ColumnFallback key={status} status={status} state={state} />
-  );
-
-  const renderColumn = (status: TaskStatus, query: TaskQuery) => {
-    if (query.isLoading) return renderFallback(status, 'loading');
-    if (query.isError || !query.data) return renderFallback(status, 'error');
-
-    const column = TASK_STATUS_META.find((c) => c.status === status)!;
-
-    return <StatusColumn key={status} column={column} query={query} projectId={projectId} />;
-  };
-
   return (
-    <div className="flex-1 flex flex-col p-3 h-full">
+    <div className="flex-1 flex flex-col p-3 pb-0.5 h-full overflow-hidden">
       <DndContext
         sensors={sensors}
-        collisionDetection={closestCorners}
         onDragStart={onDragStart}
         onDragOver={onDragOver}
         onDragMove={onDragMove}
         onDragEnd={onDragEnd}
+        collisionDetection={closestCorners}
+        autoScroll={false}
       >
         {isMobileView && (
           <div className="flex justify-center gap-2 pb-2 pt-0.5 shrink-0 xl:hidden">
@@ -97,10 +88,22 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
           {isMobileView
             ? chunkedColumns.map((group, pageIdx) => (
                 <div key={pageIdx} className="flex w-full flex-shrink-0 gap-3 snap-center">
-                  {group.map(({ status, query }) => renderColumn(status, query))}
+                  {group.map(({ status }) => (
+                    <StatusColumnTest
+                      key={status}
+                      column={TASK_STATUS_META.find((c) => c.status === status)!}
+                      tasks={taskList.filter((t) => t.status === status)}
+                    />
+                  ))}
                 </div>
               ))
-            : columnsData.map(({ status, query }) => renderColumn(status, query))}
+            : columnsData.map(({ status, tasks }) => (
+                <StatusColumnTest
+                  key={status}
+                  column={TASK_STATUS_META.find((c) => c.status === status)!}
+                  tasks={tasks}
+                />
+              ))}
         </div>
 
         {createPortal(
@@ -118,7 +121,7 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
               }),
             }}
           >
-            {activeTask && <TaskCard task={activeTask} showProjectNameTag={!projectId} />}
+            {activeTask && <TaskCard task={activeTask} />}
           </DragOverlay>,
           document.body,
         )}
@@ -127,4 +130,4 @@ const StatusBoard = ({ projectId }: StatusBoardProps) => {
   );
 };
 
-export default StatusBoard;
+export default StatusBoardTest;
