@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import FullPageLoader from '@/shared/components/ui/loading/FullPageLoader';
 import MemoListHeader from '@/features/memo/components/MemoList/MemoListHeader';
 import MemoTable from '@/features/memo/components/MemoList/MemoTable';
@@ -18,7 +17,6 @@ const MemoList = ({ projectId, onSelectMemo }: MemoListProps) => {
   const { data: memos, isLoading } = useMemosQuery(projectId);
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
-  const navigate = useNavigate();
   const { showDeleteMemoModal } = useMemoModals();
 
   const { selectedRows, toggleSelectAll, toggleSelectRow, removeSelected } = useRowSelection();
@@ -30,7 +28,7 @@ const MemoList = ({ projectId, onSelectMemo }: MemoListProps) => {
   });
 
   const handleDelete = (ids: string[]) => {
-    showDeleteMemoModal(ids, navigate, (deletedIds) => {
+    showDeleteMemoModal(ids, (deletedIds) => {
       removeSelected(deletedIds);
     });
   };

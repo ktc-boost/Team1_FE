@@ -20,6 +20,7 @@ import BoardSection from '@/features/board/components/BoardSection';
 import MemoSection from '@/features/memo/components/MemoSection';
 import FileSection from '@/features/file/components/FileSection';
 import SentryTestPage from '@/pages/SentryTestPage';
+import BoardTestPage from '@/features/board/test/BoardPage.test';
 
 const TaskDetailPage = lazy(() => import('@/pages/TaskDetailPage'));
 const MemoDetail = lazy(() => import('@/features/memo/components/MemoDetail/MemoDetail'));
@@ -32,6 +33,7 @@ const PUBLIC_ROUTES = [
   { path: ROUTE_PATH.CALLBACK, element: <KakaoCallbackPage /> },
   { path: ROUTE_PATH.ALARM_SETUP_MOBILE, element: <AlarmSetupMobilePage /> },
   { path: ROUTE_PATH.SENTRY_TEST, element: <SentryTestPage /> },
+  { path: ROUTE_PATH.BOARD_TEST, element: <BoardTestPage /> },
 ];
 
 const PROTECTED_ROUTES = [
@@ -56,15 +58,6 @@ const PROTECTED_ROUTES_NO_LAYOUT = [
   { path: ROUTE_PATH.ALARM_SETUP, element: <AlarmSetupPage /> },
 ];
 
-const AppLayoutWithModal = () => {
-  return (
-    <>
-      <ModalRenderer />
-      <AppLayout />
-    </>
-  );
-};
-
 const withProtected = (element: React.ReactNode) => (
   <ProtectedRoute>
     <PageErrorBoundary>{element}</PageErrorBoundary>
@@ -81,7 +74,7 @@ export const router = createBrowserRouter([
 
   {
     path: '/',
-    element: <AppLayoutWithModal />,
+    element: <AppLayout />,
     errorElement: <RootFallback />,
     children: PROTECTED_ROUTES.map((route) => ({
       ...route,
@@ -91,5 +84,10 @@ export const router = createBrowserRouter([
 ]);
 
 export const AppRouter = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <ModalRenderer />
+      <RouterProvider router={router} />
+    </>
+  );
 };
