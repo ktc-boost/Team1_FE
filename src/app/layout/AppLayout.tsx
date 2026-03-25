@@ -1,7 +1,7 @@
-import { SidebarProvider } from '@/shared/components/shadcn/sidebar';
-import AppSidebar from '@/widgets/AppSidebar';
-import { Outlet } from 'react-router-dom';
 import { useRef } from 'react';
+import { Outlet } from 'react-router-dom';
+import AppSidebar from '@/widgets/AppSidebar';
+import { SidebarProvider } from '@/shared/components/shadcn/sidebar';
 import FloatingSidebarTrigger from '@/features/sidebar/components/FloatingSidebarTrigger';
 
 const AppLayout = () => {
