@@ -25,7 +25,7 @@ const AiTransformTextCard = ({
   return (
     <div
       className={cn(
-        'flex flex-col flex-1 w-full rounded-md p-4 h-40 sm:h-92 bg-gray-50 border border-gray-300 shadow-sm transition-colors duration-300',
+        'flex flex-col flex-none sm:flex-1 w-full rounded-md p-4 h-40 sm:h-92 bg-gray-50 border border-gray-300 shadow-sm transition-colors duration-300',
         isHovered && `border-${color}`,
       )}
       onMouseEnter={() => onHover(type)}
