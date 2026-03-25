@@ -1,33 +1,26 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/shared/lib/utils';
 import MovingBoo from '@/shared/components/ui/MovingBoo';
+import { useIsMobile } from '@/shared/hooks/use-mobile';
+import { aiTransformGuideMap } from '@/features/ai-transform/constants/ai-transform.ui.constants';
+import type { AiCommentSide } from '@/features/ai-transform/types/ai-transform.ui.types';
 
 interface AiTransformGuideProps {
-  hoveredSide: 'original' | 'transformed' | null;
+  hoveredSide: AiCommentSide;
 }
 
-const guideMap: Record<'original' | 'transformed' | 'default', { text: string; color?: string }> = {
-  original: {
-    text: '원래 내 댓글 사용하기',
-    color: 'text-boost-orange',
-  },
-  transformed: {
-    text: 'Boo가 써준 댓글 선택하기',
-    color: 'text-boost-blue',
-  },
-  default: { text: '어느 쪽이 마음에 드시나요?', color: 'text-gray-700' },
-};
-
 const AiTransformGuide = ({ hoveredSide }: AiTransformGuideProps) => {
-  const current = hoveredSide ? guideMap[hoveredSide] : guideMap.default;
+  const current = hoveredSide ? aiTransformGuideMap[hoveredSide] : aiTransformGuideMap.default;
+  const isMobile = useIsMobile();
 
   return (
-    <div className="flex flex-col items-center justify-center w-42 gap-4">
-      <MovingBoo size={37} />
+    <div className="flex flex-col items-center justify-center w-42 gap-1 sm:gap-4">
+      <MovingBoo size={isMobile ? 32 : 37} />
       <div className="flex items-center gap-2 body2-bold text-center">
         <AnimatePresence mode="wait">
           <motion.span
             key={current.text}
-            className={current.color}
+            className={cn('hidden sm:block', current.color)}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -5 }}

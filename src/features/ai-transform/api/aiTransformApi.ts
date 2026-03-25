@@ -2,7 +2,7 @@ import api from '@/shared/api/axiosInstance';
 import type {
   AiTransformRequest,
   AiTransformResponse,
-} from '@/features/ai-transform/types/aiTransformTypes';
+} from '@/features/ai-transform/types/ai-transform.query.types';
 
 export const aiTransformApi = {
   commentTransform: async (body: AiTransformRequest): Promise<AiTransformResponse> => {
