@@ -20,7 +20,6 @@ const CommentDrawerMobile = ({
     <Drawer
       open={isCommentOpen}
       onOpenChange={(open) => {
-        console.log('Drawer onOpenChange:', open);
         setIsCommentOpen(open);
       }}
     >
