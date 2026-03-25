@@ -53,7 +53,7 @@ const FileTableRow = ({ file, index }: FileTableRowProps) => {
           variant="link"
           className="p-0 text-gray-700 hover:text-boost-blue flex items-center gap-1 body2-regular h-auto max-w-[180px]"
         >
-          <span className="truncate">{file.taskName || '할 일로 이동'}</span>
+          <span className="truncate">할 일로 이동</span>
           <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
         </Button>
       </TableCell>

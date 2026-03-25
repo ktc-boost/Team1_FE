@@ -13,8 +13,7 @@ import { FILE_HEADER_HEIGHT, FILE_ROW_HEIGHT } from '@/features/file/constants/f
 const FileSection = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const tableContainerRef = useRef<HTMLDivElement>(null);
-  const { data, isLoading, error } = useProjectFilesQuery(projectId!);
-  const allFiles = data?.pages.flatMap((page) => page.files) ?? [];
+  const { data: allFiles = [], isLoading, error } = useProjectFilesQuery(projectId!);
   const { currentPage, setCurrentPage, pageSize, pageCount, currentData } = usePagination({
     data: allFiles,
     containerRef: tableContainerRef,

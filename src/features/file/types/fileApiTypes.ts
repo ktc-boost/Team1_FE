@@ -6,25 +6,17 @@ export interface FileDownloadUrlResponse {
   headers: Record<string, string>;
   expiresInSeconds: number;
 }
-
 export interface ProjectFile {
   fileId: string;
+  taskId: string;
   filename: string;
   contentType: string;
   type: string;
   completedAt: string;
   sizeBytes: number;
-  taskId: string;
-  taskName: string;
 }
+export type ProjectFilesResponse = ProjectFile[];
 
-export interface ProjectFilesResponse {
-  projectId: string;
-  files: ProjectFile[];
-  count: number;
-  nextCursor: string | null;
-  hasNext: boolean;
-}
 export interface FileSummaryResponse {
   totalCount: number;
   totalSizeBytes: number;
