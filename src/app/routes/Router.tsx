@@ -21,6 +21,7 @@ import MemoSection from '@/features/memo/components/MemoSection';
 import FileSection from '@/features/file/components/FileSection';
 import SentryTestPage from '@/pages/SentryTestPage';
 import BoardTestPage from '@/features/board/test/BoardPage.test';
+import ModalTestPage from '@/pages/ModalTestPage';
 
 const TaskDetailPage = lazy(() => import('@/pages/TaskDetailPage'));
 const MemoDetail = lazy(() => import('@/features/memo/components/MemoDetail/MemoDetail'));
@@ -34,6 +35,7 @@ const PUBLIC_ROUTES = [
   { path: ROUTE_PATH.ALARM_SETUP_MOBILE, element: <AlarmSetupMobilePage /> },
   { path: ROUTE_PATH.SENTRY_TEST, element: <SentryTestPage /> },
   { path: ROUTE_PATH.BOARD_TEST, element: <BoardTestPage /> },
+  { path: ROUTE_PATH.MODAL_TEST, element: <ModalTestPage /> },
 ];
 
 const PROTECTED_ROUTES = [
