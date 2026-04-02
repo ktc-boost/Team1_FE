@@ -1,8 +1,10 @@
-import { avatarList } from '@/features/avatar-picker/utils/avatarUtils';
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
-import { cn } from '@/shared/lib/utils';
-import { Check, User } from 'lucide-react';
 import tinycolor from 'tinycolor2';
+import { Check, User } from 'lucide-react';
+import { cn } from '@/shared/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/shadcn/avatar';
+import { avatarList } from '@/features/avatar-picker/utils/avatarUtils';
+import { DEFAULT_BG, SELECTED_BG } from '@/features/avatar-picker/constants/avatar.ui.constants';
+
 interface AvatarGridProps {
   selectedAvatarId: string;
   hoveredIndex: number | null;
@@ -10,6 +12,7 @@ interface AvatarGridProps {
   setHoveredIndex: React.Dispatch<React.SetStateAction<number | null>>;
   selectedBgColor: string | null;
 }
+
 const AvatarGrid = ({
   selectedAvatarId,
   hoveredIndex,
@@ -51,18 +54,18 @@ const AvatarGrid = ({
                   )}
                   style={{
                     backgroundColor:
-                      isSelected || isHovered ? selectedBgColor || '#f3f4f6' : '#ffffff',
+                      isSelected || isHovered ? selectedBgColor || SELECTED_BG : DEFAULT_BG,
                     borderColor: isSelected
-                      ? tinycolor(selectedBgColor || '#f3f4f6')
+                      ? tinycolor(selectedBgColor || SELECTED_BG)
                           .darken(3)
                           .toString()
-                      : '#ffffff',
+                      : DEFAULT_BG,
                   }}
                 >
                   <AvatarImage src={avatarUrl} alt={`Avatar ${index + 1}`} />
                   <AvatarFallback
                     style={{
-                      backgroundColor: selectedBgColor || '#f3f4f6',
+                      backgroundColor: selectedBgColor || SELECTED_BG,
                     }}
                   >
                     <User size={24} />
