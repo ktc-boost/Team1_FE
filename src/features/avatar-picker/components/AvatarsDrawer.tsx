@@ -1,32 +1,33 @@
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { Check, Pen, X } from 'lucide-react';
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from '@/shared/components/shadcn/drawer';
-import { Check, Pen } from 'lucide-react';
-import { AVATAR_BG_COLOR } from '@/features/avatar-picker/constants/avatarBgColor';
-import { useAvatarStore } from '@/features/avatar-picker/store/useAvatarStore';
-import toast from 'react-hot-toast';
-import { useUpdateAvatarMutation } from '@/features/settings/hooks/useUpdateAvatarMutation';
-import { useEffect, useState } from 'react';
-import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { Button } from '@/shared/components/shadcn/button';
+import { getErrorMessage } from '@/shared/error/utils/error.utils';
+import { ApiError } from '@/shared/error/types/apiError.types';
+import { useAvatarStore } from '@/features/avatar-picker/store/useAvatarStore';
+import { useUpdateAvatarMutation } from '@/features/settings/hooks/useUpdateAvatarMutation';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import BackgroundGrid from '@/features/avatar-picker/components/BackgroundGrid';
 import AvatarGrid from '@/features/avatar-picker/components/AvatarGrid';
-
-const avatarBgColors = Object.values(AVATAR_BG_COLOR);
+import { avatarBgColors } from '@/features/avatar-picker/constants/avatar.ui.constants';
 
 interface AvatarsDrawerProps {
   showEditButton?: boolean;
-  showConfirmButton?: boolean;
+  showSaveButton?: boolean;
 }
 
-const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDrawerProps) => {
-  const { mutate: updateAvatar } = useUpdateAvatarMutation();
-  const { user } = useAuthStore();
+const AvatarsDrawer = ({ showEditButton = true, showSaveButton }: AvatarsDrawerProps) => {
+  const { mutateAsync: updateAvatar } = useUpdateAvatarMutation();
+  const user = useAuthStore((s) => s.user);
 
   const {
     selectedAvatarId,
@@ -46,42 +47,45 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
       setBgColor(user.backgroundColor ?? '');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDrawerOpen, user?.avatar, user?.backgroundColor]);
+  }, [user?.avatar, user?.backgroundColor, setAvatarId, setBgColor]);
 
-  const handleConfirm = async () => {
+  const handleSaveAvatar = async () => {
     if (!selectedAvatarId || !selectedBgColor) {
       toast.error('아바타와 배경색을 모두 선택해주세요!');
       return;
     }
 
     try {
-      updateAvatar({ avatar: selectedAvatarId, backgroundColor: selectedBgColor });
+      await updateAvatar({ avatar: selectedAvatarId, backgroundColor: selectedBgColor });
       closeDrawer();
-      toast.success('아바타가 성공적으로 업데이트되었습니다!');
+      toast.success('아바타가 성공적으로 수정되었습니다!');
     } catch (error) {
-      console.log('아바타 업데이트 실패', error);
-      toast.error('아바타 업데이트에 실패했습니다 😢');
+      if (error instanceof ApiError) toast.error(getErrorMessage(error));
+      else toast.error('아바타 수정을 실패했어요.');
     }
   };
 
+  const handleOpenChange = (open: boolean) => (open ? openDrawer() : closeDrawer());
+
   return (
-    <Drawer open={isDrawerOpen} onOpenChange={(open) => (open ? openDrawer() : closeDrawer())}>
+    <Drawer open={isDrawerOpen} onOpenChange={handleOpenChange}>
       {showEditButton && (
         <DrawerTrigger asChild>
-          <button
-            type="button"
-            className="absolute -bottom-2 -right-2 bg-boost-blue hover:bg-boost-blue-hover text-white p-4 rounded-full shadow-lg focus:boost-blue/30 cursor-pointer"
+          <Button
+            variant="defaultBoost"
+            size="icon-lg"
+            className="absolute -bottom-2 -right-2 p-4 sm:p-7 shadow-lg rounded-full"
             aria-label="아바타 변경"
           >
-            <Pen className="h-4 w-4 sm:h-5 sm:w-5" />
+            <Pen className="!h-4 !w-4 sm:!h-5 sm:!w-5" />
             <span className="absolute inset-0 bg-white rounded-full opacity-20 pointer-events-none" />
-          </button>
+          </Button>
         </DrawerTrigger>
       )}
 
       <DrawerContent className="max-h-[95vh] border-gray-300">
         <DrawerHeader className="pt-8 pb-4 text-center border-b border-gray-100">
-          <DrawerTitle className="!title2-bold sm:!title1-bold font-bold text-gray-800 mb-2">
+          <DrawerTitle className="!title2-bold sm:!title1-bold text-gray-800 mb-2">
             아바타 선택
           </DrawerTitle>
           <DrawerDescription className="!body2-regular text-gray-600 sm:!body1-regular">
@@ -89,13 +93,12 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
           </DrawerDescription>
         </DrawerHeader>
 
-        {/* 배경색 그리드 */}
         <BackgroundGrid
           avatarBgColors={avatarBgColors}
           setBgColor={setBgColor}
           selectedBgColor={selectedBgColor}
         />
-        {/* 아바타 그리드 */}
+
         <AvatarGrid
           selectedAvatarId={selectedAvatarId}
           hoveredIndex={hoveredIndex}
@@ -104,15 +107,24 @@ const AvatarsDrawer = ({ showEditButton = true, showConfirmButton }: AvatarsDraw
           selectedBgColor={selectedBgColor}
         />
 
-        {showConfirmButton && selectedAvatarId && selectedBgColor && (
+        {showSaveButton ? (
           <div className="absolute top-2 left-0 right-2 flex justify-end px-6 py-4 bg-transparent">
             <Button
               variant="defaultBoost"
-              onClick={handleConfirm}
-              className="rounded-full w-12 h-12 shadow-md"
+              onClick={handleSaveAvatar}
+              disabled={!selectedAvatarId || !selectedBgColor}
+              className="rounded-full w-12 h-12"
             >
               <Check className="w-9 h-9" />
             </Button>
+          </div>
+        ) : (
+          <div className="absolute top-2 left-0 right-2 flex justify-end px-6 py-4">
+            <DrawerClose asChild>
+              <Button variant="defaultBoost" className="rounded-full w-10 h-10 ">
+                <X className="w-9 h-9 text-white" />
+              </Button>
+            </DrawerClose>
           </div>
         )}
       </DrawerContent>

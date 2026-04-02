@@ -16,7 +16,7 @@ export default function SettingsPage() {
     <div className="overflow-y-auto">
       <div className="flex flex-col px-2 sm:px-10 space-y-4 pt-4 pb-6">
         <UserInfoCard member={myInfo} />
-        <AvatarsDrawer showEditButton={false} showConfirmButton={true} />
+        <AvatarsDrawer showEditButton={false} showSaveButton={true} />
         <Separator />
         <AlarmSettingCard />
         <Separator />

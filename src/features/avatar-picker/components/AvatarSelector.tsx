@@ -7,7 +7,7 @@ const AvatarSelector = () => {
       <div className="relative group">
         <div className="absolute inset-0 bg-gradient-to-r from-boost-orange via-boost-blue to-purple-500 rounded-full blur-lg opacity-20 group-hover:opacity-30 transition-opacity duration-300 scale-110" />
         <CurrentAvatar />
-        <AvatarsDrawer showConfirmButton={true} />
+        <AvatarsDrawer showSaveButton={false} />
       </div>
     </div>
   );
