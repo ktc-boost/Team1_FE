@@ -1,10 +1,11 @@
-import { AVATAR_BG_COLOR } from '@/features/avatar-picker/constants/avatarBgColor';
+import { AVATAR_BG_COLOR } from '@/features/avatar-picker/constants/avatar.ui.constants';
 
 type AvatarModule = { default: string };
 
 const avatarModules = import.meta.glob<AvatarModule>('@/shared/assets/images/avatars/*.webp', {
   eager: true,
 });
+
 const sortedAvatars = Object.entries(avatarModules)
   .sort(([pathA], [pathB]) => {
     const getNum = (path: string) => {
@@ -20,6 +21,7 @@ const sortedAvatars = Object.entries(avatarModules)
   .map(([_, module]) => {
     return module.default;
   });
+
 export const avatarList = sortedAvatars.slice(1); // 01.png ~ 80.png만 포함
 export const getAvatarListUtils = () => avatarList;
 
@@ -36,11 +38,13 @@ export const getAvatarSrc = (
   const index = Number(member.avatar);
   return propsAvatarList[index] ?? propsAvatarList[0];
 };
+
 // 백엔드와 통신할 때 매핑 유틸
 export const getTokenFromHex = (hex: string) => {
   const entry = Object.values(AVATAR_BG_COLOR).find((c) => c.hex === hex);
   return entry;
 };
+
 export const getHexFromToken = (token: string) => {
   const entry = Object.values(AVATAR_BG_COLOR).find((c) => c.token === token);
   return entry;
