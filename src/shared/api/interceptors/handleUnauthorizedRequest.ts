@@ -16,13 +16,11 @@ interface QueueItem {
 let isRefreshing = false;
 let requestQueue: QueueItem[] = [];
 
-// 첫번째 요청에 대한 재발급 성공/실패시 requestQueue에 있는 나머지 요청을 실행
 const processQueue = async (error: unknown, accessToken?: string) => {
   const queue = [...requestQueue];
   requestQueue = [];
 
   for (const item of queue) {
-    // 실패시 (첫번째 재발급이 실패)
     if (error || !accessToken) {
       item.reject(error);
       continue;
