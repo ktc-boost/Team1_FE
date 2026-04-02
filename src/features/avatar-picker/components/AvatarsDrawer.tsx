@@ -28,6 +28,7 @@ interface AvatarsDrawerProps {
 const AvatarsDrawer = ({ showEditButton = true, showSaveButton }: AvatarsDrawerProps) => {
   const { mutateAsync: updateAvatar } = useUpdateAvatarMutation();
   const user = useAuthStore((s) => s.user);
+  const [initialized, setInitialized] = useState(false);
 
   const {
     selectedAvatarId,
@@ -42,12 +43,18 @@ const AvatarsDrawer = ({ showEditButton = true, showSaveButton }: AvatarsDrawerP
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    if (isDrawerOpen && user) {
-      setAvatarId(user.avatar ?? '');
-      setBgColor(user.backgroundColor ?? '');
-    }
+    if (!user || initialized) return;
+
+    setAvatarId(user.avatar ?? '');
+    setBgColor(user.backgroundColor ?? '');
+    setInitialized(true);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.avatar, user?.backgroundColor, setAvatarId, setBgColor]);
+  }, [user, initialized]);
+
+  useEffect(() => {
+    setInitialized(false);
+  }, [user?.avatar, user?.backgroundColor]);
 
   const handleSaveAvatar = async () => {
     if (!selectedAvatarId || !selectedBgColor) {
