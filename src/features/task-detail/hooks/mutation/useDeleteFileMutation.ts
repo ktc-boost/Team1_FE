@@ -2,8 +2,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fileApi } from '@/features/file/api/fileApi';
 import type { FileItemType } from '@/features/file/types/fileTypes';
 import { TASK_DETAIL_FILES_QUERY_KEY } from '@/features/task-detail/constants/taskDetailQueryKey';
+import { TASK_QUERY_KEYS } from '@/features/task/constants/task.query.constants';
 
-export const useDeleteFileMutation = (taskId: string) => {
+export const useDeleteFileMutation = (projectId: string, taskId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -32,6 +33,7 @@ export const useDeleteFileMutation = (taskId: string) => {
 
     onSettled: async () => {
       await queryClient.invalidateQueries({ queryKey: TASK_DETAIL_FILES_QUERY_KEY.list(taskId) });
+      await queryClient.invalidateQueries({ queryKey: TASK_QUERY_KEYS.detail(projectId, taskId) });
     },
   });
 };

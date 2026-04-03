@@ -9,23 +9,25 @@ import { useTaskFilesQuery } from '@/features/task-detail/hooks/query/useTaskFil
 import { useDeleteFileMutation } from '@/features/task-detail/hooks/mutation/useDeleteFileMutation';
 import { FileUploadAction } from '@/features/task-detail/components/FileSection/FileUploadAction';
 import { fileToast } from '@/features/task-detail/utils/toast/fileToast';
-import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
+import { useProjectStore } from '@/features/project/store/useProjectStore';
+import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
 
 interface FileSectionProps {
   onOpenPdf: (url: string, fileName: string, id: string) => void;
   taskId: string;
+  files: ServerFileType[];
 }
 
-const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
-  const { data: uiFiles } = useTaskFilesQuery(taskId);
-  const { mutate: deleteFile } = useDeleteFileMutation(taskId);
-  const removeFile = useTaskDetailStore((s) => s.removeFile);
+const FileSection = ({ onOpenPdf, taskId, files }: FileSectionProps) => {
+  const projectData = useProjectStore((s) => s.projectData);
+
+  const { data: uiFiles } = useTaskFilesQuery(taskId, files);
+  const { mutate: deleteFile } = useDeleteFileMutation(projectData.id, taskId);
 
   const handleDeleteFile = (fileId: string) => {
     deleteFile(fileId, {
       onSuccess: () => {
         fileToast.deleteSuccess();
-        removeFile(fileId);
       },
       onError: (error) => {
         if (error instanceof ApiError) toast.error(getErrorMessage(error));

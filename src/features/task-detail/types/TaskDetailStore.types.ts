@@ -1,6 +1,5 @@
 import type { PersonaType } from '@/features/comment/constants/personaConstants';
 import type { FileInfo, PinWithAuthor } from '@/features/task-detail/types/taskDetailType';
-import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
 
 type EditingCommentState = {
   id: string;
@@ -21,7 +20,6 @@ export type TaskDetailDataState = {
   editingComment: EditingCommentState | null;
   persona: PersonaType | null;
   isCommentDrawerOpen: boolean;
-  files: ServerFileType[];
 };
 
 type TaskDetailActions = {
@@ -41,8 +39,6 @@ type TaskDetailActions = {
   clearCurrentPin: () => void;
   clearFileState: () => void;
   resetAll: () => void;
-  setFiles: (files: ServerFileType[]) => void;
-  removeFile: (fileId: string) => void;
 };
 
 export type TaskDetailState = TaskDetailDataState & TaskDetailActions;
@@ -50,7 +46,7 @@ export type TaskDetailState = TaskDetailDataState & TaskDetailActions;
 // Slice 타입
 export type FileSlice = Pick<
   TaskDetailState,
-  'selectedFile' | 'setSelectedFile' | 'clearFileState' | 'files' | 'setFiles' | 'removeFile'
+  'selectedFile' | 'setSelectedFile' | 'clearFileState'
 >;
 
 export type PinSlice = Pick<

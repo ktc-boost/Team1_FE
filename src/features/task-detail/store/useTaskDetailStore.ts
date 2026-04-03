@@ -6,7 +6,6 @@ import type {
   TaskDetailDataState,
   TaskDetailState,
 } from '@/features/task-detail/types/TaskDetailStore.types';
-import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
 import { create } from 'zustand';
 import type { StateCreator } from 'zustand';
 
@@ -23,26 +22,13 @@ const initialDataState: TaskDetailDataState = {
   editingComment: null,
   persona: null,
   isCommentDrawerOpen: false,
-  files: [],
 };
 
 // 파일 관련 Slice
-const createFileSlice: StateCreator<
-  TaskDetailState,
-  [],
-  [],
-  FileSlice & {
-    files: ServerFileType[];
-    setFiles: (files: ServerFileType[]) => void;
-    removeFile: (fileId: string) => void;
-  }
-> = (set) => ({
+const createFileSlice: StateCreator<TaskDetailState, [], [], FileSlice> = (set) => ({
   selectedFile: initialDataState.selectedFile,
-  files: initialDataState.files,
 
   setSelectedFile: (selectedFile) => set({ selectedFile }),
-  setFiles: (files) => set({ files }),
-  removeFile: (fileId) => set((state) => ({ files: state.files.filter((f) => f.id !== fileId) })),
 
   clearFileState: () =>
     set({
@@ -53,7 +39,6 @@ const createFileSlice: StateCreator<
       isAnonymous: false,
       activePinCommentId: null,
       selectedCommentId: null,
-      files: [],
     }),
 });
 
