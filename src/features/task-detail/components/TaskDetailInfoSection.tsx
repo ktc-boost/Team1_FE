@@ -1,8 +1,8 @@
+import { lazy, useEffect } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import FileSection from '@/features/task-detail/components/FileSection/FileSection';
 import TaskDetailContent from '@/features/task-detail/components/TaskDetailContent/TaskDetailContent';
-import { useShallow } from 'zustand/react/shallow';
-import { lazy } from 'react';
 import type { TaskDetail } from '@/features/task/types/task.domain.types';
 const PDFViewer = lazy(() => import('@/features/task-detail/components/PdfViewer/PdfViewer'));
 
@@ -12,13 +12,19 @@ interface TaskDetailInfoSectionProps {
 }
 
 const TaskDetailInfoSection = ({ task, taskId }: TaskDetailInfoSectionProps) => {
-  const { isPdfOpen, setSelectedFile, togglePdf } = useTaskDetailStore(
+  const { isPdfOpen, setSelectedFile, togglePdf, setFiles } = useTaskDetailStore(
     useShallow((s) => ({
       isPdfOpen: s.isPdfOpen,
       setSelectedFile: s.setSelectedFile,
       togglePdf: s.togglePdf,
+      setFiles: s.setFiles,
     })),
   );
+
+  useEffect(() => {
+    setFiles(task.files);
+  }, [task.files, setFiles]);
+
   return (
     <div className="w-full flex flex-col sm:w-6/10 overflow-hidden">
       {isPdfOpen ? (
@@ -31,7 +37,6 @@ const TaskDetailInfoSection = ({ task, taskId }: TaskDetailInfoSectionProps) => 
 
           <section id="file" className="h-4/12">
             <FileSection
-              files={task.files}
               taskId={taskId ?? ''}
               onOpenPdf={(url, name, id) => {
                 setSelectedFile({ fileId: id, fileName: name, fileUrl: url });

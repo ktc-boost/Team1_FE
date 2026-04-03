@@ -1,21 +1,38 @@
+import { Suspense } from 'react';
 import { Link } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { ApiError } from '@/shared/error/types/apiError.types';
+import { getErrorMessage } from '@/shared/error/utils/error.utils';
+import ContentItem from '@/shared/components/ui/ContentItem';
 import FileItem from '@/features/task-detail/components/FileSection/FileItem';
 import { useTaskFilesQuery } from '@/features/task-detail/hooks/query/useTaskFilesQuery';
-import type { ServerFileType } from '@/features/task-detail/types/fileApiTypes';
-import ContentItem from '@/shared/components/ui/ContentItem';
 import { useDeleteFileMutation } from '@/features/task-detail/hooks/mutation/useDeleteFileMutation';
-import { Suspense } from 'react';
 import { FileUploadAction } from '@/features/task-detail/components/FileSection/FileUploadAction';
+import { fileToast } from '@/features/task-detail/utils/toast/fileToast';
+import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 
 interface FileSectionProps {
   onOpenPdf: (url: string, fileName: string, id: string) => void;
   taskId: string;
-  files: ServerFileType[];
 }
 
-const FileSection = ({ onOpenPdf, taskId, files: serverFiles }: FileSectionProps) => {
-  const { data: uiFiles } = useTaskFilesQuery(serverFiles, taskId);
+const FileSection = ({ onOpenPdf, taskId }: FileSectionProps) => {
+  const { data: uiFiles } = useTaskFilesQuery(taskId);
   const { mutate: deleteFile } = useDeleteFileMutation(taskId);
+  const removeFile = useTaskDetailStore((s) => s.removeFile);
+
+  const handleDeleteFile = (fileId: string) => {
+    deleteFile(fileId, {
+      onSuccess: () => {
+        fileToast.deleteSuccess();
+        removeFile(fileId);
+      },
+      onError: (error) => {
+        if (error instanceof ApiError) toast.error(getErrorMessage(error));
+        else fileToast.deleteError();
+      },
+    });
+  };
 
   return (
     <div className="w-full h-full pt-6 p-3 pb-4 border-t-2 border-gray-300 flex flex-col">
@@ -37,7 +54,7 @@ const FileSection = ({ onOpenPdf, taskId, files: serverFiles }: FileSectionProps
             fileUrl={item.fileUrl}
             fileSize={item.fileSize}
             timeLeft={item.timeLeft}
-            onDelete={() => deleteFile(item.fileId)}
+            onDeleteFile={() => handleDeleteFile(item.fileId)}
             onOpenPdf={() => onOpenPdf(item.fileUrl, item.fileName, item.fileId)}
             status={item.status}
           />
