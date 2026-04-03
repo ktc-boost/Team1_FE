@@ -1,3 +1,6 @@
+import { AlertCircle } from 'lucide-react';
+import { ROUTE_PATH } from '@/app/routes/routePaths';
+import { useRouteError, isRouteErrorResponse, useNavigate } from 'react-router-dom';
 import { Button } from '@/shared/components/shadcn/button';
 import {
   Card,
@@ -6,10 +9,10 @@ import {
   CardTitle,
   CardDescription,
 } from '@/shared/components/shadcn/card';
-import { AlertCircle } from 'lucide-react';
-import { useRouteError, isRouteErrorResponse } from 'react-router-dom';
 
 export default function RootFallback() {
+  const navigate = useNavigate();
+
   const error = useRouteError();
   let message = '알 수 없는 오류가 발생했습니다.';
 
@@ -20,6 +23,8 @@ export default function RootFallback() {
   }
 
   const handleRefresh = () => window.location.reload();
+  const handleGoHome = () => navigate(ROUTE_PATH.MAIN);
+  const handleGoBack = () => navigate(-1);
 
   return (
     <div className="flex min-h-screen items-center justify-center p-6">
@@ -32,9 +37,17 @@ export default function RootFallback() {
 
         <CardContent className="space-y-6 text-center">
           <p className="label1-regular text-gray-500 whitespace-pre-wrap">{message}</p>
-          <Button variant="defaultBoost" className="w-full" onClick={handleRefresh}>
-            다시 시도
-          </Button>
+          <div className="flex flex-col gap-2">
+            <Button variant="defaultBoost" className="w-full" onClick={handleRefresh}>
+              다시 시도
+            </Button>
+            <Button variant="secondaryBoost" className="w-full" onClick={handleGoBack}>
+              뒤로
+            </Button>
+            <Button variant="secondary" className="w-full" onClick={handleGoHome}>
+              홈으로 이동
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>
