@@ -8,7 +8,10 @@ import {
   type DragMoveEvent,
 } from '@dnd-kit/core';
 import { useRef, useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { useQueryClient } from '@tanstack/react-query';
+import { ApiError } from '@/shared/error/types/apiError.types';
+import { getErrorMessage } from '@/shared/error/utils/error.utils';
 import {
   useMoveTaskMutation,
   optimisticallyMoveTask,
@@ -133,7 +136,12 @@ export const useTaskDrag = ({
         };
 
         pendingScrollRef.current = toStatus;
-        moveTaskMutation.mutate(params);
+        moveTaskMutation.mutate(params, {
+          onError: (error) => {
+            if (error instanceof ApiError) toast.error(getErrorMessage(error));
+            else toast.error('할 일 이동 중 오류가 발생했습니다.');
+          },
+        });
       }
     }
 
