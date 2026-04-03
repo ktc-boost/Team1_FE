@@ -1,3 +1,4 @@
+// 아바타 배경 색
 export const AVATAR_BG_COLOR = {
   BLUE: {
     token: 'var(--color-avatar-blue)',
@@ -33,4 +34,13 @@ export const AVATAR_BG_COLOR = {
   },
 } as const;
 
-export type AvatarColorKey = keyof typeof AVATAR_BG_COLOR;
+// 아바타 기본값
+export const DEFAULT_AVATAR_ID = '0';
+export const DEFAULT_BG_COLOR = AVATAR_BG_COLOR.BLUE.hex;
+
+// 배경색 기본값
+export const DEFAULT_BG = '#ffffff';
+export const SELECTED_BG = '#f6f8fa';
+
+// 아바타 배경색 목록
+export const avatarBgColors = Object.values(AVATAR_BG_COLOR);

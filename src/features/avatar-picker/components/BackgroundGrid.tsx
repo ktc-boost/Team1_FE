@@ -1,14 +1,13 @@
-import { cn } from '@/shared/lib/utils';
 import { Check } from 'lucide-react';
-type AvatarBgColor = {
-  token: string;
-  hex: string;
-};
+import { cn } from '@/shared/lib/utils';
+import type { AvatarBgColor } from '@/features/avatar-picker/types/avatar.ui.types';
+
 interface BackgroundGridProps {
   avatarBgColors: AvatarBgColor[];
   setBgColor: (hex: string) => void;
   selectedBgColor: string | null;
 }
+
 const BackgroundGrid = ({ avatarBgColors, setBgColor, selectedBgColor }: BackgroundGridProps) => {
   return (
     <div className="flex items-center px-6 py-6 border-b border-gray-100 mb-2">
