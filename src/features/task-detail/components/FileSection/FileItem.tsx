@@ -1,5 +1,8 @@
-import fileIcon from '@/shared/assets/images/file-icon/file-icon.png';
+import toast from 'react-hot-toast';
 import { EllipsisVertical } from 'lucide-react';
+import fileIcon from '@/shared/assets/images/file-icon/file-icon.png';
+import { ApiError } from '@/shared/error/types/apiError.types';
+import { getErrorMessage } from '@/shared/error/utils/error.utils';
 import { FileStatusImages } from '@/features/task-detail/utils/fileStatusImageUtil';
 import {
   DropdownMenu,
@@ -10,26 +13,39 @@ import {
 } from '@/shared/components/shadcn/dropdown-menu';
 import { useFileDownloadMutation } from '@/features/file/hooks/useFileDownloadMutation';
 import type { FileItemType } from '@/features/file/types/fileTypes';
+
 interface FileItemProps extends FileItemType {
-  onOpenPdf: (fileUrl: string) => void;
-  onDelete: () => void;
-  onDownload?: () => void;
+  onOpenPdf: () => void;
+  onDeleteFile: () => void;
 }
 
 const FileItem = ({
   fileId,
   fileName,
-  fileUrl,
   onOpenPdf,
-  onDelete,
+  onDeleteFile,
   fileSize,
   timeLeft,
   status,
 }: FileItemProps) => {
-  const handleOpenPdf = () => {
-    if (onOpenPdf) onOpenPdf(fileUrl);
-  };
   const { mutate: downloadFile } = useFileDownloadMutation();
+
+  const handleOpenPdf = () => onOpenPdf();
+  const handleDeleteFile = () => onDeleteFile();
+  const handleDownloadFile = () => {
+    downloadFile(
+      { fileId: fileId, fileName: fileName },
+      {
+        onSuccess: () => {
+          toast.success('파일이 다운로드 되었습니다.');
+        },
+        onError: (error) => {
+          if (error instanceof ApiError) toast.error(getErrorMessage(error));
+          else toast.error('파일 다운로드에 실패했습니다.');
+        },
+      },
+    );
+  };
 
   return (
     <div
@@ -60,7 +76,7 @@ const FileItem = ({
               <DropdownMenuItem
                 onClick={(e) => {
                   e.stopPropagation();
-                  downloadFile({ fileId, fileName });
+                  handleDownloadFile();
                 }}
                 className="px-4 py-2 !label2-regular sm:!label1-regular text-gray-800 hover:bg-gray-200 cursor-pointer"
               >
@@ -69,7 +85,7 @@ const FileItem = ({
               <DropdownMenuItem
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (onDelete) onDelete();
+                  handleDeleteFile();
                 }}
                 className="px-4 py-2 !label2-regular sm:!label1-regular text-red-600 hover:bg-gray-200 cursor-pointer"
               >
