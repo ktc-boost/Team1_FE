@@ -48,8 +48,9 @@ api.interceptors.response.use(
 
     const status = error.response.status;
 
-    if (status === 401 && !originalRequest._retry)
+    if (status === 401 && originalRequest && !originalRequest._retry) {
       return handleUnauthorizedRequest(originalRequest);
+    }
 
     if (status >= 500) {
       Sentry.withScope((scope) => {

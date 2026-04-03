@@ -61,7 +61,7 @@ const createPdfSlice: StateCreator<TaskDetailState, [], [], PdfSlice> = (set) =>
   togglePdf: (isPdfOpen) => set({ isPdfOpen }),
 });
 
-//댓글 관련 Slice
+// 댓글 관련 Slice
 const createCommentSlice: StateCreator<TaskDetailState, [], [], CommentSlice> = (set) => ({
   isAnonymous: initialDataState.isAnonymous,
   selectedCommentId: initialDataState.selectedCommentId,

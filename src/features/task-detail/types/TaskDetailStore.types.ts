@@ -48,6 +48,7 @@ export type FileSlice = Pick<
   TaskDetailState,
   'selectedFile' | 'setSelectedFile' | 'clearFileState'
 >;
+
 export type PinSlice = Pick<
   TaskDetailState,
   | 'currentPin'
@@ -58,7 +59,9 @@ export type PinSlice = Pick<
   | 'setIsEditingPin'
   | 'clearCurrentPin'
 >;
+
 export type PdfSlice = Pick<TaskDetailState, 'isPdfOpen' | 'togglePdf'>;
+
 export type CommentSlice = Pick<
   TaskDetailState,
   | 'isAnonymous'

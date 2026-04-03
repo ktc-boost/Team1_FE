@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { settingsApi } from '@/features/settings/api/settingsApi';
-import toast from 'react-hot-toast';
 import type { MyInfoResponse } from '@/features/settings/types/settingsTypes';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import type { AvatarInfo } from '@/features/user/types/userTypes';
@@ -12,7 +11,8 @@ interface UpdateAvatarPayload {
 
 export const useUpdateAvatarMutation = () => {
   const queryClient = useQueryClient();
-  const { user, setAuth } = useAuthStore.getState();
+  const user = useAuthStore((s) => s.user);
+  const setAuth = useAuthStore((s) => s.setAuth);
 
   return useMutation<AvatarInfo, Error, UpdateAvatarPayload, { previousMyInfo?: MyInfoResponse }>({
     mutationFn: (data) => settingsApi.updateAvatar(data),
@@ -37,7 +37,6 @@ export const useUpdateAvatarMutation = () => {
       if (context?.previousMyInfo) {
         queryClient.setQueryData(['myInfo'], context.previousMyInfo);
       }
-      toast.error('아바타 변경에 실패했습니다.');
     },
 
     onSuccess: (updated) => {

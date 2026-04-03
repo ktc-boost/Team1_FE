@@ -1,8 +1,8 @@
+import { lazy } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { useTaskDetailStore } from '@/features/task-detail/store/useTaskDetailStore';
 import FileSection from '@/features/task-detail/components/FileSection/FileSection';
 import TaskDetailContent from '@/features/task-detail/components/TaskDetailContent/TaskDetailContent';
-import { useShallow } from 'zustand/react/shallow';
-import { lazy } from 'react';
 import type { TaskDetail } from '@/features/task/types/task.domain.types';
 const PDFViewer = lazy(() => import('@/features/task-detail/components/PdfViewer/PdfViewer'));
 
@@ -19,6 +19,7 @@ const TaskDetailInfoSection = ({ task, taskId }: TaskDetailInfoSectionProps) => 
       togglePdf: s.togglePdf,
     })),
   );
+
   return (
     <div className="w-full flex flex-col sm:w-6/10 overflow-hidden">
       {isPdfOpen ? (
