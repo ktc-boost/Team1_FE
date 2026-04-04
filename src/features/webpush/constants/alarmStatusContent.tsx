@@ -14,6 +14,7 @@ const CREATED_CONTENT = {
   bgClass: 'bg-boost-blue/20',
   textClass: 'text-boost-blue-pressed',
 } as const;
+
 const REGISTERED_CONTENT = {
   icon: CheckCircle,
   title: '설정 완료!',
@@ -22,6 +23,7 @@ const REGISTERED_CONTENT = {
   bgClass: 'bg-green-50',
   textClass: 'text-green-500',
 };
+
 export const STATUS_CONTENT = {
   CREATED: CREATED_CONTENT,
   CONNECTED: CREATED_CONTENT,
