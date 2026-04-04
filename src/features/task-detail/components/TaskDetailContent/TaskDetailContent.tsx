@@ -1,8 +1,10 @@
+import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '@/app/routes/routeHelpers';
-import { useAuthStore } from '@/features/auth/store/useAuthStore';
-import { useDeleteTaskMutation } from '@/features/task/hooks/mutation/useDeleteTaskMutation';
+import { ApiError } from '@/shared/error/types/apiError.types';
+import { getErrorMessage } from '@/shared/error/utils/error.utils';
 import { useModal } from '@/shared/hooks/useModal';
+import { useDeleteTaskMutation } from '@/features/task/hooks/mutation/useDeleteTaskMutation';
 import StatusInfo from '@/features/task-detail/components/TaskDetailContent/StatusInfo';
 import DescriptionArea from '@/features/task-detail/components/TaskDetailContent/DescriptionArea';
 import AssigneeSection from '@/features/task-detail/components/TaskDetailContent/AssigneeMoreList';
@@ -22,27 +24,22 @@ const TaskDetailContent = ({ task }: TaskDetailContentProps) => {
   const { showCustom, resetModal } = useModal();
 
   const { mutateAsync: deleteTaskMutation } = useDeleteTaskMutation(projectId || '');
-  const currentUser = useAuthStore((state) => state.user);
 
-  if (!projectId) {
-    console.error('Project ID가 없습니다!');
-    return null;
-  }
+  if (!projectId) return null;
 
-  const currentUserId = currentUser?.id;
-  const isAssignee = task.assignees?.some((assignee) => assignee.id === currentUserId);
-
-  const handleDelete = async () => {
+  const handleDeleteTask = async () => {
     try {
       await deleteTaskMutation({ taskId: task.id, status: task.status });
       resetModal();
       navigate(ROUTES.PROJECT_BOARD(projectId));
-    } catch (err) {
-      console.error('할 일 삭제 실패:', err);
+      toast.success('할 일이 삭제되었어요.');
+    } catch (error) {
+      if (error instanceof ApiError) toast.error(getErrorMessage(error));
+      else toast.error('할 일 삭제를 실패했어요.');
     }
   };
 
-  const handleEdit = () => {
+  const handleEditTask = () => {
     showCustom({
       title: '할 일 수정',
       size: 'lg',
@@ -53,7 +50,7 @@ const TaskDetailContent = ({ task }: TaskDetailContentProps) => {
 
   return (
     <div className="relative flex flex-col h-full overflow-hidden bg-gray-100">
-      {isAssignee && <TaskControlDropdown onClickDelete={handleDelete} onEdit={handleEdit} />}
+      <TaskControlDropdown onClickDelete={handleDeleteTask} onEdit={handleEditTask} />
 
       <div className="flex flex-col flex-1  p-3 sm:p-4 gap-2 sm:gap-4 overflow-hidden">
         <div className="px-2.5">

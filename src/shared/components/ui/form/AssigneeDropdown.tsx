@@ -9,7 +9,6 @@ import {
 } from '@/shared/components/shadcn/dropdown-menu';
 import { Checkbox } from '@/shared/components/shadcn/checkbox';
 import { Avatar, AvatarImage } from '@/shared/components/shadcn/avatar';
-import { cn } from '@/shared/lib/utils';
 import type { Member } from '@/features/user/types/userTypes';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 
@@ -37,14 +36,14 @@ const AssigneeDropdown = ({
           {assignees.length ? assignees.join(', ') : '담당자를 선택하세요'}
         </span>
         {assignees.length > 0 && (
-          <span className="ml-2 bg-blue-100 text-boost-blue px-2 py-0.5 rounded-full text-xs font-medium">
+          <span className=" bg-blue-100 text-boost-blue px-1.5 py-0.5 rounded-full label2-bold">
             {assignees.length}
           </span>
         )}
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent className="min-w-[300px] border-gray-300 shadow-sm">
-      <DropdownMenuLabel className="text-xs text-gray-500">팀 멤버</DropdownMenuLabel>
+      <DropdownMenuLabel className="!label2-regular text-gray-500">팀 멤버</DropdownMenuLabel>
       <DropdownMenuSeparator />
       {members?.map((member) => {
         const isChecked = assignees.includes(member.name);
@@ -57,21 +56,19 @@ const AssigneeDropdown = ({
           >
             <Checkbox
               checked={isChecked}
-              className={cn(
-                'data-[state=checked]:bg-boost-blue data-[state=checked]:border-boost-blue',
-              )}
+              className="data-[state=checked]:bg-boost-blue data-[state=checked]:border-boost-blue"
             />
 
             <Avatar
               style={{ backgroundColor: member.backgroundColor }}
-              className={cn('flex items-center h-6 w-6 rounded-full shrink-0 shadow-xs')}
+              className="flex items-center h-6 w-6 rounded-full shrink-0 shadow-xs"
             >
               <AvatarImage
                 src={getAvatarSrc(member)}
                 className="h-5 w-5 object-cover rounded-full mx-auto my-auto"
               />
             </Avatar>
-            <span className="font-medium text-sm">{member.name}</span>
+            <span className="label1-regular">{member.name}</span>
           </DropdownMenuItem>
         );
       })}
