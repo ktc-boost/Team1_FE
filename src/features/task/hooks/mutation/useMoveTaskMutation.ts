@@ -3,8 +3,6 @@ import { taskApi } from '@/features/task/api/taskApi';
 import { arrayMove } from '@dnd-kit/sortable';
 import type { TaskListResponse } from '@/features/task/types/task.query.types';
 import type { TaskListItem, TaskDetail, TaskStatus } from '@/features/task/types/task.domain.types';
-import { isAxiosError } from 'axios';
-import toast from 'react-hot-toast';
 import { TASK_QUERY_KEYS } from '@/features/task/constants/task.query.constants';
 import type { Direction, SortBy } from '@/features/board/types/board.sort.types';
 import { useBoardSearchStore } from '@/features/board/store/useBoardSearchStore';
@@ -152,7 +150,7 @@ export const useMoveTaskMutation = () => {
       return optimisticallyMoveTask(queryClient, variables);
     },
 
-    onError: (error, variables, context) => {
+    onError: (_, variables, context) => {
       const { fromStatus, toStatus, projectId, activeTaskId } = variables;
 
       const getQueryKeyLocal = (status: TaskStatus) => getQueryKey(status, variables);
@@ -167,18 +165,6 @@ export const useMoveTaskMutation = () => {
           TASK_QUERY_KEYS.detail(projectId, activeTaskId),
           context.previousTaskDetail,
         );
-
-      if (isAxiosError(error) && error.response?.status === 403) {
-        toast.error('담당자만 가능해요!');
-        return;
-      }
-      if (isAxiosError(error) && error.response?.status === 400) {
-        toast.error('아직 승인이 완료되지 않았어요!');
-        return;
-      }
-
-      console.error(error);
-      alert('할 일 이동 중 오류가 발생했습니다.');
     },
 
     onSettled: (_data, _error, variables) => {
