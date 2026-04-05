@@ -72,10 +72,10 @@ export const UserInfoCard = ({ member }: UserInfoComponentProps) => {
         <div className="flex flex-col md:flex-row items-center gap-4">
           <Avatar
             style={{ backgroundColor: member.backgroundColor }}
-            className="flex items-center justify-center w-20 h-20 md:w-18 md:h-18"
+            className="flex items-center justify-center w-24 h-24 md:w-18 md:h-18 shadow-sm"
           >
             <AvatarImage
-              className="object-contain w-16 h-16 md:w-15 md:h-15"
+              className="object-contain w-18 h-18 md:w-15 md:h-15"
               src={getAvatarSrc(member)}
               alt="user avatar"
             />
