@@ -61,7 +61,7 @@ const TaskFormField = ({
   const assignees = watch('assignees') || [];
 
   return (
-    <div className="flex flex-col gap-8 py-4 max-h-[400px] overflow-y-auto px-1">
+    <div className="flex flex-col gap-8 py-4 max-h-[400px] overflow-y-auto px-1 scroll-smooth">
       {isMyTask && (
         <FormField icon={Folder} required label="프로젝트" error={errors.projectId?.message}>
           <ProjectSelect
