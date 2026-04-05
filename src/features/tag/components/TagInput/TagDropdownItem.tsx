@@ -92,8 +92,11 @@ const TagDropdownItem = ({
         >
           {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
         </div>
-        <Badge className="px-3 py-1 shadow-sm" style={TagStyle}>
-          {tag.name}
+        <Badge
+          className="px-3 py-1 shadow-sm max-w-30 sm:max-w-65 md:max-w-75 lg:max-w-100"
+          style={TagStyle}
+        >
+          <span className="truncate">{tag.name}</span>
         </Badge>
       </div>
 
