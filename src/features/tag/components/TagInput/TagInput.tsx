@@ -112,7 +112,7 @@ const TagInput = ({
           onKeyDown={handleKeyDown}
           placeholder={tags.length === 0 ? '태그 입력 후 Enter' : ''}
           disabled={disabled}
-          className="flex-1 min-w-[120px] h-8 border-none focus:ring-transparent label2-regular bg-transparent placeholder:text-gray-400"
+          className="flex-1 min-w-[120px] h-8 border-none focus:ring-transparent !label1-regular bg-transparent placeholder:text-gray-400"
         />
       </div>
 
