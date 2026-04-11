@@ -61,25 +61,36 @@ export const useUpdateTaskForm = (
     }
   }, [numAssignees, maxReviewers, form]);
 
-  const handleConfirm = form.handleSubmit(async (data) => {
-    setIsLoading(true);
-    try {
-      const assigneeIds: string[] = data.assignees
-        .map((name) => projectMembers.find((m) => m.name === name)?.id)
-        .filter((id): id is string => !!id);
+  const handleConfirm = form.handleSubmit(
+    async (data) => {
+      setIsLoading(true);
+      try {
+        const assigneeIds: string[] = data.assignees
+          .map((name) => projectMembers.find((m) => m.name === name)?.id)
+          .filter((id): id is string => !!id);
 
-      const payload: UpdateTaskInput = {
-        ...data,
-        assignees: assigneeIds,
-      };
+        const payload: UpdateTaskInput = {
+          ...data,
+          assignees: assigneeIds,
+        };
 
-      await onConfirm(payload);
-      form.reset(data);
-      resetModal();
-    } finally {
-      setIsLoading(false);
-    }
-  });
+        await onConfirm(payload);
+        form.reset(data);
+        resetModal();
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    (errors) => {
+      const firstErrorKey = Object.keys(errors)[0];
+
+      const el = document.querySelector(`[name="${firstErrorKey}"]`);
+      if (el instanceof HTMLElement) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.focus();
+      }
+    },
+  );
 
   return { form, handleConfirm, isLoading };
 };
