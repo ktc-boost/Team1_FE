@@ -19,6 +19,7 @@ import IOSGuide from '@/features/webpush/components/IOSGuide';
 const AlarmSetupMobilePage = () => {
   const [params] = useSearchParams();
   const qrToken = params.get('token');
+
   const { mutate: connectPushSession } = useConnectPushSessionMutation();
   const { registerPushSubscription, isLoading } = useAlarmPermission(qrToken);
 
@@ -26,6 +27,7 @@ const AlarmSetupMobilePage = () => {
 
   const triedConnectRef = useRef(false);
   const hasShownError = useRef(false);
+
   const isQrValid = Boolean(qrToken);
   const isWebPushSupported = supportsWebPush();
   const isIOSNotStandalone = getIsIOS() && !getIsStandalone();
@@ -78,6 +80,7 @@ const AlarmSetupMobilePage = () => {
 
   return (
     <StatusView
+      key={permission}
       icon={status.icon}
       title={status.title}
       message={status.message}
@@ -92,7 +95,8 @@ const AlarmSetupMobilePage = () => {
           <Button
             onClick={handleAllow}
             disabled={isAllowDisabled}
-            className="w-full py-6 bg-boost-blue hover:bg-boost-blue-hover active:bg-boost-blue-pressed text-gray-100 title2-bold duration-300 shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            variant="defaultBoost"
+            className="w-full py-6 active:bg-boost-blue-pressed !title2-regular disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <CheckCircle className="w-4 h-4" />
             {isLoading ? '처리 중...' : '허용'}
