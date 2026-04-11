@@ -68,25 +68,36 @@ export const useCreateTaskForm = (
     }
   }, [numAssignees, maxReviewers, form]);
 
-  const handleConfirm = form.handleSubmit(async (data) => {
-    setIsLoading(true);
-    try {
-      const assigneeIds = data.assignees
-        .map((name) => projectMembers.find((m) => m.name === name || m.id === name)?.id)
-        .filter((id): id is string => !!id);
+  const handleConfirm = form.handleSubmit(
+    async (data) => {
+      setIsLoading(true);
+      try {
+        const assigneeIds = data.assignees
+          .map((name) => projectMembers.find((m) => m.name === name || m.id === name)?.id)
+          .filter((id): id is string => !!id);
 
-      const payload: CreateTaskInput = {
-        ...data,
-        assignees: assigneeIds,
-      };
+        const payload: CreateTaskInput = {
+          ...data,
+          assignees: assigneeIds,
+        };
 
-      await onConfirm(payload);
-      resetModal();
-      form.reset();
-    } finally {
-      setIsLoading(false);
-    }
-  });
+        await onConfirm(payload);
+        resetModal();
+        form.reset();
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    (errors) => {
+      const firstErrorKey = Object.keys(errors)[0];
+
+      const el = document.querySelector(`[name="${firstErrorKey}"]`);
+      if (el instanceof HTMLElement) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.focus();
+      }
+    },
+  );
 
   return { form, handleConfirm, isLoading };
 };

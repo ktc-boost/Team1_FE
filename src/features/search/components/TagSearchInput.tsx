@@ -125,10 +125,10 @@ const TagSearchInput = () => {
                   className="data-[state=checked]:border-boost-blue data-[state=checked]:bg-boost-blue"
                 />
                 <Badge
-                  className="max-w-34 whitespace-normal break-words px-3 py-1 shadow-sm sm:max-w-72"
+                  className="whitespace-normal break-words px-3 py-1 shadow-sm max-w-30 sm:max-w-40 md:max-w-50 lg:max-w-60"
                   style={tagStyle}
                 >
-                  {tag.name}
+                  <span className="truncate">{tag.name}</span>
                 </Badge>
               </div>
             );
