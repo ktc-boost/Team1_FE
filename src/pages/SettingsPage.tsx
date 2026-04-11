@@ -13,15 +13,15 @@ export default function SettingsPage() {
   if (isLoading || !myInfo) return <FullPageLoader text="정보 불러오는 중.." />;
 
   return (
-    <div className="overflow-y-auto">
-      <div className="flex flex-col px-2 sm:px-10 space-y-4 pt-4 pb-6">
+    <div className="overflow-y-auto bg-gray-200">
+      <div className="flex flex-col p-4 md:p-5 space-y-4">
         <UserInfoCard member={myInfo} />
         <AvatarsDrawer showEditButton={false} showSaveButton={true} />
-        <Separator />
+        <Separator className="bg-gray-300" />
         <AlarmSettingCard />
-        <Separator />
+        <Separator className="bg-gray-300" />
         <DeleteAccountCard />
-        <Separator />
+        <Separator className="bg-gray-300" />
         <LicenseCard />
       </div>
     </div>
