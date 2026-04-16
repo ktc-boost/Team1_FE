@@ -4,6 +4,7 @@ import { User, ChevronLeft, ChevronRight } from 'lucide-react';
 import ContentItem from '@/shared/components/ui/ContentItem';
 import { getAvatarSrc } from '@/features/avatar-picker/utils/avatarUtils';
 import { MAX_DISPLAY_ASSIGNEES } from '@/features/task-detail/constants/task-detail.ui.constants';
+import { Button } from '@/shared/components/shadcn/button';
 
 interface AssigneeMoreListProps {
   assignees: { id: string; name: string; avatar?: string; backgroundColor?: string }[];
@@ -16,7 +17,7 @@ const AssigneeMoreList = ({ assignees }: AssigneeMoreListProps) => {
 
   return (
     <ContentItem icon={User} title="담당자">
-      <div className="flex flex-wrap gap-2.5">
+      <div className="flex flex-wrap gap-2.5 items-center">
         {displayedAssignees.map((assignee) => (
           <div
             key={assignee.id}
@@ -43,21 +44,22 @@ const AssigneeMoreList = ({ assignees }: AssigneeMoreListProps) => {
         ))}
 
         {hasMore && (
-          <button
+          <Button
             onClick={() => setShowAll(!showAll)}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors body2-regular text-gray-600 border border-gray-200"
+            variant="outline"
+            className="gap-1 px-2 py-1 rounded-full !label2-bold bg-boost-blue/5 hover:bg-boost-blue/10 text-boost-blue-dark/70 hover:text-boost-blue-dark/80 border-boost-blue-dark/10 shadow-sm"
           >
             {showAll ? (
               <>
-                접기 <ChevronLeft className="w-3.5 h-3.5" />
+                접기 <ChevronLeft className="w-2.5 h-2.5" />
               </>
             ) : (
               <>
-                +{assignees.length - MAX_DISPLAY_ASSIGNEES}명{' '}
-                <ChevronRight className="w-3.5 h-3.5" />
+                + {assignees.length - MAX_DISPLAY_ASSIGNEES}명{' '}
+                <ChevronRight className="w-2.5 h-2.5" />
               </>
             )}
-          </button>
+          </Button>
         )}
       </div>
     </ContentItem>

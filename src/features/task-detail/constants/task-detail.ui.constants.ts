@@ -1,2 +1,2 @@
 export const PAGE_HORIZONTAL_PADDING = 16;
-export const MAX_DISPLAY_ASSIGNEES = 1;
+export const MAX_DISPLAY_ASSIGNEES = 3;

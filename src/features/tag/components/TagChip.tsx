@@ -14,10 +14,10 @@ const TagChip = ({ tag, onRemove }: TagChipProps) => {
   return (
     <Badge
       key={tag.tagId}
-      className="cursor-default py-1 gap-1.5 shadow-sm transition-all duration-200 animate-in fade-in slide-in-from-left-2"
+      className="cursor-default py-1 gap-1.5 shadow-sm transition-all duration-200 animate-in fade-in slide-in-from-left-2 max-w-40"
       style={TagStyle}
     >
-      {tag.name}
+      <span className="truncate">{tag.name}</span>
       <Button
         size="icon"
         variant="ghost"
